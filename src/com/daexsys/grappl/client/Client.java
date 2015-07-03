@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.Socket;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Client {
@@ -19,10 +20,17 @@ public class Client {
     public static int recv = 0;
 
     public static String username = "Anonymous";
+    public static char[] password;
     public static boolean isAlphaTester = false;
     public static boolean isLoggedIn = false;
 
     public static int connectedClients = 0;
+
+    public static boolean displayGUI = false;
+    public static String ip = "";
+    public static int port = 0;
+
+    public static java.util.List<Socket> sockets = new ArrayList<Socket>();
 
     public static void main(String[] args) {
         boolean displayGui = true;
@@ -107,6 +115,7 @@ public class Client {
                             System.out.println("Alpha tester: " + alpha);
                             System.out.println("Static port: " + port);
                             Client.username = username.getText();
+                            Client.password = jPasswordField.getPassword();
 
                             // options: nyc. sf. pac. lon. deu.
                             String prefix = dataInputStream.readLine();
@@ -164,7 +173,7 @@ public class Client {
             });
             jFrame.add(signup);
 
-            JButton beanonymous = new JButton("Be Anonymous");
+            JButton beanonymous = new JButton("Run without logging in");
             //202
             beanonymous.addActionListener(new ActionListener() {
                 @Override
@@ -331,10 +340,13 @@ public class Client {
     public static void run(final boolean displayGui, final String ip, int port) {
             final int SERVICE_PORT = port;
 
-//        if(ip.substring(0, 1).equalsIgnoreCase(".")) { ip = ip.substring(1, ip.length()); }
-            try {
+        Client.displayGUI = displayGui;
+        Client.ip = ip;
+        Client.port = port;
+        try {
             // Create socket listener
             final Socket messageSocket = new Socket(ip, GrapplGlobal.MESSAGE_PORT);
+            sockets.add(messageSocket);
 
             final DataInputStream messageInputStream = new DataInputStream(messageSocket.getInputStream());
             final String s = messageInputStream.readLine();
@@ -376,6 +388,7 @@ public class Client {
                     }
                 }).start();
             }
+
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -384,6 +397,7 @@ public class Client {
 
                     try {
                         heartBeat = new Socket(ip, GrapplGlobal.HEARTBEAT);
+                        sockets.add(heartBeat);
                         dataOutputStream = new DataOutputStream(heartBeat.getOutputStream());
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -394,6 +408,8 @@ public class Client {
                             dataOutputStream.writeInt(0);
                         } catch (IOException e) {
                             e.printStackTrace();
+                            isDown();
+                            return;
                         }
 
                         try {
@@ -427,9 +443,11 @@ public class Client {
 
                             // This socket connects to the local server.
                             final Socket toLocal = new Socket("127.0.0.1", SERVICE_PORT);
+                            sockets.add(toLocal);
                             // This socket connects to the grappl server, to transfer data from the computer to it.
                             System.out.println(ip);
                             final Socket toRemote = new Socket(ip, Integer.parseInt(s) + 1);
+                            sockets.add(toRemote);
 
                             // Start the local -> remote thread
                             final Thread localToRemote = new Thread(new Runnable() {
@@ -510,7 +528,120 @@ public class Client {
         }
     }
 
-    public static void updateConnections() {
+    public static void isDown() {
+        System.out.println("Lost connection to remote");
+        closeAllSockets();
 
+        if(isAlphaTester) {
+            // Attempt reconnect
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    while (true) {
+                        try {
+                            Socket testSocket = new Socket(GrapplGlobal.DOMAIN, GrapplGlobal.HEARTBEAT);
+                            testSocket.close();
+                            restart();
+                            return;
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                        try {
+                            Thread.sleep(500);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }).start();
+        } else {
+            JOptionPane.showMessageDialog(jFrame, "The relay server you were connected to has gone down. Sorry for the interruption!");
+        }
+    }
+
+    public static void closeAllSockets() {
+        for (int i = 0; i < sockets.size(); i++) {
+            try {
+                sockets.get(i).close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        System.out.println("Sockets closed");
+    }
+
+    public static void restart() {
+        System.out.println("Reconnecting");
+
+        if(isLoggedIn) {
+            DataInputStream dataInputStream = null;
+            DataOutputStream dataOutputStream = null;
+
+            try {
+                Socket socket = new Socket(GrapplGlobal.DOMAIN, GrapplGlobal.AUTHENTICATION);
+                dataInputStream = new DataInputStream(socket.getInputStream());
+                dataOutputStream = new DataOutputStream(socket.getOutputStream());
+
+                dataOutputStream.writeByte(0);
+
+                PrintStream printStream = new PrintStream(dataOutputStream);
+//                        System.out.println(username.getText());
+//                        System.out.println(jPasswordField.getPassword());
+                System.out.println(username);
+                System.out.println(password);
+                printStream.println(Client.username.toLowerCase());
+                printStream.println(Client.password);
+
+                boolean success = dataInputStream.readBoolean();
+                boolean alpha = dataInputStream.readBoolean();
+                int port = dataInputStream.readInt();
+                isAlphaTester = alpha;
+                isLoggedIn = success;
+
+                if (success) {
+                    System.out.println("Logged in as " + Client.username);
+                    System.out.println("Alpha tester: " + alpha);
+                    System.out.println("Static port: " + port);
+
+                    // options: nyc. sf. pac. lon. deu.
+                    String prefix = dataInputStream.readLine();
+
+                    String domain = prefix + "." + GrapplGlobal.DOMAIN;
+
+                    System.out.println(domain);
+
+                    int wX = jFrame.getX();
+                    int wY = jFrame.getY();
+
+                    jFrame.setVisible(false);
+                    jFrame = new JFrame(GrapplGlobal.APP_NAME + " Client (" + Client.username + ")");
+                    // 300, 240
+                    jFrame.setSize(new Dimension(300, 240));
+                    jFrame.setLocation(wX, wY);
+
+                    jFrame.setVisible(true);
+                    jFrame.setLayout(null);
+                    jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+                    JButton jButton = new JButton("Close " + GrapplGlobal.APP_NAME + " Client");
+                    jButton.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            System.exit(0);
+                        }
+                    });
+                    jFrame.add(jButton);
+                    jButton.setBounds(0, 95, 280, 100);
+                } else {
+                    System.out.println("Login failed!");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        run(Client.displayGUI, Client.ip, Client.port);
     }
 }
