@@ -111,7 +111,7 @@ public class AutoUpdater {
             return System.getenv("user.home") + "/Library/Application Support/Grappl/";
         } else { // Linux or non-Mac BSD
             System.out.println("other");
-            return System.getenv("user.home") + "/";
+            return System.getProperty("user.home") + "/Grappl/";
         }
     }
 }
