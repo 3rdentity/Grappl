@@ -2,13 +2,16 @@ package com.daexsys.grappl.client;
 
 import com.daexsys.grappl.GrapplGlobal;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.tools.Tool;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.Socket;
 import java.net.URI;
+import java.net.URL;
 
 public class GrapplGUI {
     public JFrame jFrame;
@@ -34,12 +37,19 @@ public class GrapplGUI {
         jFrame.setLayout(null);
         jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
+        try {
+            jFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(new URL("http://grappl.io:888/html/glogo.png")));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         JLabel usernameLable = new JLabel("Username");
         usernameLable.setBounds(5, 5, 250, 20);
         jFrame.add(usernameLable);
 
         final JTextField username = new JTextField("");
         username.setBounds(5, 25, 250, 20);
+        username.setText(GrapplDataFile.getUsername());
         jFrame.add(username);
 
         final JLabel passwordLabel = new JLabel("Password");
@@ -84,6 +94,8 @@ public class GrapplGUI {
                         Client.username = username.getText();
                         Client.password = jPasswordField.getPassword();
 
+                        GrapplDataFile.saveUsername(username.getText());
+
                         // options: nyc. sf. pac. lon. deu.
                         String prefix = dataInputStream.readLine();
 
@@ -98,6 +110,13 @@ public class GrapplGUI {
                         // 300, 240
                         newJframe.setSize(new Dimension(300, 240));
                         newJframe.setLocation(wX, wY);
+
+                        try {
+                            newJframe.setIconImage(Toolkit.getDefaultToolkit().getImage(new URL("http://grappl" +
+                                    ".io:888/html/glogo.png")));
+                        } catch (Exception ee) {
+                            ee.printStackTrace();
+                        }
 
                         newJframe.setVisible(true);
                         newJframe.setLayout(null);
@@ -120,7 +139,7 @@ public class GrapplGUI {
                                 new ConsoleWindow();
                             }
                         });
-                        consoleButton.setBounds(230, 40, 40, 40);
+                        consoleButton.setBounds(235, 40, 40, 40);
                         newJframe.add(consoleButton);
 
                         String ports = JOptionPane.showInputDialog("What port does your server run on?");
@@ -178,6 +197,12 @@ public class GrapplGUI {
                 jFrame.setVisible(true);
                 jFrame.setLayout(null);
                 jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+                try {
+                    jFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(new URL("http://grappl.io:888/html/glogo.png")));
+                } catch (Exception ee) {
+                    ee.printStackTrace();
+                }
 
                 JButton jButton = new JButton("Close " + GrapplGlobal.APP_NAME + " Client");
                 jButton.addActionListener(new ActionListener() {

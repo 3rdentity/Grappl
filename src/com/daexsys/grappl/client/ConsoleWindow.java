@@ -4,6 +4,7 @@ import com.daexsys.grappl.GrapplGlobal;
 import com.daexsys.grappl.client.commands.CommandHandler;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -12,6 +13,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.net.URL;
 
 public class ConsoleWindow {
 
@@ -34,6 +36,13 @@ public class ConsoleWindow {
             dataOutputStream = new DataOutputStream(Client.authSocket.getOutputStream());
         } catch (IOException e) {
             e.printStackTrace();
+        }
+
+        try {
+            consoleFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(new URL("http://grappl" +
+                    ".io:888/html/glogo.png")));
+        } catch (Exception ee) {
+            ee.printStackTrace();
         }
 
         consoleFrame.setLayout(null);
