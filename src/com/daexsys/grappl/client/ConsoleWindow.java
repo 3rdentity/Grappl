@@ -116,6 +116,8 @@ public class ConsoleWindow {
     }
 
     public void enterCommand(String command) {
+
+
         String output = "";
 
         CommandHandler.handleCommand(command, dataInputStream, dataOutputStream, Client.localPort);

@@ -204,6 +204,16 @@ public class GrapplGUI {
                     ee.printStackTrace();
                 }
 
+                JButton consoleButton = new JButton("C I");
+                consoleButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        new ConsoleWindow();
+                    }
+                });
+                consoleButton.setBounds(235, 40, 40, 40);
+                jFrame.add(consoleButton);
+
                 JButton jButton = new JButton("Close " + GrapplGlobal.APP_NAME + " Client");
                 jButton.addActionListener(new ActionListener() {
                     @Override
@@ -239,9 +249,18 @@ public class GrapplGUI {
     }
 
     public void initializeGUI(String relayServerIP, String publicPort, int localPort) {
-        final JLabel jLabel = new JLabel("Public address: " + relayServerIP + ":" + publicPort);
-        jLabel.setBounds(5, 5, 450, 20);
-        getjFrame().add(jLabel);
+//        final JLabel jLabel = new JLabel("Public address: " + relayServerIP + ":" + publicPort);
+//        jLabel.setBounds(5, 5, 450, 20);
+//        getjFrame().add(jLabel);
+
+        final JTextPane label = new JTextPane();
+        label.setContentType("text");
+        label.setText("Public address: " + relayServerIP + ":" + publicPort);
+        label.setBorder(null);
+        label.setBackground(null);
+        label.setEditable(false);
+        label.setBounds(5, 8, 450, 20);
+        getjFrame().add(label);
 
         JLabel jLabel2 = new JLabel("Server on local port: " + localPort);
         jLabel2.setBounds(5, 25, 450, 20);

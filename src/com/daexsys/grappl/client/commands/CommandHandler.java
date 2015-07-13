@@ -15,6 +15,7 @@ import java.io.PrintStream;
 import java.util.Scanner;
 
 public class CommandHandler {
+    public static String send = "";
 
     public static void handleCommand(String command, DataInputStream dataInputStream, DataOutputStream dataOutputStream, int port) {
         String ip = GrapplGlobal.DOMAIN;
@@ -76,6 +77,27 @@ public class CommandHandler {
             else if(spl[0].equalsIgnoreCase("version")) {
                 ClientLog.log(GrapplGlobal.APP_NAME + " version " + GrapplClientState.VERSION);
             }
+
+            else if(spl[0].equalsIgnoreCase("listadd")) {
+                ClientLog.log("Adding to server list");
+                dataOutputStream.writeByte(6);
+                String game = spl[1];
+                PrintStream printStream = new PrintStream(dataOutputStream);
+                send = game + " - " + Client.relayServerIP + ":"+ Client.publicPort;
+                printStream.println(send);
+            }
+
+            else if(spl[0].equalsIgnoreCase("listremove")) {
+                ClientLog.log("Removing from server list");
+                dataOutputStream.writeByte(7);
+                PrintStream printStream = new PrintStream(dataOutputStream);
+                printStream.println(send);
+            }
+
+            else if(spl[0].equalsIgnoreCase("help")) {
+                ClientLog.log("Commands: init, login [username] [password], setport [port], listadd [gamename], listremovem, whoami, version, relay, ipban [ip]");
+            }
+
             else if (spl[0].equalsIgnoreCase("setport")) {
                 if (Client.isLoggedIn) {
                     if (Client.isAlphaTester) {
