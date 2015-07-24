@@ -23,15 +23,19 @@ public class GrapplDataFile {
 
     public static void saveUsername(String username) {
         File file = new File(getOSSpecificLocation() + "/user.dat");
+        file.mkdirs();
         try {
             file.createNewFile();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+//        boolean rememberMe = false;
+
         try {
             PrintStream printStream = new PrintStream(new FileOutputStream(file));
             printStream.println(username);
+//            printStream.println(rememberMe);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

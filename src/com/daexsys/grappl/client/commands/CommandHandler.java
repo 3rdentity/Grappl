@@ -38,6 +38,22 @@ public class CommandHandler {
                 }
             }
 
+            else if (spl[0].equalsIgnoreCase("ipunban")) {
+
+                if (Client.isLoggedIn) {
+                    String ipToBAN = spl[1];
+
+                    dataOutputStream.writeByte(8);
+                    PrintStream printStream = new PrintStream(dataOutputStream);
+                    printStream.println(ipToBAN);
+
+                    ClientLog.log("Unbanned ip: " + ipToBAN);
+                } else {
+                    ClientLog.log("You must be logged in to unban IPs.");
+                }
+            }
+
+
             else if (spl[0].equalsIgnoreCase("login")) {
                 String username = spl[1];
                 String password = spl[2];
@@ -78,6 +94,11 @@ public class CommandHandler {
                 ClientLog.log(GrapplGlobal.APP_NAME + " version " + GrapplClientState.VERSION);
             }
 
+            else if(spl[0].equalsIgnoreCase("savelog")) {
+                ClientLog.save();
+                ClientLog.log("Log saved");
+            }
+
             else if(spl[0].equalsIgnoreCase("listadd")) {
                 ClientLog.log("Adding to server list");
                 dataOutputStream.writeByte(6);
@@ -94,8 +115,21 @@ public class CommandHandler {
                 printStream.println(send);
             }
 
+            else if(spl[0].equalsIgnoreCase("changelocal")) {
+                Client.localPort = Integer.parseInt(spl[1]);
+                ClientLog.log("Local port is now " + Client.localPort);
+            }
+
+            else if(spl[0].equalsIgnoreCase("resetstats")) {
+                Client.connectedClients = 0;
+                Client.sent = 0;
+                Client.recv = 0;
+            }
+
             else if(spl[0].equalsIgnoreCase("help")) {
-                ClientLog.log("Commands: init, login [username] [password], setport [port], listadd [gamename], listremovem, whoami, version, relay, ipban [ip]");
+                ClientLog.log("COMMANDS: init, login [username] [password], setport [port]");
+                ClientLog.log("listadd [gamename], listremovem, whoami, version, relay");
+                ClientLog.log("changelocal [port], resetstats, ipban [ip], ipunban [ip], savelog");
             }
 
             else if (spl[0].equalsIgnoreCase("setport")) {
@@ -150,6 +184,7 @@ public class CommandHandler {
                         CommandHandler.handleCommand(line, dataInputStream, dataOutputStream, Client.localPort);
                     } catch (Exception e) {
                         e.printStackTrace();
+//                        System.exit(0);
                         return;
                     }
                 }

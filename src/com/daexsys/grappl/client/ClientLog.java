@@ -1,6 +1,7 @@
 package com.daexsys.grappl.client;
 
 import javax.swing.*;
+import java.io.*;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,6 +24,37 @@ public class ClientLog {
             for(String s : log) {
                 display.append(s + "\n");
             }
+        }
+
+        save();
+    }
+
+    public static void save() {
+        try {
+            File dirs = new File(AutoUpdater.getOSSpecificLocation());
+            dirs.mkdirs();
+
+            File file = new File(AutoUpdater.getOSSpecificLocation() + GrapplClientState.clientTimeOpened + "-log.log");
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
+            PrintStream printStream = new PrintStream(fileOutputStream);
+
+            for(String s : theLog) {
+                printStream.println(s);
+            }
+            printStream.close();
+            try {
+                fileOutputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
     }
 
