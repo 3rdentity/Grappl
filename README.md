@@ -24,7 +24,7 @@ After that, use the grappl object's connect method to open the server.
 
     grappl.connect(relayServerIP);
 
-'relayserverIP' is the relay server of your choice. This may be one of the official ones (n.grappl.io, e.grappl.io, p.grappl.io) or a custom one.
+'relayserverIP' is a string representing the relay server of your choice. This may be one of the official ones (n.grappl.io, e.grappl.io, p.grappl.io) or a custom one.
 
     grappl.getPublicAddress();
 
