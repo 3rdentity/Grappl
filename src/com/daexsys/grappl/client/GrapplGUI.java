@@ -85,128 +85,132 @@ public class GrapplGUI {
         if(isActuallyHash) {
             rememberMeBox.setSelected(true);
             login(usernamef, jPasswordField, this, rememberMeBox);
-        }
+        } else {
 
-        final JButton login = new JButton("Login");
-        login.setBounds(2, 112, 140, 40);
-        login.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-               login(usernamef, jPasswordField, theGUI, rememberMeBox);
-            }
-        });
-        jFrame.add(login);
-
-        //100
-        JButton signup = new JButton("Sign up");
-        signup.setBounds(142, 112, 140, 40);
-        signup.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    Desktop.getDesktop().browse(URI.create("http://grappl.io/register"));
-                } catch (IOException e1) {
-                    e1.printStackTrace();
+            final JButton login = new JButton("Login");
+            login.setBounds(2, 112, 140, 40);
+            login.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    login(usernamef, jPasswordField, theGUI, rememberMeBox);
                 }
-            }
-        });
-        jFrame.add(signup);
+            });
+            jFrame.add(login);
 
-        JButton beanonymous = new JButton("Run without logging in");
-        //202
-        beanonymous.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                jFrame.setVisible(false);
-                int wX = jFrame.getX();
-                int wY = jFrame.getY();
-
-                jFrame = new JFrame(GrapplGlobal.APP_NAME + " Client");
-                jFrame.setSize(new Dimension(300, 240));
-                jFrame.setLocation(wX, wY);
-
-                jFrame.setVisible(true);
-                jFrame.setLayout(null);
-                jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
-                try {
-                    jFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(new URL("http://grappl.io:888/html/glogo.png")));
-                } catch (Exception ee) {
-                    ee.printStackTrace();
-                }
-
-                JButton consoleButton = new JButton("C I");
-                consoleButton.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        new ConsoleWindow(grappl);
+            //100
+            JButton signup = new JButton("Sign up");
+            signup.setBounds(142, 112, 140, 40);
+            signup.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    try {
+                        Desktop.getDesktop().browse(URI.create("http://grappl.io/register"));
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
                     }
-                });
-                consoleButton.setBounds(235, 40, 40, 40);
-                jFrame.add(consoleButton); JButton jButton2 = new JButton("Request random visitors");
+                }
+            });
+            jFrame.add(signup);
 
-                grappl = new GrapplBuilder().withGUI(theGUI).build();
+            JButton beanonymous = new JButton("Run without logging in");
+            //202
+            beanonymous.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    jFrame.setVisible(false);
+                    int wX = jFrame.getX();
+                    int wY = jFrame.getY();
 
-                jButton2.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        try {
-                            Socket socket = new Socket(GrapplGlobal.DOMAIN, GrapplGlobal.AUTHENTICATION);
-                            DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
-                            String app = JOptionPane.showInputDialog("What game/application is your server for?");
-                            if (!app.equalsIgnoreCase("")) {
-                                String send = "";
-                                ClientLog.log("Adding to server list");
-                                try {
-                                    dos.writeByte(6);
-                                    PrintStream printStream = new PrintStream(dos);
-                                    send = app + " - " + grappl.getRelayServer() + ":" + grappl.getExternalPort();
-                                    printStream.println(send);
-                                } catch (Exception ee) {
-                                    ee.printStackTrace();
-                                }
-                            }
-                        } catch (Exception ex) {
+                    jFrame = new JFrame(GrapplGlobal.APP_NAME + " Client");
+                    jFrame.setSize(new Dimension(300, 240));
+                    jFrame.setLocation(wX, wY);
 
+                    jFrame.setVisible(true);
+                    jFrame.setLayout(null);
+                    jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+                    try {
+                        jFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(new URL("http://grappl.io:888/html/glogo.png")));
+
+
+                    } catch (Exception ee) {
+                        ee.printStackTrace();
+                    }
+
+                    JButton consoleButton = new JButton("C I");
+                    consoleButton.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            new ConsoleWindow(grappl);
                         }
-                    }
-                });
-                jFrame.add(jButton2);
+                    });
+                    consoleButton.setBounds(235, 40, 40, 40);
+                    jFrame.add(consoleButton);
+                    JButton jButton2 = new JButton("Request random visitors");
 
-                JButton jButton = new JButton("Close " + GrapplGlobal.APP_NAME + " Client");
-                jButton.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        System.exit(0);
-                    }
-                });
-                jFrame.add(jButton);
-                jButton.setBounds(0, 95, 280, 100);
+                    grappl = new GrapplBuilder().withGUI(theGUI).build();
 
-                String ports = JOptionPane.showInputDialog("What port does your server run on?");
-                grappl.setInternalPort(Integer.parseInt(ports));
-                grappl.connect(GrapplGlobal.DOMAIN);
-            }
-        });
-        //150
-        beanonymous.setBounds(2, 155, 192, 40);
-        jFrame.add(beanonymous);
+                    jButton2.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            try {
+                                Socket socket = new Socket(GrapplGlobal.DOMAIN, GrapplGlobal.AUTHENTICATION);
+                                DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
+                                String app = JOptionPane.showInputDialog("What game/application is your server for?");
+                                if (!app.equalsIgnoreCase("")) {
+                                    String send = "";
+                                    ClientLog.log("Adding to server list");
+                                    try {
+                                        dos.writeByte(6);
+                                        PrintStream printStream = new PrintStream(dos);
+                                        send = app + " - " + grappl.getRelayServer() + ":" + grappl.getExternalPort();
+                                        printStream.println(send);
+                                    } catch (Exception ee) {
+                                        ee.printStackTrace();
+                                    }
+                                }
+                            } catch (Exception ex) {
 
-        JButton donate = new JButton("Donate");
-        donate.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    Desktop.getDesktop().browse(URI.create("http://grappl.io/donate"));
-                } catch (IOException e1) {
-                    e1.printStackTrace();
+                            }
+                        }
+                    });
+                    jFrame.add(jButton2);
+
+                    JButton jButton = new JButton("Close " + GrapplGlobal.APP_NAME + " Client");
+                    jButton.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            System.exit(0);
+                        }
+                    });
+                    jFrame.add(jButton);
+                    jButton.setBounds(0, 95, 280, 100);
+
+                    String ports = JOptionPane.showInputDialog("What port does your server run on?");
+                    grappl.setInternalPort(Integer.parseInt(ports));
+                    grappl.connect(GrapplGlobal.DOMAIN);
                 }
-            }
-        });
-        donate.setBounds(201, 155, 75, 40);
-        jFrame.add(donate);
+            });
+            //150
+            beanonymous.setBounds(2, 155, 192, 40);
+            jFrame.add(beanonymous);
 
-        jFrame.repaint();
+            JButton donate = new JButton("Donate");
+            donate.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    try {
+                        Desktop.getDesktop().browse(URI.create("http://grappl.io/donate"));
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+            });
+            donate.setBounds(201, 155, 75, 40);
+            jFrame.add(donate);
+
+            jFrame.repaint();
+        }
     }
 
     public void initializeGUI(String relayServerIP, String publicPort, int localPort) {
