@@ -1,5 +1,11 @@
 ## Grappl
 
+
+Website: http://grappl.io/
+
+Donations: http://grappl.io/donate
+
+
 Grappl is a tool for hosting servers behind closed ports.
 Other people don't have to download anything to connect to Grappl'd servers, unlike other programs such as hamachi, they
 act just like normal listening-IP servers.
@@ -21,6 +27,7 @@ may be one of the official ones (n.grappl.io, e.grappl.io, p.grappl.io) or a cus
 ## License
 
 Code in the com.daexsys.grappl.client package is released under GPL v3.
+
 All other code (server/web) is All Rights Reserved. It will eventually be removed in a code cleanup.
 
 ## Development
