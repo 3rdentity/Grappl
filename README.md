@@ -24,9 +24,7 @@ may be one of the official ones (n.grappl.io, e.grappl.io, p.grappl.io) or a cus
 
 ## License
 
-Code in the com.daexsys.grappl.client package is released under GPL v3.
-
-All other code (server/web) is All Rights Reserved. It will eventually be removed in a code cleanup.
+The Grappl client code is released under GPL v2.
 
 ## Development
 
