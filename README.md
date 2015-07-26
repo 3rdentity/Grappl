@@ -18,7 +18,7 @@ We'll start using Maven, soon.
 ## API
 
 Using Grappl's client API is very simple and straightforward. Just create a GrapplBuilder, and use
-the supplied methods to configured Grappl's state. Use build() to get the Grappl object,
+the supplied methods to configure Grappl's state. Use build() to get the Grappl object,
 then use the Grappl object's connect() method to connect to your relay server of choice. This
 may be one of the official ones (n.grappl.io, e.grappl.io, p.grappl.io) or a custom one.
 
