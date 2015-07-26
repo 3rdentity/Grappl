@@ -120,7 +120,7 @@ public class Grappl {
         ClientLog.log("Lost connection to remote");
         closeAllSockets();
 
-        if(isAlphaTester) {
+//        if(isAlphaTester) {
             // Attempt reconnect
             new Thread(new Runnable() {
                 @Override
@@ -132,7 +132,8 @@ public class Grappl {
                             restart();
                             return;
                         } catch (IOException e) {
-                            e.printStackTrace();
+//                            e.printStackTrace();
+                            System.out.println("Attempting reconnect");
                         }
 
                         try {
@@ -143,10 +144,11 @@ public class Grappl {
                     }
                 }
             }).start();
-        } else {
-            JOptionPane.showMessageDialog(gui.getjFrame(), "The relay server you were connected to has gone " +
-                    "down. Sorry for the interruption!");
-        }
+//        }
+//    else {
+//            JOptionPane.showMessageDialog(gui.getjFrame(), "The relay server you were connected to has gone " +
+//                    "down. Sorry for the interruption!");
+//        }
     }
 
     private void closeAllSockets() {
@@ -261,10 +263,11 @@ public class Grappl {
                 } catch (IOException e) {
                     try {
                         messageSocket.close();
+                        ClientLog.log("Error in connection with message server");
                     } catch (IOException e1) {
-                        e1.printStackTrace();
+//                        e1.printStackTrace();
                     }
-                    e.printStackTrace();
+//                    e.printStackTrace();
                 }
             }
         });
@@ -310,28 +313,30 @@ public class Grappl {
 
                     ClientLog.log(domain);
 
-                    int wX = gui.getjFrame().getX();
-                    int wY = gui.getjFrame().getY();
+                    if(gui != null) {
+                        int wX = gui.getjFrame().getX();
+                        int wY = gui.getjFrame().getY();
 
-                    gui.getjFrame().setVisible(false);
-                    gui.jFrame = new JFrame(GrapplGlobal.APP_NAME + " Client (" + username + ")");
-                    // 300, 240
-                    gui.getjFrame().setSize(new Dimension(300, 240));
-                    gui.getjFrame().setLocation(wX, wY);
+                        gui.getjFrame().setVisible(false);
+                        gui.jFrame = new JFrame(GrapplGlobal.APP_NAME + " Client (" + username + ")");
+                        // 300, 240
+                        gui.getjFrame().setSize(new Dimension(300, 240));
+                        gui.getjFrame().setLocation(wX, wY);
 
-                    gui.getjFrame().setVisible(true);
-                    gui.getjFrame().setLayout(null);
-                    gui.getjFrame().setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+                        gui.getjFrame().setVisible(true);
+                        gui.getjFrame().setLayout(null);
+                        gui.getjFrame().setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-                    JButton jButton = new JButton("Close " + GrapplGlobal.APP_NAME + " Client");
-                    jButton.addActionListener(new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            System.exit(0);
-                        }
-                    });
-                    gui.getjFrame().add(jButton);
-                    jButton.setBounds(0, 95, 280, 100);
+                        JButton jButton = new JButton("Close " + GrapplGlobal.APP_NAME + " Client");
+                        jButton.addActionListener(new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                System.exit(0);
+                            }
+                        });
+                        gui.getjFrame().add(jButton);
+                        jButton.setBounds(0, 95, 280, 100);
+                    }
                 } else {
                     ClientLog.log("Login failed!");
                 }

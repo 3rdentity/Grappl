@@ -45,7 +45,6 @@ public class GrapplBuilder {
                 PrintStream printStream = new PrintStream(dataOutputStream);
                 printStream.println(grappl.username);
                 printStream.println(grappl.password);
-                grappl.password = null;
             } catch (Exception e) {
                 e.printStackTrace();
             }
