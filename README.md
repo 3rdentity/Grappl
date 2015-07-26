@@ -5,7 +5,7 @@ Website: http://grappl.io/
 Donations: http://grappl.io/donate
 
 Grappl is a tool for hosting servers behind closed ports.
-People connecting don't have to download anything to connect to Grappl'd servers, unlike other programs such as hamachi.
+People connecting don't have to download anything to connect to Grappl'd servers, unlike with other programs such as hamachi.
 
 It works by transferring data through relay servers on grappl.io.
 
