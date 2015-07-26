@@ -16,23 +16,15 @@ The project is still in an alpha state. This repository contains all the newest 
 
 Using Grappl's client API is very simple and straightforward.
 
-Just create a GrapplBuilder:
+Just create a GrapplBuilder, use the supplied methods to configure Grappl's state, then use build() to create the Grappl object. Like so:
 
-    GrapplBuilder grapplBuilder = new GrapplBuilder();
+    Grappl grappl = new GrapplBuilder().atLocalPort(25565).build();
 
-then use the supplied methods to configure Grappl's state:
-
-    grapplBuilder.atLocalPort(25565);
-
-Then use build() to get the Grappl object:
-
-    Grappl grappl = grapplBuilder.build();
-
-Use the Grappl object's connect method to open the server. 'relayserverIP' is the relay server of your choice.
+After that, use the grappl object's connect method to open the server.
 
     grappl.connect(relayServerIP);
 
-This may be one of the official ones (n.grappl.io, e.grappl.io, p.grappl.io) or a custom one.
+'relayserverIP' is the relay server of your choice. This may be one of the official ones (n.grappl.io, e.grappl.io, p.grappl.io) or a custom one.
 
     grappl.getPublicAddress();
 
