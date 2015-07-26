@@ -8,8 +8,4 @@ public class GrapplServerState {
     public static void setup() {
         timeStarted = System.currentTimeMillis();
     }
-
-    public static void main(String[] args) {
-        System.out.println("12abcdef".hashCode());
-    }
 }
