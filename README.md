@@ -1,6 +1,7 @@
-## Grappl
+![Grappl Logo](https://dl.dropboxusercontent.com/u/34769058/grappl/glogo3.png)
 
 Website: http://grappl.io/
+
 Donations: http://grappl.io/donate
 
 Grappl is a tool for hosting servers behind closed ports.
