@@ -1,16 +1,11 @@
 package com.daexsys.grappl.client;
 
-import com.daexsys.grappl.GrapplGlobal;
-import com.daexsys.grappl.client.api.GrapplBuilder;
-import com.daexsys.grappl.client.commands.CommandHandler;
+import io.grappl.GrapplGlobal;
+import io.grappl.client.GrapplGUI;
+import io.grappl.client.commands.CommandHandler;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.Socket;
-import java.util.ArrayList;
 
 public class Client {
     public int localPort = 0;

@@ -1,14 +1,12 @@
-package com.daexsys.grappl.client.commands;
+package io.grappl.client.commands;
 
-import com.daexsys.grappl.GrapplGlobal;
+import io.grappl.GrapplGlobal;
 import com.daexsys.grappl.GrapplServerState;
 import com.daexsys.grappl.client.Client;
-import com.daexsys.grappl.client.ClientLog;
-import com.daexsys.grappl.client.ConsoleWindow;
-import com.daexsys.grappl.client.GrapplClientState;
-import com.daexsys.grappl.client.api.Grappl;
+import io.grappl.client.ClientLog;
+import io.grappl.client.GrapplClientState;
+import io.grappl.client.api.Grappl;
 
-import javax.swing.*;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;

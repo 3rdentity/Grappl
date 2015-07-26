@@ -1,4 +1,4 @@
-package com.daexsys.grappl.client;
+package io.grappl.client;
 
 public enum LoginType {
     LOGIN, ANONYMOUS

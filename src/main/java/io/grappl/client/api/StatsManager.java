@@ -1,4 +1,4 @@
-package com.daexsys.grappl.client.api;
+package io.grappl.client.api;
 
 public class StatsManager {
 

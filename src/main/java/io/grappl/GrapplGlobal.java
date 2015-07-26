@@ -1,4 +1,4 @@
-package com.daexsys.grappl;
+package io.grappl;
 
 public class GrapplGlobal {
     public static String APP_NAME = "Grappl";

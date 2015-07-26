@@ -1,15 +1,14 @@
-package com.daexsys.grappl.client;
+package io.grappl.client;
 
-import com.daexsys.grappl.GrapplGlobal;
-import com.daexsys.grappl.client.api.Grappl;
-import com.daexsys.grappl.client.commands.CommandHandler;
+import io.grappl.GrapplGlobal;
+import com.daexsys.grappl.client.Client;
+import io.grappl.client.api.Grappl;
+import io.grappl.client.commands.CommandHandler;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;

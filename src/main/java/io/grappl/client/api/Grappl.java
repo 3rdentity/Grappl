@@ -1,8 +1,8 @@
-package com.daexsys.grappl.client.api;
+package io.grappl.client.api;
 
-import com.daexsys.grappl.GrapplGlobal;
-import com.daexsys.grappl.client.ClientLog;
-import com.daexsys.grappl.client.GrapplGUI;
+import io.grappl.GrapplGlobal;
+import io.grappl.client.ClientLog;
+import io.grappl.client.GrapplGUI;
 
 import javax.swing.*;
 import java.awt.*;

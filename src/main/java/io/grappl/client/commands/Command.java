@@ -1,4 +1,4 @@
-package com.daexsys.grappl.client.commands;
+package io.grappl.client.commands;
 
 public class Command {
 
