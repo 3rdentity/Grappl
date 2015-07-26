@@ -348,6 +348,16 @@ public class Grappl {
         connect(relayServerIP);
     }
 
+    public String getPublicAddress() {
+        String publicAddress = "grappl.io:" + getExternalPort();
+
+        if(getPrefix() != null) {
+            return getPrefix() + "." + publicAddress;
+        }
+
+        return "";
+    }
+
     public void disconnect() {
         closeAllSockets();
     }
