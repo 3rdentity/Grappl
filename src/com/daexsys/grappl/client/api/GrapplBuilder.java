@@ -50,14 +50,12 @@ public class GrapplBuilder {
                 e.printStackTrace();
             }
 
-            System.out.println("Helklo");
 
             boolean success = dataInputStream.readBoolean();
             boolean alpha = dataInputStream.readBoolean();
             int port = dataInputStream.readInt();
 
             System.out.println(success);
-            System.out.println("after");
             grappl.prefix = dataInputStream.readLine();
 
             grappl.isAlphaTester = alpha;

@@ -57,7 +57,7 @@ public class GrapplDataFile {
             printStream.println(username);
 
             if(password != null) {
-                printStream.println(new String(password).hashCode());
+                printStream.println(password);
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();

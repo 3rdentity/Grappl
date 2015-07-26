@@ -83,6 +83,7 @@ public class GrapplGUI {
         final GrapplGUI theGUI = this;
 
         if(isActuallyHash) {
+            rememberMeBox.setSelected(true);
             login(usernamef, jPasswordField, this, rememberMeBox);
         }
 
@@ -270,9 +271,7 @@ public class GrapplGUI {
             }
 
             grapplBuilder.useLoginDetails(username, password).login().withGUI(theGUI);
-            System.out.println("out");
             grappl = grapplBuilder.build();
-            System.out.println("this car");
 
             if(grappl.isLoggedIn()) {
                 ClientLog.log("Logged in as " + grappl.getUsername());
