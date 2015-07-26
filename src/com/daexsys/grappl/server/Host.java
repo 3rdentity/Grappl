@@ -9,7 +9,7 @@ import java.util.Date;
 
 /**
  * A host represents the connection between the server and an open Grappl client.
- * It is connected to a service-server, which runs on the assigned port on the GrapplServer.
+ * It is connected to a service-server, which runs on the assigned localPort on the GrapplServer.
  * ExClients can connect to that service-server. When they do, a message is sent to the Grappl client
  * associated with that connection, and it will open a traffic-client to the traffic-server.
  *
@@ -29,7 +29,7 @@ public class Host {
     // Whether or not the ExServer is open.
     private boolean open = false;
 
-    // The port number the ExServer is running on.
+    // The localPort number the ExServer is running on.
     private int portNumber;
 
     // The number of ExClients currently connected to the ExServer. This variable is not always accurate. (Fix?)
@@ -43,6 +43,7 @@ public class Host {
 
     // The traffic server
     private ServerSocket trafficSocket;
+    private ServerSocket serviceServer;
 
     /**
      * Construct a host object.
@@ -57,14 +58,22 @@ public class Host {
         timeOpened = System.currentTimeMillis();
 
         // Display debug message for VPS-user to see.
-        log("HOST connected " + socket.getInetAddress());
+        log("Host connected " + socket.getInetAddress());
+
+        PrintStream printStream = null;
+        try {
+            printStream = new PrintStream(Server.relaySocket.getOutputStream());
+            printStream.println("0");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
      * Initializes the host.
      *
      * Activities this involves:
-     * - Getting the ExServer's port (either randomized or attached to the User object)
+     * - Getting the ExServer's localPort (either randomized or attached to the User object)
      * - Creating the ExServer.
      * - Initializing the host thread. This waits for ExClient connections.
      * - Passing messages to the GrClient.
@@ -72,17 +81,27 @@ public class Host {
     public void start() {
         try {
             final Host thisHost = this;
-            portNumber = Server.getPort(getUser());
+            portNumber = Server.getPort(getUser(), thisHost.getAddress());
 
             final int trafficPortNumber = portNumber + 1;
+//            System.out.println("opa: " + trafficPortNumber);
             trafficSocket = new ServerSocket(trafficPortNumber);
 
-            // Tell the host what port they're running on.
+            // Tell the host what localPort they're running on.
             final PrintStream printStream = new PrintStream(messageSocket.getOutputStream());
             printStream.println(getPortNumber());
 
-            final ServerSocket serviceServer = new ServerSocket(getPortNumber());
-            log("HOSTING connections at port: " + getPortNumber());
+            serviceServer = new ServerSocket(getPortNumber());
+
+            if(getUser() != null) {
+                if(getUser().getUsername() != null) {
+                    log("Hosting connections at port: " + getPortNumber() + " | Server hosted by: " + getUser().getUsername());
+                } else {
+                    log("Hosting connections at port: " + getPortNumber());
+                }
+            } else {
+                log("Hosting connections at port: " + getPortNumber());
+            }
 
             open = true;
 
@@ -100,30 +119,30 @@ public class Host {
                             final Socket local = serviceServer.accept();
 
                             // Display message that a client is attempting to connect
-                            log(getPortNumber() + ": EX-CLIENT:(" + local.getInetAddress() + ") is attempting to connect to HOST:(" +
+                            if(Server.detailedDebug) log(getPortNumber() + ": Exclient:(" + local.getInetAddress() + ") is attempting to connect to host:(" +
                                     messageSocket.getInetAddress() + ")");
 
-                            // Inform host that something is coming
-                            printStream.println(getPortNumber());
+                            if(!getUser().isIPBanned(local.getInetAddress().toString())) {
+                                // Inform host that something is coming
+                                printStream.println(local.getInetAddress().toString());
 
-                            // If host is still open
-                            if(System.currentTimeMillis() < getTick() + 2000) {
-                                // Attempt to launch connection
-                                launchNewConnection(local);
-                            } else {
-                                thisHost.closeHost();
+                                // If host is still open
+                                if(System.currentTimeMillis() < getTick() + 2000) {
+                                    // Attempt to launch connection
+                                    launchNewConnection(local);
+                                } else {
+                                    thisHost.closeHost();
+                                }
                             }
                         }
                     } catch (Exception e) {
-                        log(getPortNumber() + ": WARNING CONNECTION FAILED SHUTTING DOWN HOST");
-
                         try {
                             serviceServer.close();
                         } catch (IOException e1) {
                             e1.printStackTrace();
                         }
+
                         closeHost();
-                        e.printStackTrace();
                     }
                 }
             });
@@ -144,13 +163,35 @@ public class Host {
 
             log(getPortNumber() + ": Host closed at port: " + getPortNumber() + "(" + address + ")");
 
+            Server.removeHost(this);
+
+            PrintStream printStream;
             try {
-                messageSocket.close();
+                printStream = new PrintStream(Server.relaySocket.getOutputStream());
+                printStream.println("1");
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            Server.removeHost(this);
+            try {
+                messageSocket.close();
+                serviceServer.close();
+                trafficSocket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                serviceServer.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                trafficSocket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -169,6 +210,10 @@ public class Host {
         // Increment the number of clients connected. May or may not decrement, ever. Probably doesn't.
         clientCount++;
 
+        if(getUser() != null) {
+            getUser().connectionsTotal++;
+        }
+
         // Create the actual connection thread.
         new Thread(new Runnable() {
             @Override
@@ -177,7 +222,7 @@ public class Host {
                     // Get traffic socket.
                     final Socket remote = trafficSocket.accept();
 
-                    log(getPortNumber() + ": EX-CLIENT:(" + local.getInetAddress() + ") has connected to HOST:(" +
+                    if(Server.detailedDebug) log(getPortNumber() + ": Exclient:(" + local.getInetAddress() + ") has connected to host:(" +
                             messageSocket.getInetAddress() + ")");
 
                     Thread localToRemote = new Thread(new Runnable() {
@@ -190,6 +235,10 @@ public class Host {
                                 while ((size = local.getInputStream().read(buffer)) != -1) {
                                     remote.getOutputStream().write(buffer, 0, size);
 
+                                    if(getUser() != null) {
+                                        getUser().blocksIn++;
+                                    }
+
                                     try {
                                         Thread.sleep(5);
                                     } catch (InterruptedException e) {
@@ -200,18 +249,16 @@ public class Host {
                                 try {
                                     local.close();
                                     remote.close();
-                                    clientCount--;
                                 } catch (IOException e1) {
-                                    e1.printStackTrace();
+//                                    e1.printStackTrace();
                                 }
                             }
 
                             try {
                                 local.close();
                                 remote.close();
-                                clientCount--;
                             } catch (IOException e) {
-                                e.printStackTrace();
+//                                e.printStackTrace();
                             }
                         }
                     });
@@ -227,35 +274,37 @@ public class Host {
                                 while ((size = remote.getInputStream().read(buffer)) != -1) {
                                     local.getOutputStream().write(buffer, 0, size);
 
+                                    if(getUser() != null) {
+                                        getUser().blocksOut++;
+                                    }
+
                                     try {
                                         Thread.sleep(5);
                                     } catch (InterruptedException e) {
-                                        e.printStackTrace();
+//                                        e.printStackTrace();
                                     }
                                 }
                             } catch (Exception e) {
                                 try {
                                     local.close();
                                     remote.close();
-                                    clientCount--;
                                 } catch (IOException e1) {
-                                    e1.printStackTrace();
+//                                    e1.printStackTrace();
                                 }
                             }
 
                             try {
                                 local.close();
                                 remote.close();
-                                clientCount--;
                             } catch (IOException e) {
-                                e.printStackTrace();
+//                                e.printStackTrace();
                             }
                         }
                     });
                     remoteToLocal.start();
 
                 } catch (Exception e) {
-                    e.printStackTrace();
+//                    e.printStackTrace();
                 }
             }
         }).start();

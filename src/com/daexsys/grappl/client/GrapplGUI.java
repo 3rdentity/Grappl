@@ -174,6 +174,7 @@ public class GrapplGUI {
                             }
                         }
                     });
+                    jButton2.setBounds(0, 95, 280, 20);
                     jFrame.add(jButton2);
 
                     JButton jButton = new JButton("Close " + GrapplGlobal.APP_NAME + " Client");
@@ -184,7 +185,7 @@ public class GrapplGUI {
                         }
                     });
                     jFrame.add(jButton);
-                    jButton.setBounds(0, 95, 280, 100);
+                    jButton.setBounds(0, 115, 280, 80);
 
                     String ports = JOptionPane.showInputDialog("What port does your server run on?");
                     grappl.setInternalPort(Integer.parseInt(ports));
