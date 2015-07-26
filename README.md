@@ -21,7 +21,7 @@ may be one of the official ones (n.grappl.io, e.grappl.io, p.grappl.io) or a cus
 
 ## License
 
-The Grappl client code is released under GPL v2.
+The Grappl client code is released under LGPL v2.1.
 
 ## Development
 
