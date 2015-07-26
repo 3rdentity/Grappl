@@ -12,9 +12,6 @@ Grappl works by transferring data through relay servers on grappl.io.
 
 The project is still in an alpha state. This repository contains all the newest client code, and some of the server and web code.
 
-This project uses the library [Gson](https://github.com/google/gson). Remember to set it up on your IDE.
-We'll start using Maven, soon.
-
 ## API
 
 Using Grappl's client API is very simple and straightforward. Just create a GrapplBuilder, and use
