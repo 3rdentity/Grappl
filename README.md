@@ -8,12 +8,12 @@ Grappl is a tool for hosting servers behind closed ports.
 Other people don't have to download anything to connect to Grappl'd servers, unlike other programs such as hamachi, they
 act just like normal listening-IP servers.
 
-It works by transferring data through relay servers on grappl.io.
+Grappl works by transferring data through relay servers on grappl.io.
 
-It's still in an alpha state. This repository contains all the newest client code, and some of the server and web code.
+The project is still in an alpha state. This repository contains all the newest client code, and some of the server and web code.
 
 This project uses the library [Gson](https://github.com/google/gson). Remember to set it up on your IDE.
-We'll start using Maven, soon enough.
+We'll start using Maven, soon.
 
 ## API
 
@@ -30,4 +30,6 @@ All other code (server/web) is All Rights Reserved. It will eventually be remove
 
 ## Development
 
-Grappl is primarily developed by Matt Hebert. His twitter is here: https://twitter.com/Cactose
+Grappl is primarily developed by Matt Hebert.
+
+His twitter is here: https://twitter.com/Cactose
