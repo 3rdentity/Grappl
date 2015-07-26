@@ -31,10 +31,10 @@ public class ClientLog {
 
     public static void save() {
         try {
-            File dirs = new File(AutoUpdater.getOSSpecificLocation());
+            File dirs = new File(DataFileHelper.getOSSpecificLocation());
             dirs.mkdirs();
 
-            File file = new File(AutoUpdater.getOSSpecificLocation() + GrapplClientState.clientTimeOpened + "-log.log");
+            File file = new File(DataFileHelper.getOSSpecificLocation() + GrapplClientState.clientTimeOpened + "-log.log");
             try {
                 file.createNewFile();
             } catch (IOException e) {
