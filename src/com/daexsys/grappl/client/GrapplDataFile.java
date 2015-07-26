@@ -21,7 +21,27 @@ public class GrapplDataFile {
         return "";
     }
 
-    public static void saveUsername(String username) {
+    public static String getPassword() {
+        File file = new File(getOSSpecificLocation() + "/user.dat");
+        try {
+            file.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            DataInputStream dataInputStream = new DataInputStream(new FileInputStream(file));
+            dataInputStream.readLine();
+            return dataInputStream.readLine();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "";
+    }
+
+    public static void saveUsername(String username, char[] password) {
         File file = new File(getOSSpecificLocation() + "/user.dat");
         file.mkdirs();
         try {
@@ -35,7 +55,10 @@ public class GrapplDataFile {
         try {
             PrintStream printStream = new PrintStream(new FileOutputStream(file));
             printStream.println(username);
-//            printStream.println(rememberMe);
+
+            if(password != null) {
+                printStream.println(new String(password).hashCode());
+            }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

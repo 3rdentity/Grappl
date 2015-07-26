@@ -6,6 +6,7 @@ import com.daexsys.grappl.client.Client;
 import com.daexsys.grappl.client.ClientLog;
 import com.daexsys.grappl.client.ConsoleWindow;
 import com.daexsys.grappl.client.GrapplClientState;
+import com.daexsys.grappl.client.api.Grappl;
 
 import javax.swing.*;
 import java.io.DataInputStream;
@@ -17,7 +18,7 @@ import java.util.Scanner;
 public class CommandHandler {
     public static String send = "";
 
-    public static void handleCommand(String command, DataInputStream dataInputStream, DataOutputStream dataOutputStream, int port) {
+    public static void handleCommand(Grappl grappl, String command, DataInputStream dataInputStream, DataOutputStream dataOutputStream) {
         String ip = GrapplGlobal.DOMAIN;
 
         String[] spl = command.split("\\s+");
@@ -25,7 +26,7 @@ public class CommandHandler {
 
             if (spl[0].equalsIgnoreCase("ipban")) {
 
-                if (Client.isLoggedIn) {
+                if (grappl.isLoggedIn()) {
                     String ipToBAN = spl[1];
 
                     dataOutputStream.writeByte(5);
@@ -40,7 +41,7 @@ public class CommandHandler {
 
             else if (spl[0].equalsIgnoreCase("ipunban")) {
 
-                if (Client.isLoggedIn) {
+                if (grappl.isLoggedIn()) {
                     String ipToBAN = spl[1];
 
                     dataOutputStream.writeByte(8);
@@ -67,27 +68,27 @@ public class CommandHandler {
                 boolean success = dataInputStream.readBoolean();
                 boolean alpha = dataInputStream.readBoolean();
                 int thePort = dataInputStream.readInt();
-                Client.isAlphaTester = alpha;
-                Client.isLoggedIn = success;
+                grappl.setAlphaTester(alpha);
+                grappl.setLoggedIn(success);
 
                 if (success) {
                     ClientLog.log("Logged in as " + username);
                     ClientLog.log("Alpha tester: " + alpha);
                     ClientLog.log("Static port: " + thePort);
-                    Client.username = username;
+//                    Client.username = username;
                 } else {
-                    JOptionPane.showMessageDialog(Client.grapplGUI.getjFrame(), "Login failed!");
+//                    JOptionPane.showMessageDialog(Client.grapplGUI.getjFrame(), "Login failed!");
                 }
             } else if (spl[0].equalsIgnoreCase("whoami")) {
-                if (Client.isLoggedIn) {
-                    ClientLog.log(Client.username);
+                if (grappl.isLoggedIn()) {
+                    ClientLog.log(grappl.getUsername());
                 } else {
                     ClientLog.log("You aren't logged in, so you are anonymous.");
                 }
             }
 
             else if(spl[0].equalsIgnoreCase("relay")) {
-                ClientLog.log(Client.relayServerIP);
+                ClientLog.log(grappl.getUsername());
             }
 
             else if(spl[0].equalsIgnoreCase("version")) {
@@ -104,7 +105,7 @@ public class CommandHandler {
                 dataOutputStream.writeByte(6);
                 String game = spl[1];
                 PrintStream printStream = new PrintStream(dataOutputStream);
-                send = game + " - " + Client.relayServerIP + ":"+ Client.publicPort;
+                send = game + " - " + grappl.getRelayServer() + ":"+ grappl.getExternalPort();
                 printStream.println(send);
             }
 
@@ -116,14 +117,12 @@ public class CommandHandler {
             }
 
             else if(spl[0].equalsIgnoreCase("changelocal")) {
-                Client.localPort = Integer.parseInt(spl[1]);
-                ClientLog.log("Local port is now " + Client.localPort);
+                grappl.setInternalPort(Integer.parseInt(spl[1]));
+                ClientLog.log("Local port is now " + grappl.getInternalPort());
             }
 
             else if(spl[0].equalsIgnoreCase("resetstats")) {
-                Client.connectedClients = 0;
-                Client.sent = 0;
-                Client.recv = 0;
+                grappl.getStatsManager().reset();
             }
 
             else if(spl[0].equalsIgnoreCase("help")) {
@@ -133,8 +132,8 @@ public class CommandHandler {
             }
 
             else if (spl[0].equalsIgnoreCase("setport")) {
-                if (Client.isLoggedIn) {
-                    if (Client.isAlphaTester) {
+                if (grappl.isLoggedIn()) {
+                    if (grappl.isAlphaTester()) {
                         dataOutputStream.writeByte(2);
                         dataOutputStream.writeInt(Integer.parseInt(spl[1]));
                         ClientLog.log("Your port was set to: " + Integer.parseInt(spl[1]));
@@ -146,7 +145,7 @@ public class CommandHandler {
                 }
             } else if (spl[0].equalsIgnoreCase("init")) {
                 ClientLog.log("Starting...");
-                Client.initToRelay(ip, port);
+                grappl.connect(ip);
 
             } else if (spl[0].equalsIgnoreCase("quit")) {
                 System.exit(0);
@@ -181,7 +180,7 @@ public class CommandHandler {
                 while(true) {
                     try {
                         String line = scanner.nextLine();
-                        CommandHandler.handleCommand(line, dataInputStream, dataOutputStream, Client.localPort);
+//                        CommandHandler.handleCommand(line, dataInputStream, dataOutputStream, Client.localPort);
                     } catch (Exception e) {
                         e.printStackTrace();
 //                        System.exit(0);

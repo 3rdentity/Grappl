@@ -1,6 +1,7 @@
 package com.daexsys.grappl.client;
 
 import com.daexsys.grappl.GrapplGlobal;
+import com.daexsys.grappl.client.api.Grappl;
 import com.daexsys.grappl.client.commands.CommandHandler;
 
 import javax.swing.*;
@@ -22,8 +23,11 @@ public class ConsoleWindow {
 
     public static JTextArea display;
 
-    public ConsoleWindow() {
+    private Grappl grappl;
+
+    public ConsoleWindow(Grappl grappl) {
         JFrame consoleFrame = new JFrame();
+        this.grappl = grappl;
         consoleFrame.setTitle("Grappl Console");
 
         try {
@@ -50,19 +54,7 @@ public class ConsoleWindow {
         consoleFrame.setLocationRelativeTo(null);
         consoleFrame.setVisible(true);
 
-//        try {
-//            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-//        } catch (ClassNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (InstantiationException e) {
-//            e.printStackTrace();
-//        } catch (IllegalAccessException e) {
-//            e.printStackTrace();
-//        } catch (UnsupportedLookAndFeelException e) {
-//            e.printStackTrace();
-//        }
-
-    display = new JTextArea(120,20);
+        display = new JTextArea(120,20);
         JScrollPane jScrollPane = new JScrollPane(display,
                 JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
                 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -116,12 +108,6 @@ public class ConsoleWindow {
     }
 
     public void enterCommand(String command) {
-
-
-        String output = "";
-
-        CommandHandler.handleCommand(command, dataInputStream, dataOutputStream, Client.localPort);
-
-//        ClientLog.log(output);
+        CommandHandler.handleCommand(grappl, command, dataInputStream, dataOutputStream);
     }
 }
