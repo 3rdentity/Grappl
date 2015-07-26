@@ -10,7 +10,7 @@ Grappl is a tool for hosting servers behind closed ports.
 People connecting don't have to download anything to connect to Grappl'd servers, unlike with other programs such as hamachi.
 
 All you have to do to run it is run the .jar, choose whether you want to be logged in or anonymous, specify what port your server
-is bound to, and your server will be open for anyone to connect to. No messing around with port forwarding.
+is bound to, and your server will be open for anyone to connect. No messing around with port forwarding.
 
 It works by transferring data through relay servers on grappl.io.
 
