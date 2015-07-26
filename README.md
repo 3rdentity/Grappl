@@ -1,7 +1,8 @@
 ## Grappl
 
 Grappl is a tool for hosting servers behind closed ports.
-Other people don't have to download anything to connect to Grappl'd servers, unlike other programs such as hamachi.
+Other people don't have to download anything to connect to Grappl'd servers, unlike other programs such as hamachi, they
+act just like normal listening-IP servers.
 
 It works by transferring data through relay servers on grappl.io.
 
@@ -16,6 +17,11 @@ Using Grappl's client API is very simple and straightforward. Just create a Grap
 the supplied methods to configured Grappl's state. Use build() to get the Grappl object,
 then use the Grappl object's connect() method to connect to your relay server of choice. This
 may be one of the official ones (n.grappl.io, e.grappl.io, p.grappl.io) or a custom one.
+
+## License
+
+Code in the com.daexsys.grappl.client package is released under GPL v3.
+All other code (server/web) is All Rights Reserved. It will eventually be removed in a code cleanup.
 
 ## Development
 
