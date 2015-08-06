@@ -49,7 +49,6 @@ public class GrapplBuilder {
                 e.printStackTrace();
             }
 
-
             boolean success = dataInputStream.readBoolean();
             boolean alpha = dataInputStream.readBoolean();
             int port = dataInputStream.readInt();
