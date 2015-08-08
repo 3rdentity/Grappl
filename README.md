@@ -36,7 +36,7 @@ After that, use the grappl object's connect method to open the server.
 
 ## License
 
-The Grappl client code is released under LGPL v2.1.
+The Grappl code is released under LGPL v2.1.
 
 ## Development
 
