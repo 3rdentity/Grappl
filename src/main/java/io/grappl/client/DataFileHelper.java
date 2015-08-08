@@ -1,14 +1,5 @@
 package io.grappl.client;
 
-import java.io.*;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.jar.JarEntry;
-import java.util.jar.JarInputStream;
-
 public class DataFileHelper {
     public static String getOSSpecificLocation() {
         final String os = System.getProperty("os.name").toLowerCase();

@@ -1,5 +1,7 @@
 package io.grappl.client;
 
+import io.grappl.client.gui.ConsoleWindow;
+
 import javax.swing.*;
 import java.io.*;
 import java.text.DateFormat;

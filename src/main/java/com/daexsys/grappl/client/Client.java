@@ -1,7 +1,7 @@
 package com.daexsys.grappl.client;
 
 import io.grappl.GrapplGlobal;
-import io.grappl.client.GrapplGUI;
+import io.grappl.client.gui.GrapplGUI;
 import io.grappl.client.commands.CommandHandler;
 
 import java.io.*;

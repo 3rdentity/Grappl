@@ -1,6 +1,9 @@
-package io.grappl.client;
+package io.grappl.client.gui;
 
 import io.grappl.GrapplGlobal;
+import io.grappl.client.ClientLog;
+import io.grappl.client.GrapplClientState;
+import io.grappl.client.GrapplDataFile;
 import io.grappl.client.api.Grappl;
 import io.grappl.client.api.GrapplBuilder;
 
@@ -40,6 +43,7 @@ public class GrapplGUI {
         jFrame.setVisible(true);
         jFrame.setLayout(null);
         jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+//        jFrame.setResizable(false);
 
         try {
             jFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(new URL("http://grappl.io:888/html/glogo.png")));
@@ -215,10 +219,6 @@ public class GrapplGUI {
     }
 
     public void initializeGUI(String relayServerIP, String publicPort, int localPort) {
-//        final JLabel jLabel = new JLabel("Public address: " + relayServerIP + ":" + publicPort);
-//        jLabel.setBounds(5, 5, 450, 20);
-//        getjFrame().add(jLabel);
-
         final JTextPane label = new JTextPane();
         label.setContentType("text");
         label.setText("Public address: " + relayServerIP + ":" + publicPort);
@@ -325,6 +325,8 @@ public class GrapplGUI {
                 newJframe.add(jButton);
                 // 95 100
                 jButton.setBounds(0, 115, 280, 80);
+
+//                newJframe.setResizable(false);
 
                 final DataOutputStream dos = dataOutputStream;
                 JButton jButton2 = new JButton("Request random visitors");

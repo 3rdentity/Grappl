@@ -2,7 +2,7 @@ package io.grappl.client.api;
 
 import io.grappl.GrapplGlobal;
 import io.grappl.client.ClientLog;
-import io.grappl.client.GrapplGUI;
+import io.grappl.client.gui.GrapplGUI;
 
 import javax.swing.*;
 import java.awt.*;

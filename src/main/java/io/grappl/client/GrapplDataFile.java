@@ -50,8 +50,6 @@ public class GrapplDataFile {
             e.printStackTrace();
         }
 
-//        boolean rememberMe = false;
-
         try {
             PrintStream printStream = new PrintStream(new FileOutputStream(file));
             printStream.println(username);

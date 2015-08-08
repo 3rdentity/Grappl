@@ -1,7 +1,7 @@
 package io.grappl.client.api;
 
 import io.grappl.GrapplGlobal;
-import io.grappl.client.GrapplGUI;
+import io.grappl.client.gui.GrapplGUI;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
