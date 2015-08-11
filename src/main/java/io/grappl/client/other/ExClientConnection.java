@@ -2,28 +2,44 @@ package io.grappl.client.other;
 
 import io.grappl.client.ClientLog;
 import io.grappl.client.api.Grappl;
+import io.grappl.client.api.NetworkLocation;
 
 import java.io.IOException;
 import java.net.Socket;
 
-public class ExClient {
+public class ExClientConnection {
 
+    public static final int BLOCK_SIZE = 4096;
+
+    // The address of the external client
     private String address;
+
+    // The Grappl instance associated with this connection
     private Grappl grappl;
 
-    public ExClient(Grappl grappl, String address) {
+    // Whether or not the connection is still open
+    private boolean open;
+
+    public ExClientConnection(Grappl grappl, String address) {
         this.grappl = grappl;
         this.address = address;
     }
 
-    public void open() {   // Increment the connected player counter.
+    /**
+     * Open the connection
+     * Creates two threads to move data from the internal server to the relay server
+     */
+    public void open() {
+        // Increment the connected player counter.
         getGrappl().getStatsManager().openConnection();
 
         final int relayPort = Integer.parseInt(grappl.getExternalPort()) + 1;
 
         // This socket connects to the local server.
         try {
-            final Socket inward = new Socket(grappl.getInternalAddress(), grappl.getInternalPort());
+            NetworkLocation internalServer = grappl.getInternalServer();
+
+            final Socket inward = new Socket(internalServer.getAddress(), internalServer.getPort());
             grappl.getSockets().add(inward);
             final Socket outward = new Socket(grappl.getRelayServer(), relayPort);
             grappl.getSockets().add(outward);
@@ -32,7 +48,7 @@ public class ExClient {
             final Thread outwardCurrent = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    byte[] buffer = new byte[4096];
+                    byte[] buffer = new byte[BLOCK_SIZE];
                     int size;
 
                     try {
@@ -63,11 +79,11 @@ public class ExClient {
             });
             outwardCurrent.start();
 
-            //                            Start the remote -> local thread
+            // Start the remote -> local thread
             final Thread inwardCurrent = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    byte[] buffer = new byte[4096];
+                    byte[] buffer = new byte[BLOCK_SIZE];
                     int size;
 
                     try {
@@ -97,11 +113,15 @@ public class ExClient {
             });
             inwardCurrent.start();
         } catch (Exception e) {
-            ClientLog.log("Failed to connect to local server!");
+            ClientLog.log("Failed to connect to internal server!");
         }
     }
 
-    public boolean isStillOpen() {
+    public boolean isOpen() {
+        return open;
+    }
+
+    public boolean ping() {
         return true;
     }
 
@@ -111,5 +131,10 @@ public class ExClient {
 
     public Grappl getGrappl() {
         return grappl;
+    }
+
+    public void acknowledgeDisconnect() {
+        open = false;
+        ClientLog.log(address + " has been disconnected");
     }
 }

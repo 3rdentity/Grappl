@@ -4,7 +4,7 @@ import io.grappl.GrapplGlobal;
 import io.grappl.client.ClientLog;
 import io.grappl.client.freezer.Freezer;
 import io.grappl.client.gui.GrapplGUI;
-import io.grappl.client.other.ExClient;
+import io.grappl.client.other.ExClientConnection;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,24 +23,32 @@ public class Grappl {
     protected String username;
     protected char[] password;
 
-    protected String externalPort;
-
     protected String internalAddress = "127.0.0.1";
     protected int internalPort;
 
     private String relayServerIP;
-
-    protected GrapplGUI gui;
+    protected String externalPort;
 
     protected boolean isLoggedIn = false;
     protected boolean isAlphaTester = false;
+    protected GrapplGUI gui;
 
     protected String prefix;
 
-    private Freezer freezer;
-
     private StatsManager statsManager = new StatsManager();
     private List<Socket> sockets = new ArrayList<Socket>();
+    private Freezer freezer;
+
+    protected LocationProvider locationProvider;
+
+    public Grappl() {
+        locationProvider = new LocationProvider() {
+            @Override
+            public NetworkLocation getLocation() {
+                return new NetworkLocation(internalAddress, internalPort);
+            }
+        };
+    }
 
     public void connect(String relayServer) {
         ClientLog.log("Connecting: relayserver=" + relayServer + " localport=" +
@@ -138,7 +146,7 @@ public class Grappl {
                             return;
                         } catch (IOException e) {
 //                            e.printStackTrace();
-                            System.out.println("Attempting reconnect");
+                            ClientLog.log("Attempting reconnect");
                         }
 
                         try {
@@ -173,7 +181,7 @@ public class Grappl {
     private void createExClientHandler(final Socket messageSocket, final DataInputStream messageInputStream) {
         final Grappl theGrappl = this;
 
-        final List<ExClient> connectedClients = new ArrayList<ExClient>();
+        final List<ExClientConnection> connectedClients = new ArrayList<ExClientConnection>();
 
         if(gui != null) {
             getGui().jLabel3 = new JLabel("Connected clients: " + getStatsManager().getOpenConnections());
@@ -191,7 +199,7 @@ public class Grappl {
                         String userIP = messageInputStream.readLine();
                         ClientLog.log("A user has connected from ip " + userIP.substring(1, userIP.length()));
 
-                        ExClient exClient = new ExClient(theGrappl, userIP);
+                        ExClientConnection exClient = new ExClientConnection(theGrappl, userIP);
                         exClient.open();
                         connectedClients.add(exClient);
                     }
@@ -211,9 +219,9 @@ public class Grappl {
                 try {
                     while(true) {
                         for (int i = 0; i < connectedClients.size(); i++) {
-                            ExClient exClient = connectedClients.get(i);
+                            ExClientConnection exClient = connectedClients.get(i);
 
-                            if(!exClient.isStillOpen()) {
+                            if(!exClient.ping()) {
                                 connectedClients.remove(exClient);
                             }
                         }
@@ -378,5 +386,9 @@ public class Grappl {
 
     public List<Socket> getSockets() {
         return sockets;
+    }
+
+    public NetworkLocation getInternalServer() {
+        return locationProvider.getLocation();
     }
 }

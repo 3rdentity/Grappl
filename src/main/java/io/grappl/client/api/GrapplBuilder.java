@@ -38,6 +38,11 @@ public class GrapplBuilder {
         return this;
     }
 
+    public GrapplBuilder withInternalLocationProvider(LocationProvider locationProvider) {
+        grappl.locationProvider = locationProvider;
+        return this;
+    }
+
     public GrapplBuilder login() {
         try {
             Socket socket = new Socket(GrapplGlobal.DOMAIN, GrapplGlobal.AUTHENTICATION);

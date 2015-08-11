@@ -21,6 +21,9 @@ public class GrapplGUI {
     private Grappl grappl;
     private boolean isActuallyHash = false;
 
+    protected ConsoleWindow theConsoleWindow;
+
+    private static final String commandButton = "...";
     public JLabel jLabel3;
 
     public GrapplGUI() {
@@ -141,11 +144,15 @@ public class GrapplGUI {
                         ee.printStackTrace();
                     }
 
-                    JButton consoleButton = new JButton("C I");
+                    JButton consoleButton = new JButton(commandButton);
                     consoleButton.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            new ConsoleWindow(grappl);
+                            if(theConsoleWindow == null) {
+                                theConsoleWindow = new ConsoleWindow(grappl);
+                            } else {
+                                theConsoleWindow.getTheFrame().toFront();
+                            }
                         }
                     });
                     consoleButton.setBounds(235, 40, 40, 40);
@@ -353,11 +360,15 @@ public class GrapplGUI {
                 // 95 100
                 jButton2.setBounds(0, 95, 280, 20);
 
-                JButton consoleButton = new JButton("C I");
+                JButton consoleButton = new JButton(commandButton);
                 consoleButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        new ConsoleWindow(grappl);
+                        if(theConsoleWindow == null) {
+                            theConsoleWindow = new ConsoleWindow(grappl);
+                        } else {
+                            theConsoleWindow.getTheFrame().toFront();
+                        }
                     }
                 });
                 consoleButton.setBounds(235, 40, 40, 40);

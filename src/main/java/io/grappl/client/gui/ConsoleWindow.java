@@ -10,6 +10,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -24,10 +26,49 @@ public class ConsoleWindow {
     public static JTextArea display;
 
     private Grappl grappl;
+    private JFrame theFrame;
 
-    public ConsoleWindow(Grappl grappl) {
+    public ConsoleWindow(final Grappl grappl) {
         JFrame consoleFrame = new JFrame();
+        theFrame = consoleFrame;
         this.grappl = grappl;
+        theFrame.addWindowListener(new WindowListener() {
+            @Override
+            public void windowOpened(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                grappl.getGui().theConsoleWindow = null;
+
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowIconified(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowDeiconified(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowActivated(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {
+
+            }
+        });
         consoleFrame.setTitle("Grappl Console");
 
         try {
@@ -109,5 +150,9 @@ public class ConsoleWindow {
 
     public void enterCommand(String command) {
         CommandHandler.handleCommand(grappl, command, dataInputStream, dataOutputStream);
+    }
+
+    public JFrame getTheFrame() {
+        return theFrame;
     }
 }

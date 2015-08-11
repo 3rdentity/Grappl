@@ -1,4 +1,4 @@
-package io.grappl.client.other;
+package io.grappl.client.api;
 
 public class NetworkLocation {
 

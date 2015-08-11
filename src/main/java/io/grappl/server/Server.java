@@ -46,7 +46,7 @@ public class Server {
 
     public static boolean connectionLost = false;
 
-    private static Map<String, Integer> assbacon = new HashMap<String, Integer>();
+    private static Map<String, Integer> connectionsPerIP = new HashMap<String, Integer>();
 
     public static void main(String[] args) {
         GrapplServerState.setup();
@@ -396,7 +396,8 @@ public class Server {
                 }
             }
         }
-        return 0;
+
+        return 25565;
     }
 
     public static void openRelay() {
@@ -630,18 +631,20 @@ public class Server {
 
                 String address = hostSocket.getInetAddress().toString();
 
-                if(assbacon.containsKey(address)) {
-                    int amount = assbacon.get(address);
+                if(connectionsPerIP.containsKey(address)) {
+                    int amount = connectionsPerIP.get(address);
                     amount++;
-                    assbacon.put(address, amount);
+                    connectionsPerIP.put(address, amount);
                 } else {
-                    assbacon.put(address, 1);
+                    connectionsPerIP.put(address, 1);
                 }
 
-                if(assbacon.get(address) < 15) {
-                    Host host = new Host(hostSocket, userForIP(hostSocket.getInetAddress().toString()));
-                    host.start();
-                    addHost(host);
+                if(connectionsPerIP.get(address) < 15) {
+                    try {
+                        Host host = new Host(hostSocket, userForIP(hostSocket.getInetAddress().toString()));
+                        host.start();
+                        addHost(host);
+                    } catch (Exception e) {}
                 }
             } catch (Exception e) {
                 e.printStackTrace();
