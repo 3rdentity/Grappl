@@ -28,6 +28,11 @@ public class GrapplBuilder {
         return this;
     }
 
+    public GrapplBuilder atLocalAddress(String serverIP) {
+        grappl.internalAddress = serverIP;
+        return this;
+    }
+
     public GrapplBuilder atLocalPort(int localPort) {
         grappl.internalPort = localPort;
         return this;

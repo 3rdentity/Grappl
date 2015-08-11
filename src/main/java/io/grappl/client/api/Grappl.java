@@ -2,7 +2,9 @@ package io.grappl.client.api;
 
 import io.grappl.GrapplGlobal;
 import io.grappl.client.ClientLog;
+import io.grappl.client.freezer.Freezer;
 import io.grappl.client.gui.GrapplGUI;
+import io.grappl.client.other.ExClient;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,6 +24,8 @@ public class Grappl {
     protected char[] password;
 
     protected String externalPort;
+
+    protected String internalAddress = "127.0.0.1";
     protected int internalPort;
 
     private String relayServerIP;
@@ -32,6 +36,8 @@ public class Grappl {
     protected boolean isAlphaTester = false;
 
     protected String prefix;
+
+    private Freezer freezer;
 
     private StatsManager statsManager = new StatsManager();
     private List<Socket> sockets = new ArrayList<Socket>();
@@ -68,7 +74,6 @@ public class Grappl {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     /**
@@ -144,13 +149,11 @@ public class Grappl {
                     }
                 }
             }).start();
-//        }
-//    else {
-//            JOptionPane.showMessageDialog(gui.getjFrame(), "The relay server you were connected to has gone " +
-//                    "down. Sorry for the interruption!");
-//        }
     }
 
+    /**
+     * Hypothetically should cause a complete disconnection from Grappl's servers
+     */
     private void closeAllSockets() {
         for (int i = 0; i < sockets.size(); i++) {
             try {
@@ -168,110 +171,61 @@ public class Grappl {
     }
 
     private void createExClientHandler(final Socket messageSocket, final DataInputStream messageInputStream) {
+        final Grappl theGrappl = this;
+
+        final List<ExClient> connectedClients = new ArrayList<ExClient>();
+
+        if(gui != null) {
+            getGui().jLabel3 = new JLabel("Connected clients: " + getStatsManager().getOpenConnections());
+            getGui().jLabel3.setBounds(5, 45, 450, 20);
+            gui.getjFrame().add(getGui().jLabel3);
+            gui.getjFrame().repaint();
+        }
+
         Thread exClientHandler = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    if(gui != null) {
-                        getGui().jLabel3 = new JLabel("Connected clients: " + getStatsManager().getOpenConnections());
-                        getGui().jLabel3.setBounds(5, 45, 450, 20);
-                        gui.getjFrame().add(getGui().jLabel3);
-                        gui.getjFrame().repaint();
-                    }
-
                     while(true) {
                         // This goes off when a new client attempts to connect.
                         String userIP = messageInputStream.readLine();
-                        ClientLog.log("A user has connected from ip " + userIP);
+                        ClientLog.log("A user has connected from ip " + userIP.substring(1, userIP.length()));
 
-                        // Increment the connected player counter.
-                        statsManager.openConnection();
-
-                        // This socket connects to the local server.
-                        try {
-                            final Socket toLocal = new Socket("127.0.0.1", internalPort);
-                            sockets.add(toLocal);
-                            // This socket connects to the grappl server, to transfer data from the computer to it.
-                            ClientLog.log(relayServerIP);
-                            final Socket toRemote = new Socket(relayServerIP, Integer.parseInt(externalPort) + 1);
-                            sockets.add(toRemote);
-
-                            // Start the local -> remote thread
-                            final Thread localToRemote = new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    byte[] buffer = new byte[4096];
-                                    int size;
-
-                                    try {
-                                        while ((size = toLocal.getInputStream().read(buffer)) != -1) {
-                                            toRemote.getOutputStream().write(buffer, 0, size);
-                                            statsManager.sendBlock();
-                                        }
-                                    } catch (IOException e) {
-                                        try {
-                                            toLocal.close();
-                                            toRemote.close();
-                                        } catch (IOException e1) {
-                                            e1.printStackTrace();
-                                        }
-                                    }
-
-                                    try {
-                                        toLocal.close();
-                                        toRemote.close();
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            });
-                            localToRemote.start();
-
-                            //                            Start the remote -> local thread
-                            final Thread remoteToLocal = new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    byte[] buffer = new byte[4096];
-                                    int size;
-
-                                    try {
-                                        while ((size = toRemote.getInputStream().read(buffer)) != -1) {
-                                            toLocal.getOutputStream().write(buffer, 0, size);
-                                            statsManager.receiveBlock();
-                                        }
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                        try {
-                                            toLocal.close();
-                                            toRemote.close();
-                                        } catch (IOException e1) {                                        }
-                                    }
-
-                                    try {
-                                        toLocal.close();
-                                        toRemote.close();
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            });
-                            remoteToLocal.start();
-                        } catch (Exception e) {
-                            ClientLog.log("Failed to connect to local server!");
-                        }
+                        ExClient exClient = new ExClient(theGrappl, userIP);
+                        exClient.open();
+                        connectedClients.add(exClient);
                     }
                 } catch (IOException e) {
                     try {
                         messageSocket.close();
-                        ClientLog.log("Error in connection with message server");
-                    } catch (IOException e1) {
-//                        e1.printStackTrace();
-                    }
-//                    e.printStackTrace();
+                        ClientLog.log("Connection with message server has been broken. Unfortunate.");
+                    } catch (IOException e1) {}
                 }
             }
         });
         exClientHandler.start();
+
+        Thread clientVerifier = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    while(true) {
+                        for (int i = 0; i < connectedClients.size(); i++) {
+                            ExClient exClient = connectedClients.get(i);
+
+                            if(!exClient.isStillOpen()) {
+                                connectedClients.remove(exClient);
+                            }
+                        }
+
+                        Thread.sleep(1000);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        clientVerifier.start();
     }
 
 
@@ -358,6 +312,10 @@ public class Grappl {
         return "";
     }
 
+    public void setInternalAddress(String internalAddress) {
+        this.internalAddress = internalAddress;
+    }
+
     public void disconnect() {
         closeAllSockets();
     }
@@ -404,5 +362,21 @@ public class Grappl {
 
     public StatsManager getStatsManager() {
         return statsManager;
+    }
+
+    public void createFreezer() {
+        freezer = new Freezer();
+    }
+
+    public Freezer getFreezer() {
+        return freezer;
+    }
+
+    public String getInternalAddress() {
+        return internalAddress;
+    }
+
+    public List<Socket> getSockets() {
+        return sockets;
     }
 }

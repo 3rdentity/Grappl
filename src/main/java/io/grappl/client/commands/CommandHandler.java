@@ -118,14 +118,32 @@ public class CommandHandler {
                 ClientLog.log("Local port is now " + grappl.getInternalPort());
             }
 
+            else if(spl[0].equalsIgnoreCase("changeserver")) {
+                String server = spl[1];
+                grappl.setInternalAddress(server);
+                ClientLog.log("Server is now " + server);
+            }
+
+            else if(spl[0].equalsIgnoreCase("freezer")) {
+                grappl.createFreezer();
+            }
+
+            else if(spl[0].equalsIgnoreCase("savefreezer")) {
+                grappl.getFreezer().save();
+            }
+
             else if(spl[0].equalsIgnoreCase("resetstats")) {
                 grappl.getStatsManager().reset();
+            }
+
+            else if(spl[0].equalsIgnoreCase("disconnect")) {
+                grappl.disconnect();
             }
 
             else if(spl[0].equalsIgnoreCase("help")) {
                 ClientLog.log("COMMANDS: init, login [username] [password], setport [port]");
                 ClientLog.log("listadd [gamename], listremovem, whoami, version, relay");
-                ClientLog.log("changelocal [port], resetstats, ipban [ip], ipunban [ip], savelog");
+                ClientLog.log("changelocal [port], resetstats, ipban [ip], ipunban [ip], savelog, changeserver, freezer, savefreezer");
             }
 
             else if (spl[0].equalsIgnoreCase("setport")) {
