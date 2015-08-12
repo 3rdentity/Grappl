@@ -1,12 +1,15 @@
 package io.grappl;
 
+/**
+ * Lots of global variables
+ */
 public class GrapplGlobal {
-    public static String APP_NAME = "Grappl";
-    public static String DOMAIN = "grappl.io";
+    public static final String APP_NAME = "Grappl";
+    public static final String DOMAIN = "grappl.io";
 
-    public static int INNER_TRANSIT = 2178;
-    public static int MESSAGE_PORT = 25564;
-    public static int HEARTBEAT = 25570;
-    public static int RELAY_CONTROL = 25563;
-    public static int AUTHENTICATION = 25571;
+    public static final int INNER_TRANSIT =  2178;
+    public static final int RELAY_CONTROL =  25563;
+    public static final int MESSAGE_PORT =   25564;
+    public static final int HEARTBEAT =      25570;
+    public static final int AUTHENTICATION = 25571;
 }

@@ -1,4 +1,4 @@
-package io.grappl.server;
+package io.grappl.server.relay;
 
 import com.google.gson.Gson;
 
@@ -21,8 +21,6 @@ public class User {
     public int blocksIn = 0;
     public int blocksOut = 0;
     public int connectionsTotal = 0;
-
-    private int numberOfLogins = 0;
 
     public long timeRegistered = 0;
 
@@ -114,7 +112,6 @@ public class User {
             loaded = dataInputStream.readLine();
             person = gson.fromJson(loaded, User.class);
         } catch (IOException e) {
-//            System.out.println("Not found");
         }
 
         return person;

@@ -1,11 +1,8 @@
-package io.grappl.server;
+package io.grappl.server.relay;
 
 import io.grappl.GrapplGlobal;
-import io.grappl.server.restartrestore.Union;
-import io.grappl.web.GrapplStats;
-import io.grappl.web.WebServer;
-import io.grappl.web.cgi.PortHandler;
-import io.grappl.web.list.ServerList;
+import io.grappl.server.web.cgi.PortHandler;
+import io.grappl.server.web.list.ServerList;
 import com.maxmind.geoip2.DatabaseReader;
 import com.maxmind.geoip2.model.CountryResponse;
 
@@ -410,79 +407,85 @@ public class Server {
         }
 
         for(int i : portsTaken) {
-            System.out.println(i);
+            System.out.print(i + " ");
         }
-        try {
-            relaySocket = new Socket(GrapplGlobal.DOMAIN, GrapplGlobal.RELAY_CONTROL);
-            System.out.println("Connected to head server..");
 
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        DataInputStream dataInputStream = new DataInputStream(relaySocket.getInputStream());
-                        while (true) {
-                            try {
-                                String preface = dataInputStream.readLine();
+        boolean isMainRelay = true;
 
-                                if(preface.equalsIgnoreCase("INCOMING")) {
-                                    String read = dataInputStream.readLine();
-                                    String username = dataInputStream.readLine();
-                                    log("MSG: " + read + " - " + username);
+        if(isMainRelay) {
+            try {
+                relaySocket = new Socket(GrapplGlobal.DOMAIN, GrapplGlobal.RELAY_CONTROL);
+                System.out.println("Connected to head server..");
 
-                                    String[] spl = read.split("\\s+");
-                                    String ip = spl[0];
-                                    int port = Integer.parseInt(spl[1]);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            DataInputStream dataInputStream = new DataInputStream(relaySocket.getInputStream());
+                            while (true) {
+                                try {
+                                    String preface = dataInputStream.readLine();
 
-                                    ipToPort.put(ip, port);
-                                } else if(preface.equalsIgnoreCase("UPDATE")) {
-                                    Runtime.getRuntime().exec("rm Moxie.jar");
-                                    Runtime.getRuntime().exec("wget http://grappl.io:888/html/Moxie.jar");
-                                    Runtime.getRuntime().exec("java -jar Moxie.jar relay");
-                                    System.exit(0);
-                                }
-                            } catch (Exception e) {
-                                e.printStackTrace();
+                                    if (preface.equalsIgnoreCase("INCOMING")) {
+                                        String read = dataInputStream.readLine();
+                                        String username = dataInputStream.readLine();
+                                        log("MSG: " + read + " - " + username);
 
-                                relaySocket.close();
+                                        String[] spl = read.split("\\s+");
+                                        String ip = spl[0];
+                                        int port = Integer.parseInt(spl[1]);
 
-                                connectionLost = true;
-
-                                new Thread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        while(true) {
-                                            try {
-                                                relaySocket = new Socket(GrapplGlobal.DOMAIN, GrapplGlobal.RELAY_CONTROL);
-                                                relaySocket.close();
-
-                                                openRelay();
-                                                return;
-                                            } catch (Exception e) {
-                                                e.printStackTrace();
-                                            }
-
-                                            try {
-                                                Thread.sleep(500);
-                                            } catch (InterruptedException e1) {
-                                                e1.printStackTrace();
-                                            }
-                                        }
+                                        ipToPort.put(ip, port);
+                                    } else if (preface.equalsIgnoreCase("UPDATE")) {
+                                        Runtime.getRuntime().exec("rm Moxie.jar");
+                                        Runtime.getRuntime().exec("wget http://grappl.io:888/html/Moxie.jar");
+                                        Runtime.getRuntime().exec("java -jar Moxie.jar relay");
+                                        System.exit(0);
                                     }
-                                }).start();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
 
-                                return;
+                                    relaySocket.close();
+
+                                    connectionLost = true;
+
+//                                    new Thread(new Runnable() {
+//                                        @Override
+//                                        public void run() {
+//                                            while (true) {
+//                                                try {
+//                                                    relaySocket = new Socket(GrapplGlobal.DOMAIN, GrapplGlobal.RELAY_CONTROL);
+//
+//                                                    relaySocket.close();
+//
+//                                                    openRelay();
+//                                                    return;
+//                                                } catch (Exception e) {
+//                                                    e.printStackTrace();
+//                                                }
+//
+//                                                try {
+//                                                    Thread.sleep(500);
+//                                                } catch (InterruptedException e1) {
+//                                                    e1.printStackTrace();
+//                                                }
+//                                            }
+//                                        }
+//                                    }).start();
+
+                                    return;
+                                }
+
+                                Thread.sleep(50);
                             }
-
-                            Thread.sleep(50);
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
                     }
-                }
-            }).start();
-        } catch (IOException e) {
-            e.printStackTrace();
+                }).start();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         startServer();
@@ -663,8 +666,6 @@ public class Server {
 
             CountryResponse countryResponse = databaseReader.country(inetAddress);
 
-//            System.out.println(countryResponse);
-
             String continent = countryResponse.getContinent().toString();
 
             // NYC server
@@ -680,7 +681,6 @@ public class Server {
             if(continent.equalsIgnoreCase("Oceania")) return "p";
             if(continent.equalsIgnoreCase("Antarctica")) return "p";
         } catch (Exception e) {
-//            e.printStackTrace();
             return "n";
         }
 

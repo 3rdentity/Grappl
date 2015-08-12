@@ -36,6 +36,9 @@ public class Freezer {
     }
 
     public void save() {
+        System.out.println("SAVING: SENT: " + sentBlocks.size());
+        System.out.println("SAVING: RECEVIED: " + receivedBlocks.size());
+
         File receive = new File("recv-" + freezerID + ".frz");
         try {
             receive.createNewFile();
@@ -45,10 +48,17 @@ public class Freezer {
         try {
             FileOutputStream fileOutputStream = new FileOutputStream(receive);
             DataOutputStream dataOutputStream = new DataOutputStream(fileOutputStream);
+            PrintStream printStream = new PrintStream(dataOutputStream);
+
+            dataOutputStream.writeLong(receivedBlocks.size());
 
             for(TemporalBlock temporalBlock : receivedBlocks) {
                 dataOutputStream.writeLong(temporalBlock.timeActive);
-                fileOutputStream.write(temporalBlock.data);
+                dataOutputStream.writeShort(temporalBlock.data.length);
+
+                for (int i = 0; i < temporalBlock.data.length; i++) {
+                    printStream.println(temporalBlock.data[i]);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -63,10 +73,17 @@ public class Freezer {
         try {
             FileOutputStream fileOutputStream = new FileOutputStream(send);
             DataOutputStream dataOutputStream = new DataOutputStream(fileOutputStream);
+            PrintStream printStream = new PrintStream(dataOutputStream);
+
+            dataOutputStream.writeLong(sentBlocks.size());
 
             for(TemporalBlock temporalBlock : sentBlocks) {
                 dataOutputStream.writeLong(temporalBlock.timeActive);
-                fileOutputStream.write(temporalBlock.data);
+                dataOutputStream.writeShort(temporalBlock.data.length);
+
+                for (int i = 0; i < temporalBlock.data.length; i++) {
+                    printStream.println(temporalBlock.data[i]);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

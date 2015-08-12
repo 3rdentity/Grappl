@@ -1,4 +1,4 @@
-package io.grappl.server;
+package io.grappl.server.relay;
 
 public class LocCheck {
     public static void main(String[] args) {

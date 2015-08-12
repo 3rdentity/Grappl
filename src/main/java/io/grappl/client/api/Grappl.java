@@ -15,7 +15,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
 
 public class Grappl {
@@ -38,6 +38,8 @@ public class Grappl {
     private StatsManager statsManager = new StatsManager();
     private List<Socket> sockets = new ArrayList<Socket>();
     private Freezer freezer;
+
+    private Map<UUID, ExClientConnection> clients = new HashMap<UUID, ExClientConnection>();
 
     protected LocationProvider locationProvider;
 
@@ -201,6 +203,7 @@ public class Grappl {
 
                         ExClientConnection exClient = new ExClientConnection(theGrappl, userIP);
                         exClient.open();
+                        clients.put(exClient.getUUID(), exClient);
                         connectedClients.add(exClient);
                     }
                 } catch (IOException e) {

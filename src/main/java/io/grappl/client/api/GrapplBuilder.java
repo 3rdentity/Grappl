@@ -63,7 +63,6 @@ public class GrapplBuilder {
             boolean alpha = dataInputStream.readBoolean();
             int port = dataInputStream.readInt();
 
-            System.out.println(success);
             grappl.prefix = dataInputStream.readLine();
 
             grappl.isAlphaTester = alpha;

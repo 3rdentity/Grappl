@@ -1,6 +1,6 @@
-package io.grappl.server.restartrestore;
+package io.grappl.server.relay.restartrestore;
 
-import io.grappl.server.Server;
+import io.grappl.server.relay.Server;
 import com.google.gson.Gson;
 
 import java.io.*;

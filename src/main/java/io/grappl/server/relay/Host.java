@@ -1,4 +1,4 @@
-package io.grappl.server;
+package io.grappl.server.relay;
 
 import java.io.IOException;
 import java.io.PrintStream;

@@ -1,11 +1,13 @@
 package io.grappl.client.other;
 
 import io.grappl.client.ClientLog;
+import io.grappl.client.GrapplClientState;
 import io.grappl.client.api.Grappl;
 import io.grappl.client.api.NetworkLocation;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.util.UUID;
 
 public class ExClientConnection {
 
@@ -20,9 +22,18 @@ public class ExClientConnection {
     // Whether or not the connection is still open
     private boolean open;
 
+    // Stats related to this specific connection
+    private ExConnectionStats exConnectionStats;
+
+    // The UUID of this connection
+    private UUID uuid;
+
     public ExClientConnection(Grappl grappl, String address) {
         this.grappl = grappl;
         this.address = address;
+
+        exConnectionStats = new ExConnectionStats();
+        uuid = UUID.randomUUID();
     }
 
     /**
@@ -43,6 +54,8 @@ public class ExClientConnection {
             grappl.getSockets().add(inward);
             final Socket outward = new Socket(grappl.getRelayServer(), relayPort);
             grappl.getSockets().add(outward);
+
+            ClientLog.detailed(uuid + " connection active " + address.substring(1, address.length()) + " -> " + internalServer.getAddress() + ":" + internalServer.getPort());
 
             // Start the local -> remote thread
             final Thread outwardCurrent = new Thread(new Runnable() {
@@ -91,12 +104,19 @@ public class ExClientConnection {
                             inward.getOutputStream().write(buffer, 0, size);
                             grappl.getStatsManager().receiveBlock();
 
+                            if(GrapplClientState.audible) {
+                                for(byte bite : buffer) {
+                                    if(bite != 0) {
+                                        System.out.println(bite);
+                                    }
+                                }
+                            }
+
                             if(grappl.getFreezer() != null) {
                                 grappl.getFreezer().receiveBlock(buffer);
                             }
                         }
                     } catch (IOException e) {
-                        e.printStackTrace();
                         try {
                             inward.close();
                             outward.close();
@@ -113,7 +133,7 @@ public class ExClientConnection {
             });
             inwardCurrent.start();
         } catch (Exception e) {
-            ClientLog.log("Failed to connect to internal server!");
+            ClientLog.log("ERROR: Failed to connect " + address.substring(1, address.length()) + " to internal server!");
         }
     }
 
@@ -136,5 +156,13 @@ public class ExClientConnection {
     public void acknowledgeDisconnect() {
         open = false;
         ClientLog.log(address + " has been disconnected");
+    }
+
+    public UUID getUUID() {
+        return uuid;
+    }
+
+    public ExConnectionStats getExConnectionStats() {
+        return exConnectionStats;
     }
 }

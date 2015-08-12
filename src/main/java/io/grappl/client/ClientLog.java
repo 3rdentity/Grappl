@@ -31,6 +31,27 @@ public class ClientLog {
         save();
     }
 
+    public static void detailed(String toBeLogged) {
+        if(GrapplClientState.doDetailedLogging) {
+            String tag = DateFormat.getDateTimeInstance().format(new Date(System.currentTimeMillis()));
+            String theS = "[" + tag + "] " + toBeLogged;
+            System.out.println(theS);
+            theLog.add(theS);
+
+            if (ConsoleWindow.display != null) {
+                JTextArea display = ConsoleWindow.display;
+                display.setText(null);
+
+                List<String> log = ClientLog.getTheLog();
+                for (String s : log) {
+                    display.append(s + "\n");
+                }
+            }
+
+            save();
+        }
+    }
+
     public static void save() {
         try {
             File dirs = new File(DataFileHelper.getOSSpecificLocation());

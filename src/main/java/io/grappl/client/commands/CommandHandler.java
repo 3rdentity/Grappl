@@ -5,15 +5,24 @@ import com.daexsys.grappl.client.Client;
 import io.grappl.client.ClientLog;
 import io.grappl.client.GrapplClientState;
 import io.grappl.client.api.Grappl;
+import io.grappl.client.commands.impl.DisconnectCommand;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class CommandHandler {
     public static String send = "";
+
+    public static Map<String, Command> commandMap = new HashMap<String, Command>();
+
+    static {
+        commandMap.put("disconnect", new DisconnectCommand());
+    }
 
     public static void handleCommand(Grappl grappl, String command, DataInputStream dataInputStream, DataOutputStream dataOutputStream) {
         String ip = GrapplGlobal.DOMAIN;
@@ -128,16 +137,16 @@ public class CommandHandler {
                 grappl.createFreezer();
             }
 
+            else if(spl[0].equalsIgnoreCase("audible")) {
+                GrapplClientState.audible = true;
+            }
+
             else if(spl[0].equalsIgnoreCase("savefreezer")) {
                 grappl.getFreezer().save();
             }
 
             else if(spl[0].equalsIgnoreCase("resetstats")) {
                 grappl.getStatsManager().reset();
-            }
-
-            else if(spl[0].equalsIgnoreCase("disconnect")) {
-                grappl.disconnect();
             }
 
             else if(spl[0].equalsIgnoreCase("help")) {
@@ -164,7 +173,13 @@ public class CommandHandler {
 
             } else if (spl[0].equalsIgnoreCase("quit")) {
                 System.exit(0);
-            } else {
+            }
+
+            else if (commandMap.containsKey(spl[0].toLowerCase())) {
+                commandMap.get(spl[0].toLowerCase()).runCommand(grappl, dataInputStream, dataOutputStream);
+            }
+
+            else {
                 ClientLog.log("Unknown command");
             }
         }

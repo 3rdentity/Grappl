@@ -1,4 +1,4 @@
-package io.grappl.server;
+package io.grappl.server.relay;
 
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
