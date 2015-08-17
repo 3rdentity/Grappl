@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 
-public class AutoUpdater {
+public class Autoupdater {
     public static String localURL = "";
 
     public static void main(String[] args) {

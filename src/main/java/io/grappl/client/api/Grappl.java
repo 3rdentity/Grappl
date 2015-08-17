@@ -45,7 +45,6 @@ public class Grappl {
 
     public Grappl() {
         locationProvider = new LocationProvider() {
-            @Override
             public NetworkLocation getLocation() {
                 return new NetworkLocation(internalAddress, internalPort);
             }
@@ -294,7 +293,6 @@ public class Grappl {
 
                         JButton jButton = new JButton("Close " + GrapplGlobal.APP_NAME + " Client");
                         jButton.addActionListener(new ActionListener() {
-                            @Override
                             public void actionPerformed(ActionEvent e) {
                                 System.exit(0);
                             }
