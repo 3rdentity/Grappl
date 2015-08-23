@@ -34,6 +34,7 @@ public class Grappl {
     protected GrapplGUI gui;
 
     protected String prefix;
+    private boolean intentionallyDisconnected = false;
 
     private StatsManager statsManager = new StatsManager();
     private List<Socket> sockets = new ArrayList<Socket>();
@@ -241,6 +242,8 @@ public class Grappl {
 
 
     public void restart() {
+        if(intentionallyDisconnected) return;
+
         ClientLog.log("Reconnecting...");
 
         if(isLoggedIn) {
@@ -326,6 +329,7 @@ public class Grappl {
     }
 
     public void disconnect() {
+        intentionallyDisconnected = true;
         closeAllSockets();
     }
 
