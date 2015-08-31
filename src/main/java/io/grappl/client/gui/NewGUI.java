@@ -60,6 +60,7 @@ public class NewGUI {
         jFrame.setLayout(null);
         jFrame.setLocationRelativeTo(null);
         jFrame.setResizable(false);
+        jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         final JLabel relayLab = new JLabel("Relay Server");
         relayLab.setBounds(20, 20, 100, 20);
