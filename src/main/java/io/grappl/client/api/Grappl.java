@@ -2,6 +2,8 @@ package io.grappl.client.api;
 
 import io.grappl.GrapplGlobal;
 import io.grappl.client.ClientLog;
+import io.grappl.client.api.event.UserConnectEvent;
+import io.grappl.client.api.event.UserConnectListener;
 import io.grappl.client.freezer.Freezer;
 import io.grappl.client.gui.GrapplGUI;
 import io.grappl.client.other.ExClientConnection;
@@ -41,6 +43,8 @@ public class Grappl {
     private Freezer freezer;
 
     private Map<UUID, ExClientConnection> clients = new HashMap<UUID, ExClientConnection>();
+
+    private List<UserConnectListener> userConnectListeners = new ArrayList<UserConnectListener>();
 
     protected LocationProvider locationProvider;
 
@@ -200,6 +204,8 @@ public class Grappl {
                         // This goes off when a new client attempts to connect.
                         String userIP = messageInputStream.readLine();
                         ClientLog.log("A user has connected from ip " + userIP.substring(1, userIP.length()));
+
+                        userConnects(new UserConnectEvent(userIP));
 
                         ExClientConnection exClient = new ExClientConnection(theGrappl, userIP);
                         exClient.open();
@@ -395,5 +401,15 @@ public class Grappl {
 
     public NetworkLocation getInternalServer() {
         return locationProvider.getLocation();
+    }
+
+    public void addUserConnectListener(UserConnectListener userConnectListener) {
+        userConnectListeners.add(userConnectListener);
+    }
+
+    public void userConnects(UserConnectEvent userConnectEvent) {
+        for(UserConnectListener userConnectListener : userConnectListeners) {
+            userConnectListener.userConnected(userConnectEvent);
+        }
     }
 }

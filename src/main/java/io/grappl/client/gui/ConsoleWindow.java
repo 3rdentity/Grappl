@@ -32,6 +32,7 @@ public class ConsoleWindow {
         JFrame consoleFrame = new JFrame();
         theFrame = consoleFrame;
         this.grappl = grappl;
+        consoleFrame.setResizable(false);
         theFrame.addWindowListener(new WindowListener() {
             @Override
             public void windowOpened(WindowEvent e) {
@@ -40,7 +41,11 @@ public class ConsoleWindow {
 
             @Override
             public void windowClosing(WindowEvent e) {
-                grappl.getGui().theConsoleWindow = null;
+                try {
+                    grappl.getGui().theConsoleWindow = null;
+                } catch (Exception ee) {
+                    ee.printStackTrace();
+                }
 
             }
 
