@@ -4,6 +4,8 @@ import io.grappl.GrapplGlobal;
 import io.grappl.client.ClientLog;
 import io.grappl.client.api.event.UserConnectEvent;
 import io.grappl.client.api.event.UserConnectListener;
+import io.grappl.client.api.event.UserDisconnectEvent;
+import io.grappl.client.api.event.UserDisconnectListener;
 import io.grappl.client.freezer.Freezer;
 import io.grappl.client.gui.GrapplGUI;
 import io.grappl.client.other.ExClientConnection;
@@ -45,6 +47,7 @@ public class Grappl {
     private Map<UUID, ExClientConnection> clients = new HashMap<UUID, ExClientConnection>();
 
     private List<UserConnectListener> userConnectListeners = new ArrayList<UserConnectListener>();
+    private List<UserDisconnectListener> userDisconnectListeners = new ArrayList<UserDisconnectListener>();
 
     protected LocationProvider locationProvider;
 
@@ -410,6 +413,16 @@ public class Grappl {
     public void userConnects(UserConnectEvent userConnectEvent) {
         for(UserConnectListener userConnectListener : userConnectListeners) {
             userConnectListener.userConnected(userConnectEvent);
+        }
+    }
+
+    public void addUserDisconnectListener(UserDisconnectListener userDisconnectListener) {
+        userDisconnectListeners.add(userDisconnectListener);
+    }
+
+    public void userDisconnects(UserDisconnectEvent userDisconnectEvent) {
+        for(UserDisconnectListener userDisconnectListener : userDisconnectListeners) {
+            userDisconnectListener.userDisconnected(userDisconnectEvent);
         }
     }
 }
