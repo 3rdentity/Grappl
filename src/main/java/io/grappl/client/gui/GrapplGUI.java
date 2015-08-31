@@ -91,10 +91,11 @@ public class GrapplGUI {
 
         if(isActuallyHash) {
             rememberMeBox.setSelected(true);
-            login(usernamef, jPasswordField, this, rememberMeBox);
-        } else {
+//            login(usernamef, jPasswordField, this, rememberMeBox);
+        }
+        {
 
-            final JButton login = new JButton("Login");
+            final JButton login = new JButton("Log in");
             login.setBounds(2, 112, 140, 40);
             login.addActionListener(new ActionListener() {
                 @Override

@@ -44,7 +44,7 @@ public class NewGUI {
 
     public void create() {
 
-        final JFrame jFrame = new JFrame();
+        jFrame = new JFrame();
 
         try {
             jFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(new URL("http://grappl" +
@@ -112,31 +112,7 @@ public class NewGUI {
 
                     GrapplBuilder grapplBuilder = new GrapplBuilder();
 
-                    if(username != null && password != null) {
 
-                        try {
-                            if (!isActuallyHash) {
-                                password = (new String(password).hashCode() + "").toCharArray();
-                            }
-
-                            grapplBuilder.useLoginDetails(username, password).login();
-                            grappl = grapplBuilder.build();
-
-                            if (grappl.isLoggedIn()) {
-                                loggedIn.setText("Logged in as: " + username);
-                                if(grappl.isAlphaTester()) {
-                                    alphaTester.setText("Alpha tester: true");
-                                }
-                                ClientLog.log("Logged in as " + grappl.getUsername());
-                                ClientLog.log("Alpha tester: " + grappl.isAlphaTester());
-                                ClientLog.log("Static port: " + grappl.getExternalPort());
-
-                                GrapplDataFile.saveUsername(grappl.getUsername(), password);
-                            }
-                        } catch (Exception ere) {
-                            ere.printStackTrace();
-                        }
-                    }
                     grapplBuilder.atLocalPort(Integer.parseInt(jTextField.getText()));
                     grappl = grapplBuilder.build();
                     grappl.connect(((String) jComboBox.getSelectedItem()).split("\\s+")[0]);
@@ -206,7 +182,7 @@ public class NewGUI {
         alphaTester.setBounds(dist, 40, 250, 20);
         jFrame.add(alphaTester);
 
-        JButton logIn = new JButton("Log in");
+        logIn = new JButton("Log in");
         logIn.setBounds(dist, 70, 80, 30);
         logIn.addActionListener(new ActionListener() {
             @Override
@@ -243,7 +219,7 @@ public class NewGUI {
                 jPasswordField.setBounds(5, 62, 250, 20);
                 String password = GrapplDataFile.getPassword();
 
-                boolean isActuallyHash = false;
+                isActuallyHash = false;
                 if (password != null) {
                     jPasswordField.setText(password);
                     isActuallyHash = true;
@@ -251,14 +227,14 @@ public class NewGUI {
                     ClientLog.log("Password is null");
                 }
                 jFrame.add(jPasswordField);
-
-                final JCheckBox rememberMeBox = new JCheckBox();
-                rememberMeBox.setBounds(10, 87, 20, 20);
-                jFrame.add(rememberMeBox);
-
-                final JLabel rememberMeLabel = new JLabel("Remember me");
-                rememberMeLabel.setBounds(35, 87, 250, 20);
-                jFrame.add(rememberMeLabel);
+//
+//                final JCheckBox rememberMeBox = new JCheckBox();
+//                rememberMeBox.setBounds(10, 87, 20, 20);
+//                jFrame.add(rememberMeBox);
+//
+//                final JLabel rememberMeLabel = new JLabel("Remember me");
+//                rememberMeLabel.setBounds(35, 87, 250, 20);
+//                jFrame.add(rememberMeLabel);
 
 //                final GrapplGUI theGUI = this;
 //
@@ -267,12 +243,40 @@ public class NewGUI {
 //                    login(usernamef, jPasswordField, this, rememberMeBox);
 //                } else {
 //
-                final JButton login = new JButton("Login");
-                login.setBounds(2, 112, 140, 40);
+                final JButton login = new JButton("Log in");
+                login.setBounds(22, 102, 120, 40);
                 login.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         login(usernamef, jPasswordField);
+
+
+                        try {
+                            if (!isActuallyHash) {
+                                NewGUI.password = (new String(NewGUI.password).hashCode() + "").toCharArray();
+                            }
+
+                            GrapplBuilder grapplBuilder = new GrapplBuilder();
+                            grapplBuilder.useLoginDetails(username, NewGUI.password).login();
+                            grappl = grapplBuilder.build();
+
+                            if (grappl.isLoggedIn()) {
+                                loggedIn.setText("Logged in as: " + username);
+                                if(grappl.isAlphaTester()) {
+                                    alphaTester.setText("Alpha tester: true, static port: " + grappl.getExternalPort());
+                                }
+                                ClientLog.log("Logged in as " + grappl.getUsername());
+                                ClientLog.log("Alpha tester: " + grappl.isAlphaTester());
+                                ClientLog.log("Static port: " + grappl.getExternalPort());
+                                logIn();
+
+                                GrapplDataFile.saveUsername(grappl.getUsername(), NewGUI.password);
+                            }
+                            grappl = null;
+                        } catch (Exception ere) {
+                            ere.printStackTrace();
+                        }
+
                         jFrame.setVisible(false);
                     }
                 });
@@ -282,7 +286,7 @@ public class NewGUI {
         });
         jFrame.add(logIn);
 
-        JButton signUp = new JButton("Sign up");
+        signUp = new JButton("Sign up");
         signUp.setBounds(dist + 90, 70, 80, 30);
         signUp.addActionListener(new ActionListener() {
             @Override
@@ -296,7 +300,7 @@ public class NewGUI {
         });
         jFrame.add(signUp);
 
-        JButton donate = new JButton("Donate");
+        donate = new JButton("Donate");
         donate.setBounds(dist + 180, 70, 80, 30);
         donate.addActionListener(new ActionListener() {
             @Override
@@ -313,6 +317,43 @@ public class NewGUI {
 
         jFrame.repaint();
 
+    }
+
+    public JButton logIn;
+    public JButton signUp;
+    public JButton donate;
+    public JButton logOut;
+    public JFrame jFrame;
+
+    public void logIn() {
+        jFrame.remove(logIn);
+        jFrame.remove(signUp);
+
+        logOut = new JButton("Log out");
+        logOut.setBounds(290, 70, 80, 30);
+        logOut.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                username = null;
+                password = null;
+                logOut();
+            }
+        });
+        jFrame.add(logOut);
+
+        jFrame.add(logOut);
+        donate.setBounds(290 + 90, 70, 80, 30);
+        jFrame.repaint();
+    }
+
+    public void logOut() {
+        jFrame.remove(logOut);
+        jFrame.add(logIn);
+        jFrame.add(signUp);
+        donate.setBounds(290 + 180, 70, 80, 30);
+        loggedIn.setText("Anonymous: Not logged in");
+        alphaTester.setText("Alpha tester: false");
+        jFrame.repaint();
     }
 
 
