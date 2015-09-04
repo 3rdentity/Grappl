@@ -1,13 +1,12 @@
-package io.grappl.client.freezer.defrost;
+package io.grappl.client.experiments.freezer.defrost;
 
-import io.grappl.client.freezer.ReplayBlock;
+import io.grappl.client.experiments.freezer.ReplayBlock;
 
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class IcePlayer {
 

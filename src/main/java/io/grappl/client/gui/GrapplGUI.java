@@ -12,7 +12,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
-import java.net.Socket;
 import java.net.URI;
 import java.net.URL;
 
@@ -218,7 +217,7 @@ public class GrapplGUI {
 //                        e1.printStackTrace();
 //                    }
                     jFrame.setVisible(false);
-                    new NewGUI().create();
+                    new AdvancedGUI().create();
                 }
             });
             donate.setBounds(201, 155, 100, 40);

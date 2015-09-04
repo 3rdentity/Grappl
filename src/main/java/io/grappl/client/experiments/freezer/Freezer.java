@@ -1,4 +1,4 @@
-package io.grappl.client.freezer;
+package io.grappl.client.experiments.freezer;
 
 import io.grappl.client.ClientLog;
 

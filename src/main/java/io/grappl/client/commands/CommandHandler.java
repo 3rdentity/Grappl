@@ -133,17 +133,17 @@ public class CommandHandler {
                 ClientLog.log("Server is now " + server);
             }
 
-            else if(spl[0].equalsIgnoreCase("freezer")) {
-                grappl.createFreezer();
-            }
+//            else if(spl[0].equalsIgnoreCase("freezer")) {
+//                grappl.createFreezer();
+//            }
 
             else if(spl[0].equalsIgnoreCase("audible")) {
                 GrapplClientState.audible = true;
             }
 
-            else if(spl[0].equalsIgnoreCase("savefreezer")) {
-                grappl.getFreezer().save();
-            }
+//            else if(spl[0].equalsIgnoreCase("savefreezer")) {
+//                grappl.getFreezer().save();
+//            }
 
             else if(spl[0].equalsIgnoreCase("resetstats")) {
                 grappl.getStatsManager().reset();

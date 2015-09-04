@@ -1,26 +1,28 @@
 package io.grappl.client.gui;
 
-import io.grappl.GrapplGlobal;
 import io.grappl.client.ClientLog;
-import io.grappl.client.GrapplClientState;
 import io.grappl.client.GrapplDataFile;
 import io.grappl.client.api.Grappl;
 import io.grappl.client.api.GrapplBuilder;
 import io.grappl.client.api.event.UserConnectEvent;
 import io.grappl.client.api.event.UserConnectListener;
+import io.grappl.client.api.event.UserDisconnectEvent;
+import io.grappl.client.api.event.UserDisconnectListener;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 
-public class NewGUI {
-    public static JTextArea display;
+/**
+ * This is the GUI that appears when you click the 'Advanced' button right
+ * after Grappl opens.
+ */
+public class AdvancedGUI {
     public static JList<String> jList;
 
     public static JLabel loggedIn;
@@ -31,10 +33,10 @@ public class NewGUI {
     private static boolean isActuallyHash;
 
     public static void main(String[] args) {
-        new NewGUI().create();
+        new AdvancedGUI().create();
     }
 
-    public NewGUI() {
+    public AdvancedGUI() {
 
     }
 
@@ -76,7 +78,7 @@ public class NewGUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String rServer = JOptionPane.showInputDialog(jFrame, "New relay server address");
-                if (!rServer.equals("")) {
+                if (rServer == null) {} else if(!rServer.equals("")) {
                     jComboBox.addItem(rServer);
                 }
             }
@@ -122,6 +124,13 @@ public class NewGUI {
                         @Override
                         public void userConnected(UserConnectEvent userConnectEvent) {
                             ((DefaultListModel<String>) jList.getModel()).addElement(userConnectEvent.getAddress());
+                        }
+                    });
+
+                    grappl.addUserDisconnectListener(new UserDisconnectListener() {
+                        @Override
+                        public void userDisconnected(UserDisconnectEvent userDisconnectEvent) {
+                            ((DefaultListModel<String>) jList.getModel()).addElement(userDisconnectEvent.getAddress());
                         }
                     });
                     connectionLabel.setText("Public at: " + grappl.getRelayServer() + ":" + grappl.getExternalPort());
@@ -229,21 +238,6 @@ public class NewGUI {
                 }
                 jFrame.add(jPasswordField);
 //
-//                final JCheckBox rememberMeBox = new JCheckBox();
-//                rememberMeBox.setBounds(10, 87, 20, 20);
-//                jFrame.add(rememberMeBox);
-//
-//                final JLabel rememberMeLabel = new JLabel("Remember me");
-//                rememberMeLabel.setBounds(35, 87, 250, 20);
-//                jFrame.add(rememberMeLabel);
-
-//                final GrapplGUI theGUI = this;
-//
-//                if(isActuallyHash) {
-//                    rememberMeBox.setSelected(true);
-//                    login(usernamef, jPasswordField, this, rememberMeBox);
-//                } else {
-//
                 final JButton login = new JButton("Log in");
                 login.setBounds(22, 102, 120, 40);
                 login.addActionListener(new ActionListener() {
@@ -254,11 +248,11 @@ public class NewGUI {
 
                         try {
                             if (!isActuallyHash) {
-                                NewGUI.password = (new String(NewGUI.password).hashCode() + "").toCharArray();
+                                AdvancedGUI.password = (new String(AdvancedGUI.password).hashCode() + "").toCharArray();
                             }
 
                             GrapplBuilder grapplBuilder = new GrapplBuilder();
-                            grapplBuilder.useLoginDetails(username, NewGUI.password).login();
+                            grapplBuilder.useLoginDetails(username, AdvancedGUI.password).login();
                             grappl = grapplBuilder.build();
 
                             if (grappl.isLoggedIn()) {
@@ -271,7 +265,7 @@ public class NewGUI {
                                 ClientLog.log("Static port: " + grappl.getExternalPort());
                                 logIn();
 
-                                GrapplDataFile.saveUsername(grappl.getUsername(), NewGUI.password);
+                                GrapplDataFile.saveUsername(grappl.getUsername(), AdvancedGUI.password);
                             }
                             grappl = null;
                         } catch (Exception ere) {
