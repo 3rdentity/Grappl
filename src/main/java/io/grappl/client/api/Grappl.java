@@ -423,7 +423,6 @@ public class Grappl {
                     try {
                         dataOutputStream.writeInt(0);
                     } catch (IOException e) {
-                        e.printStackTrace();
                         isDown();
                         return;
                     }

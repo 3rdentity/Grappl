@@ -8,14 +8,12 @@ public class GrapplDataFile {
         try {
             file.createNewFile();
         } catch (IOException e) {
-            e.printStackTrace();
         }
 
         try {
             DataInputStream dataInputStream = new DataInputStream(new FileInputStream(file));
             return dataInputStream.readLine();
         } catch (Exception e) {
-            e.printStackTrace();
         }
 
         return "";
@@ -26,7 +24,6 @@ public class GrapplDataFile {
         try {
             file.createNewFile();
         } catch (IOException e) {
-            e.printStackTrace();
         }
 
         try {

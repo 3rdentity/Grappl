@@ -44,7 +44,6 @@ public class ConsoleWindow {
                 try {
                     grappl.getGui().theConsoleWindow = null;
                 } catch (Exception ee) {
-                    ee.printStackTrace();
                 }
 
             }
