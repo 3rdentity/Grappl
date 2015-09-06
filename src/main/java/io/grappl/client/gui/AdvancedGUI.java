@@ -68,7 +68,7 @@ public class AdvancedGUI {
         relayLab.setBounds(20, 20, 100, 20);
         jFrame.add(relayLab);
 
-        final JComboBox<String> jComboBox = new JComboBox<String>(new String[]{"n.grappl.io (North America)", "e.grappl.io (Europe)", "p.grappl.io (Oceania)"});
+        final JComboBox<String> jComboBox = new JComboBox<String>(new String[]{"n.grappl.io (East Coast NA)", "s.grappl.io (West Coast NA)", "e.grappl.io (Europe)", "p.grappl.io (Oceania)"});
         jComboBox.setBounds(20, 40, 200, 20);
         jFrame.add(jComboBox);
 
