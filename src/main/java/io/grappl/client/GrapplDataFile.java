@@ -21,6 +21,8 @@ public class GrapplDataFile {
 
     public static String getPassword() {
         File file = new File(getOSSpecificLocation() + "/user.dat");
+
+        new File(getOSSpecificLocation()).mkdirs();
         try {
             file.createNewFile();
         } catch (IOException e) {
@@ -40,6 +42,7 @@ public class GrapplDataFile {
 
     public static void saveUsername(String username, char[] password) {
         File file = new File(getOSSpecificLocation() + "/user.dat");
+
         file.mkdirs();
         try {
             file.createNewFile();
@@ -63,13 +66,10 @@ public class GrapplDataFile {
         final String os = System.getProperty("os.name").toLowerCase();
 
         if(os.contains("win")) {
-//            System.out.println("win");
             return System.getenv("APPDATA") + "/Daexsys/Grappl/";
         } else if(os.contains("mac")) {
-//            System.out.println("mac");
-            return System.getenv("user.home") + "/Library/Application Support/Grappl/";
-        } else { // Linux or non-Mac BSD
-//            System.out.println("other");
+            return System.getProperty("user.home") + "/Library/Application Support/Grappl/";
+        } else { // Linux / BSD
             return System.getProperty("user.home") + "/Grappl/";
         }
     }

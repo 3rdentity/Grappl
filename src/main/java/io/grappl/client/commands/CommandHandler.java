@@ -5,8 +5,9 @@ import com.daexsys.grappl.client.Client;
 import io.grappl.client.ClientLog;
 import io.grappl.client.GrapplClientState;
 import io.grappl.client.api.Grappl;
-import io.grappl.client.commands.impl.DisconnectCommand;
+import io.grappl.client.commands.impl.*;
 
+import javax.swing.*;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -22,6 +23,14 @@ public class CommandHandler {
 
     static {
         commandMap.put("disconnect", new DisconnectCommand());
+        commandMap.put("savelog", new SaveLogCommand());
+        commandMap.put("relay", new RelayCommand());
+        commandMap.put("version", new VersionCommand());
+        commandMap.put("ipban", new IpBanCommand());
+        commandMap.put("ipunban", new IpUnban());
+
+        commandMap.put("setstaticport", new SetStaticPortCommand());
+        commandMap.put("setport", new SetStaticPortCommand());
     }
 
     public static void handleCommand(Grappl grappl, String command, DataInputStream dataInputStream, DataOutputStream dataOutputStream) {
@@ -30,38 +39,7 @@ public class CommandHandler {
         String[] spl = command.split("\\s+");
         try {
 
-            if (spl[0].equalsIgnoreCase("ipban")) {
-
-                if (grappl.isLoggedIn()) {
-                    String ipToBAN = spl[1];
-
-                    dataOutputStream.writeByte(5);
-                    PrintStream printStream = new PrintStream(dataOutputStream);
-                    printStream.println(ipToBAN);
-
-                    ClientLog.log("Banned ip: " + ipToBAN);
-                } else {
-                    ClientLog.log("You must be logged in to ban IPs.");
-                }
-            }
-
-            else if (spl[0].equalsIgnoreCase("ipunban")) {
-
-                if (grappl.isLoggedIn()) {
-                    String ipToBAN = spl[1];
-
-                    dataOutputStream.writeByte(8);
-                    PrintStream printStream = new PrintStream(dataOutputStream);
-                    printStream.println(ipToBAN);
-
-                    ClientLog.log("Unbanned ip: " + ipToBAN);
-                } else {
-                    ClientLog.log("You must be logged in to unban IPs.");
-                }
-            }
-
-
-            else if (spl[0].equalsIgnoreCase("login")) {
+            if (spl[0].equalsIgnoreCase("login")) {
                 String username = spl[1];
                 String password = spl[2];
 
@@ -83,27 +61,16 @@ public class CommandHandler {
                     ClientLog.log("Static port: " + thePort);
 //                    Client.username = username;
                 } else {
-//                    JOptionPane.showMessageDialog(Client.grapplGUI.getjFrame(), "Login failed!");
+                    JOptionPane.showMessageDialog(grappl.getGui().getjFrame(), "Login failed!");
                 }
-            } else if (spl[0].equalsIgnoreCase("whoami")) {
+            }
+
+            else if (spl[0].equalsIgnoreCase("whoami")) {
                 if (grappl.isLoggedIn()) {
                     ClientLog.log(grappl.getUsername());
                 } else {
                     ClientLog.log("You aren't logged in, so you are anonymous.");
                 }
-            }
-
-            else if(spl[0].equalsIgnoreCase("relay")) {
-                ClientLog.log(grappl.getUsername());
-            }
-
-            else if(spl[0].equalsIgnoreCase("version")) {
-                ClientLog.log(GrapplGlobal.APP_NAME + " version " + GrapplClientState.VERSION);
-            }
-
-            else if(spl[0].equalsIgnoreCase("savelog")) {
-                ClientLog.save();
-                ClientLog.log("Log saved");
             }
 
             else if(spl[0].equalsIgnoreCase("listadd")) {
@@ -149,34 +116,28 @@ public class CommandHandler {
                 grappl.getStatsManager().reset();
             }
 
-            else if(spl[0].equalsIgnoreCase("help")) {
-                ClientLog.log("COMMANDS: init, login [username] [password], setport [port]");
-                ClientLog.log("listadd [gamename], listremovem, whoami, version, relay");
-                ClientLog.log("changelocal [port], resetstats, ipban [ip], ipunban [ip], savelog, changeserver, freezer, savefreezer");
-            }
-
-            else if (spl[0].equalsIgnoreCase("setport")) {
-                if (grappl.isLoggedIn()) {
-                    if (grappl.isAlphaTester()) {
-                        dataOutputStream.writeByte(2);
-                        dataOutputStream.writeInt(Integer.parseInt(spl[1]));
-                        ClientLog.log("Your port was set to: " + Integer.parseInt(spl[1]));
-                    } else {
-                        ClientLog.log("You are not an alpha tester, so you can't set static ports.");
-                    }
-                } else {
-                    ClientLog.log("You are not logged in.");
-                }
-            } else if (spl[0].equalsIgnoreCase("init")) {
+            else if (spl[0].equalsIgnoreCase("init")) {
                 ClientLog.log("Starting...");
                 grappl.connect(ip);
 
-            } else if (spl[0].equalsIgnoreCase("quit")) {
-                System.exit(0);
             }
 
             else if (commandMap.containsKey(spl[0].toLowerCase())) {
-                commandMap.get(spl[0].toLowerCase()).runCommand(grappl, dataInputStream, dataOutputStream);
+                commandMap.get(spl[0].toLowerCase()).runCommand(grappl, spl, dataInputStream, dataOutputStream);
+            }
+
+            else if(command.equalsIgnoreCase("help")) {
+                String printedOutput = "Commands: ";
+
+                for(Map.Entry<String, Command> entries : commandMap.entrySet()) {
+                    printedOutput += entries.getKey() + ", ";
+                }
+
+                ClientLog.log(printedOutput.substring(0, printedOutput.length() - 2));
+            }
+
+            else if (spl[0].equalsIgnoreCase("quit")) {
+                System.exit(0);
             }
 
             else {

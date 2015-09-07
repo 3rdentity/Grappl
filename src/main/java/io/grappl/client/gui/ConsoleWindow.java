@@ -78,13 +78,14 @@ public class ConsoleWindow {
         try {
             Client.authSocket = new Socket(GrapplGlobal.DOMAIN, GrapplGlobal.AUTHENTICATION);
         } catch (IOException e) {
-            e.printStackTrace();
+            ClientLog.log("Could not establish auth connection");
         }
+
         try {
             dataInputStream = new DataInputStream(Client.authSocket.getInputStream());
             dataOutputStream = new DataOutputStream(Client.authSocket.getOutputStream());
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            ClientLog.log("Failed to create streams");
         }
 
         try {
@@ -100,6 +101,7 @@ public class ConsoleWindow {
         consoleFrame.setVisible(true);
 
         display = new JTextArea(120,20);
+        display.setLineWrap(true);
         JScrollPane jScrollPane = new JScrollPane(display,
                 JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
                 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
