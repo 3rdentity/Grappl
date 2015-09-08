@@ -75,13 +75,16 @@ public class CommandHandler {
 
                 Scanner scanner = new Scanner(System.in);
 
-                while(true) {
+                while(scanner.hasNextLine()) {
                     try {
                         String line = scanner.nextLine();
-//                        CommandHandler.handleCommand(line, dataInputStream, dataOutputStream, Client.localPort);
+                        String[] args = line.split("\\s+");
+
+                        if (commandMap.containsKey(args[0].toLowerCase())) {
+                            commandMap.get(args[0].toLowerCase()).runCommand(null, args, dataInputStream, dataOutputStream);
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
-//                        System.exit(0);
                         return;
                     }
                 }

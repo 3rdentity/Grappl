@@ -11,10 +11,14 @@ public class WhoAmICommand implements Command {
     @Override
     public void runCommand(Grappl grappl, String[] args, DataInputStream dataInputStream, DataOutputStream dataOutputStream) {
 
-        if (grappl.isLoggedIn()) {
-            ClientLog.log(grappl.getUsername());
+        if(grappl == null) {
+            ClientLog.log("Grappl has not been initialized");
         } else {
-            ClientLog.log("You aren't logged in, so you are anonymous.");
+            if (grappl.isLoggedIn()) {
+                ClientLog.log(grappl.getUsername());
+            } else {
+                ClientLog.log("You aren't logged in, so you are anonymous.");
+            }
         }
     }
 }
