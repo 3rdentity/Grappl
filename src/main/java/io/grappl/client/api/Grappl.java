@@ -420,6 +420,7 @@ public class Grappl {
                 ClientLog.log("Connected to heartbeat server");
 
                 while(true) {
+                    System.out.println("beating heart");
                     try {
                         dataOutputStream.writeInt(0);
                     } catch (IOException e) {
