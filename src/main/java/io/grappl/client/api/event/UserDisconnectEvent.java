@@ -1,7 +1,5 @@
 package io.grappl.client.api.event;
 
-import java.net.InetAddress;
-
 public class UserDisconnectEvent {
     private String address;
 
