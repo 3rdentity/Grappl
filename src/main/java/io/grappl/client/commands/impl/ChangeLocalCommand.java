@@ -11,7 +11,11 @@ public class ChangeLocalCommand implements Command {
     @Override
     public void runCommand(Grappl grappl, String[] args, DataInputStream dataInputStream, DataOutputStream dataOutputStream) {
 
-        grappl.setInternalPort(Integer.parseInt(args[1]));
-        ClientLog.log("Local port is now " + grappl.getInternalPort());
+        if(grappl == null) {
+            ClientLog.log("Grappl has not been created");
+        } else {
+            grappl.setInternalPort(Integer.parseInt(args[1]));
+            ClientLog.log("Local port is now " + grappl.getInternalPort());
+        }
     }
 }

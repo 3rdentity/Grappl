@@ -120,8 +120,11 @@ public class GrapplGUI {
             });
             jFrame.add(signup);
 
+
+
+
+
             JButton beanonymous = new JButton("Run without logging in");
-            //202
             beanonymous.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -159,7 +162,7 @@ public class GrapplGUI {
                     consoleButton.setBounds(235, 40, 40, 40);
                     jFrame.add(consoleButton);
 
-                    grappl = new GrapplBuilder().withGUI(theGUI).build();
+                    grappl = new GrapplBuilder().useLoginDetails("default", ("1".hashCode() + "").toCharArray()).login().withGUI(theGUI).build();
 
                     JButton jButton = new JButton("Close " + GrapplGlobal.APP_NAME + " Client");
                     jButton.addActionListener(new ActionListener() {
@@ -173,12 +176,20 @@ public class GrapplGUI {
 
                     String ports = JOptionPane.showInputDialog("What port does your server run on?");
                     grappl.setInternalPort(Integer.parseInt(ports));
-                    grappl.connect(GrapplGlobal.DOMAIN);
+                    grappl.connect(grappl.getPrefix() + "." + GrapplGlobal.DOMAIN);
                 }
             });
-            //150
             beanonymous.setBounds(2, 155, 192, 40);
             jFrame.add(beanonymous);
+
+
+
+
+
+
+
+
+
 
             JButton donate = new JButton("Advanced");
             donate.addActionListener(new ActionListener() {
