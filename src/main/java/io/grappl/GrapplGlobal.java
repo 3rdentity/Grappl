@@ -15,5 +15,7 @@ public class GrapplGlobal {
     public static final int HEARTBEAT =      25570;
     public static final int AUTHENTICATION = 25571;
 
+    public static final String NO_GRAPPL_MESSAGE = "There is no grappl open!";
+
     public static Grappl theGrappl;
 }

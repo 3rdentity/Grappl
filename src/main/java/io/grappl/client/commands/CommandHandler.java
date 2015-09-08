@@ -35,6 +35,7 @@ public class CommandHandler {
         commandMap.put("resetstats", new ResetStatsCommand());
         commandMap.put("quit", new QuitCommand());
         commandMap.put("audible", new AudibleCommand());
+        commandMap.put("state", new StateCommand());
 
         commandMap.put("setstaticport", new SetStaticPortCommand());
         commandMap.put("setport", new SetStaticPortCommand());
