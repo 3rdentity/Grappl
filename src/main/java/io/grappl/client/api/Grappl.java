@@ -68,6 +68,9 @@ public class Grappl {
      * Constructs a new Grappl and sets a generic locationprovider
      */
     public Grappl() {
+        // Allows the terminal console to have commands act on the newest grappl object
+        GrapplGlobal.theGrappl = this;
+
         locationProvider = new LocationProvider() {
             public NetworkLocation getLocation() {
                 return new NetworkLocation(internalAddress, internalPort);
@@ -420,7 +423,6 @@ public class Grappl {
                 ClientLog.log("Connected to heartbeat server");
 
                 while(true) {
-                    System.out.println("beating heart");
                     try {
                         dataOutputStream.writeInt(0);
                     } catch (IOException e) {

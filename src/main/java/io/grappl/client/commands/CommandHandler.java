@@ -81,7 +81,7 @@ public class CommandHandler {
                         String[] args = line.split("\\s+");
 
                         if (commandMap.containsKey(args[0].toLowerCase())) {
-                            commandMap.get(args[0].toLowerCase()).runCommand(null, args, dataInputStream, dataOutputStream);
+                            commandMap.get(args[0].toLowerCase()).runCommand(GrapplGlobal.theGrappl, args, dataInputStream, dataOutputStream);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();

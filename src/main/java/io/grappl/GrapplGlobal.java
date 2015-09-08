@@ -1,5 +1,7 @@
 package io.grappl;
 
+import io.grappl.client.api.Grappl;
+
 /**
  * Lots of global variables
  */
@@ -12,4 +14,6 @@ public class GrapplGlobal {
     public static final int MESSAGING_PORT =   25564;
     public static final int HEARTBEAT =      25570;
     public static final int AUTHENTICATION = 25571;
+
+    public static Grappl theGrappl;
 }

@@ -114,33 +114,20 @@ public class ConsoleWindow {
         display.setEditable(false);
 //
         final JTextField typeArea = new JTextField();
-        typeArea.setBounds(20, 280, 230, 20);
+        typeArea.setBounds(20, 280, 530, 20);
         consoleFrame.add(typeArea);
-//        typeArea.setFocusable(true);
-//        typeArea.addKeyListener(new KeyListener() {
-//            @Override
-//            public void keyTyped(KeyEvent e) {
-////                System.out.println(e.getKeyLocation());
-////                if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-////                    final String theCommand = typeArea.getText();
-////                    enterCommand(theCommand);
-////                    typeArea.setText(null);
-////                }
-//            }
-//
-//            @Override
-//            public void keyPressed(KeyEvent e) {
-//
-//            }
-//
-//            @Override
-//            public void keyReleased(KeyEvent e) {
-//
-//            }
-//        });
+        typeArea.setFocusable(true);
+        typeArea.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                final String theCommand = typeArea.getText();
+                enterCommand(theCommand);
+                typeArea.setText(null);
+            }
+        });
 
         JButton jButton = new JButton("Enter");
-        jButton.setBounds(270, 280, 80, 20);
+        jButton.setBounds(570, 280, 80, 20);
         consoleFrame.add(jButton);
         jButton.addActionListener(new ActionListener() {
             @Override
