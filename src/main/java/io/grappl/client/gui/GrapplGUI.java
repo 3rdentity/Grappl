@@ -42,7 +42,7 @@ public class GrapplGUI {
         }
 
         jFrame = new JFrame("Grappl Client " + GrapplClientState.VERSION);
-        jFrame.setSize(new Dimension(320, 240));
+        jFrame.setSize(new Dimension(310, 240));
 
         jFrame.setLocationRelativeTo(null);
         jFrame.setVisible(true);
@@ -91,12 +91,13 @@ public class GrapplGUI {
 
         final GrapplGUI theGUI = this;
 
+
         if(isActuallyHash) {
             rememberMeBox.setSelected(true);
         }
         {
             final JButton login = new JButton("Log in");
-            login.setBounds(2, 112, 140, 40);
+            login.setBounds(4, 112, 140, 40);
             login.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -107,7 +108,7 @@ public class GrapplGUI {
 
             //100
             JButton signup = new JButton("Sign up");
-            signup.setBounds(142, 112, 140, 40);
+            signup.setBounds(148, 112, 140, 40);
             signup.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -119,10 +120,6 @@ public class GrapplGUI {
                 }
             });
             jFrame.add(signup);
-
-
-
-
 
             JButton beanonymous = new JButton("Run without logging in");
             beanonymous.addActionListener(new ActionListener() {
@@ -138,6 +135,8 @@ public class GrapplGUI {
 
                     jFrame.setVisible(true);
                     jFrame.setLayout(null);
+                    jFrame.setResizable(false);
+                    jFrame.setSize(new Dimension(290, 230));
                     jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
                     try {
@@ -172,39 +171,25 @@ public class GrapplGUI {
                         }
                     });
                     jFrame.add(jButton);
-                    jButton.setBounds(0, 115, 280, 80);
+                    jButton.setBounds(2, 105, 280, 90);
 
                     String ports = JOptionPane.showInputDialog("What port does your server run on?");
                     grappl.setInternalPort(Integer.parseInt(ports));
                     grappl.connect(grappl.getPrefix() + "." + GrapplGlobal.DOMAIN);
                 }
             });
-            beanonymous.setBounds(2, 155, 192, 40);
+            beanonymous.setBounds(4, 155, 192, 40);
             jFrame.add(beanonymous);
-
-
-
-
-
-
-
-
-
 
             JButton donate = new JButton("Advanced");
             donate.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-//                    try {
-//                        Desktop.getDesktop().browse(URI.create("http://grappl.io/donate"));
-//                    } catch (IOException e1) {
-//                        e1.printStackTrace();
-//                    }
                     jFrame.setVisible(false);
                     new AdvancedGUI().create();
                 }
             });
-            donate.setBounds(201, 155, 100, 40);
+            donate.setBounds(200, 155, 90, 40);
             jFrame.add(donate);
 
             jFrame.repaint();
@@ -296,6 +281,8 @@ public class GrapplGUI {
                 // 300, 240
                 newJframe.setSize(new Dimension(300, 240));
                 newJframe.setLocation(wX, wY);
+                newJframe.setResizable(false);
+                newJframe.setSize(new Dimension(290, 230));
 
                 try {
                     newJframe.setIconImage(Toolkit.getDefaultToolkit().getImage(new URL("http://grappl" +
@@ -317,7 +304,7 @@ public class GrapplGUI {
                 });
                 newJframe.add(jButton);
                 // 95 100
-                jButton.setBounds(0, 115, 280, 80);
+                jButton.setBounds(2, 105, 280, 90);
 
 //                newJframe.setResizable(false);
 
