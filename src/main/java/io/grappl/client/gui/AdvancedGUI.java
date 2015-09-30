@@ -31,13 +31,15 @@ public class AdvancedGUI {
     private static char[] password;
     private static boolean isActuallyHash;
 
-    public static void main(String[] args) {
-        new AdvancedGUI().create();
-    }
-
     public static Grappl grappl;
     public static JLabel connectionLabel;
     public static JLabel portLabel;
+
+    public JButton logIn;
+    public JButton signUpButton;
+    public JButton donateButton;
+    public JButton logOut;
+    public JFrame jFrame;
 
     public void create() {
 
@@ -87,16 +89,25 @@ public class AdvancedGUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (grappl != null) {
-                    grappl.setInternalPort(Integer.parseInt(jTextField.getText()));
+                    try {
+                        int portValue = Integer.parseInt(jTextField.getText());
+
+                        if (portValue > 65535) {
+                            JOptionPane.showConfirmDialog(jFrame, "Value too high. Port must be equal to or lower than 65535");
+                        } else {
+                            grappl.setInternalPort(Integer.parseInt(jTextField.getText()));
+                            portLabel.setText("Local port: " + grappl.getInternalPort());
+                        }
+                    } catch (NumberFormatException ignore) {
+                        JOptionPane.showConfirmDialog(jFrame, "Value too high. Port must be equal to or lower than 65535");
+                    }
                 }
-                portLabel.setText("Local port: " + grappl.getInternalPort());
             }
         });
         update.setBounds(150, 100, 90, 20);
         jFrame.add(update);
 
         final JButton close = new JButton("Close");
-
         JButton open = new JButton("Open");
         open.setBounds(20, 140, 100, 40);
         open.addActionListener(new ActionListener() {
@@ -303,12 +314,6 @@ public class AdvancedGUI {
 
     }
 
-    public JButton logIn;
-    public JButton signUpButton;
-    public JButton donateButton;
-    public JButton logOut;
-    public JFrame jFrame;
-
     public void logIn() {
         jFrame.remove(logIn);
         jFrame.remove(signUpButton);
@@ -340,9 +345,12 @@ public class AdvancedGUI {
         jFrame.repaint();
     }
 
-
     public void login(JTextField usernamef, JPasswordField jPasswordField) {
         username = usernamef.getText().toLowerCase();
         password = jPasswordField.getPassword();
+    }
+
+    public static void main(String[] args) {
+        new AdvancedGUI().create();
     }
 }
