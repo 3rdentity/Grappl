@@ -1,6 +1,7 @@
 package io.grappl.client.gui;
 
 import io.grappl.client.ClientLog;
+import io.grappl.client.GrapplClientState;
 import io.grappl.client.GrapplDataFile;
 import io.grappl.client.api.Grappl;
 import io.grappl.client.api.GrapplBuilder;
@@ -36,10 +37,6 @@ public class AdvancedGUI {
         new AdvancedGUI().create();
     }
 
-    public AdvancedGUI() {
-
-    }
-
     public static Grappl grappl;
     public static JLabel connectionLabel;
     public static JLabel portLabel;
@@ -48,12 +45,7 @@ public class AdvancedGUI {
 
         jFrame = new JFrame();
 
-        try {
-            jFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(new URL("http://grappl" +
-                    ".io:888/html/glogo.png")));
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
+        jFrame.setIconImage(GrapplClientState.getIcon());
 
         jFrame.setTitle("Grappl Advanced");
 
