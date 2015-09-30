@@ -376,9 +376,7 @@ public class Grappl {
         ClientLog.log("Lost connection to remote");
         closeAllSockets();
 
-//        if(isAlphaTester) {
-        // Attempt reconnect
-        new Thread(new Runnable() {
+        Thread reconnectThread = new Thread(new Runnable() {
             @Override
             public void run() {
                 while (true) {
@@ -388,7 +386,6 @@ public class Grappl {
                         restart();
                         return;
                     } catch (IOException e) {
-//                            e.printStackTrace();
                         ClientLog.log("Attempting reconnect");
                     }
 
@@ -399,7 +396,9 @@ public class Grappl {
                     }
                 }
             }
-        }).start();
+        });
+        reconnectThread.setName("Reconnect Thread");
+        reconnectThread.start();
     }
 
     /**
