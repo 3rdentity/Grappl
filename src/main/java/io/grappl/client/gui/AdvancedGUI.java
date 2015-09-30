@@ -15,9 +15,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URL;
 
 /**
  * This is the GUI that appears when you click the 'Advanced' button right
@@ -98,6 +96,7 @@ public class AdvancedGUI {
         jFrame.add(update);
 
         final JButton close = new JButton("Close");
+
         JButton open = new JButton("Open");
         open.setBounds(20, 140, 100, 40);
         open.addActionListener(new ActionListener() {
@@ -106,7 +105,6 @@ public class AdvancedGUI {
                 if (grappl == null) {
 
                     GrapplBuilder grapplBuilder = new GrapplBuilder();
-
 
                     grapplBuilder.atLocalPort(Integer.parseInt(jTextField.getText()));
                     grappl = grapplBuilder.build();
@@ -196,7 +194,6 @@ public class AdvancedGUI {
                 jFrame.setLocationRelativeTo(null);
                 jFrame.setVisible(true);
                 jFrame.setLayout(null);
-//        jFrame.setResizable(false);
 
                 jFrame.setIconImage(GrapplClientState.getIcon());
 
@@ -232,7 +229,6 @@ public class AdvancedGUI {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         login(usernamef, jPasswordField);
-
 
                         try {
                             if (!isActuallyHash) {
@@ -275,9 +271,9 @@ public class AdvancedGUI {
         });
         jFrame.add(logIn);
 
-        signUp = new JButton("Sign up");
-        signUp.setBounds(dist + 90, 70, 80, 30);
-        signUp.addActionListener(new ActionListener() {
+        signUpButton = new JButton("Sign up");
+        signUpButton.setBounds(dist + 90, 70, 80, 30);
+        signUpButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -287,11 +283,11 @@ public class AdvancedGUI {
                 }
             }
         });
-        jFrame.add(signUp);
+        jFrame.add(signUpButton);
 
-        donate = new JButton("Donate");
-        donate.setBounds(dist + 180, 70, 80, 30);
-        donate.addActionListener(new ActionListener() {
+        donateButton = new JButton("Donate");
+        donateButton.setBounds(dist + 180, 70, 80, 30);
+        donateButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -301,22 +297,21 @@ public class AdvancedGUI {
                 }
             }
         });
-        jFrame.add(donate);
-
+        jFrame.add(donateButton);
 
         jFrame.repaint();
 
     }
 
     public JButton logIn;
-    public JButton signUp;
-    public JButton donate;
+    public JButton signUpButton;
+    public JButton donateButton;
     public JButton logOut;
     public JFrame jFrame;
 
     public void logIn() {
         jFrame.remove(logIn);
-        jFrame.remove(signUp);
+        jFrame.remove(signUpButton);
 
         logOut = new JButton("Log out");
         logOut.setBounds(290, 70, 80, 30);
@@ -331,15 +326,15 @@ public class AdvancedGUI {
         jFrame.add(logOut);
 
         jFrame.add(logOut);
-        donate.setBounds(290 + 90, 70, 80, 30);
+        donateButton.setBounds(290 + 90, 70, 80, 30);
         jFrame.repaint();
     }
 
     public void logOut() {
         jFrame.remove(logOut);
         jFrame.add(logIn);
-        jFrame.add(signUp);
-        donate.setBounds(290 + 180, 70, 80, 30);
+        jFrame.add(signUpButton);
+        donateButton.setBounds(290 + 180, 70, 80, 30);
         loggedIn.setText("Anonymous: Not logged in");
         alphaTester.setText("Alpha tester: false");
         jFrame.repaint();

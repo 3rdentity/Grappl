@@ -8,7 +8,6 @@ import io.grappl.client.api.Grappl;
 import io.grappl.client.commands.CommandHandler;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -17,7 +16,6 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.net.URL;
 
 public class ConsoleWindow {
 
@@ -100,7 +98,7 @@ public class ConsoleWindow {
         consoleFrame.setLocationRelativeTo(null);
         consoleFrame.setVisible(true);
 
-        display = new JTextArea(120,20);
+        display = new JTextArea(120, 20);
         display.setLineWrap(true);
         JScrollPane jScrollPane = new JScrollPane(display,
                 JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
