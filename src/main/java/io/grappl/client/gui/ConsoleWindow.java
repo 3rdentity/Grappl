@@ -3,6 +3,7 @@ package io.grappl.client.gui;
 import io.grappl.GrapplGlobal;
 import com.daexsys.grappl.client.Client;
 import io.grappl.client.ClientLog;
+import io.grappl.client.GrapplClientState;
 import io.grappl.client.api.Grappl;
 import io.grappl.client.commands.CommandHandler;
 
@@ -89,8 +90,7 @@ public class ConsoleWindow {
         }
 
         try {
-            consoleFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(new URL("http://grappl" +
-                    ".io:888/html/glogo.png")));
+            consoleFrame.setIconImage(GrapplClientState.getIcon());
         } catch (Exception ee) {
             ee.printStackTrace();
         }

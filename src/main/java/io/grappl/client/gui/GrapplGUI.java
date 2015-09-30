@@ -50,11 +50,7 @@ public class GrapplGUI {
         jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 //        jFrame.setResizable(false);
 
-        try {
-            jFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(new URL("http://grappl.io:888/html/glogo.png")));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        jFrame.setIconImage(GrapplClientState.getIcon());
 
         final JLabel usernameLable = new JLabel("Username");
         usernameLable.setBounds(5, 2, 250, 20);
@@ -139,13 +135,7 @@ public class GrapplGUI {
                     jFrame.setSize(new Dimension(290, 230));
                     jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-                    try {
-                        jFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(new URL("http://grappl.io:888/html/glogo.png")));
-
-
-                    } catch (Exception ee) {
-                        ee.printStackTrace();
-                    }
+                    jFrame.setIconImage(GrapplClientState.getIcon());
 
                     JButton consoleButton = new JButton(commandButton);
                     consoleButton.addActionListener(new ActionListener() {
@@ -285,8 +275,7 @@ public class GrapplGUI {
                 newJframe.setSize(new Dimension(290, 230));
 
                 try {
-                    newJframe.setIconImage(Toolkit.getDefaultToolkit().getImage(new URL("http://grappl" +
-                            ".io:888/html/glogo.png")));
+                    newJframe.setIconImage(GrapplClientState.getIcon());
                 } catch (Exception ee) {
                     ee.printStackTrace();
                 }

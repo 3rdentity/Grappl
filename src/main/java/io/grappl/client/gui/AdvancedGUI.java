@@ -198,11 +198,7 @@ public class AdvancedGUI {
                 jFrame.setLayout(null);
 //        jFrame.setResizable(false);
 
-                try {
-                    jFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(new URL("http://grappl.io:888/html/glogo.png")));
-                } catch (Exception ee) {
-                    ee.printStackTrace();
-                }
+                jFrame.setIconImage(GrapplClientState.getIcon());
 
                 final JLabel usernameLable = new JLabel("Username");
                 usernameLable.setBounds(5, 2, 250, 20);
