@@ -5,13 +5,13 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class GrapplClientState {
-    public static final String VERSION = "1.4 Alpha";
+    public static final String VERSION = "Beta 1.0";
     public static final long clientTimeOpened = System.currentTimeMillis();
 
     public static boolean doDetailedLogging = true;
     public static boolean audible = false;
 
-    public static boolean usingSavedHashPass = false;
+    public static boolean usingSavedHashPass = true;
 
     public static Image icon;
 

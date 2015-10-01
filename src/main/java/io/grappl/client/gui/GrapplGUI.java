@@ -11,6 +11,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.*;
 import java.net.URI;
 
@@ -40,7 +42,7 @@ public class GrapplGUI {
             e.printStackTrace();
         }
 
-        jFrame = new JFrame("Grappl Client " + GrapplClientState.VERSION);
+        jFrame = new JFrame("Grappl " + GrapplClientState.VERSION);
         jFrame.setSize(new Dimension(310, 240));
         jFrame.setLocationRelativeTo(null);
         jFrame.setVisible(true);
@@ -61,6 +63,22 @@ public class GrapplGUI {
         jFrame.add(passwordLabel);
         final JPasswordField jPasswordField = new JPasswordField("");
         jPasswordField.setBounds(5, 62, 250, 20);
+        jPasswordField.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                GrapplClientState.usingSavedHashPass = false;
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                GrapplClientState.usingSavedHashPass = false;
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                GrapplClientState.usingSavedHashPass = false;
+            }
+        });
         String password = GrapplDataFile.getPassword();
         jFrame.add(jPasswordField);
         if(password != null) {
@@ -113,7 +131,7 @@ public class GrapplGUI {
                     int wX = jFrame.getX();
                     int wY = jFrame.getY();
 
-                    jFrame = new JFrame(GrapplGlobal.APP_NAME + " Client");
+                    jFrame = new JFrame(GrapplGlobal.APP_NAME + " ");
                     jFrame.setSize(new Dimension(300, 240));
                     jFrame.setLocation(wX, wY);
                     jFrame.setVisible(true);
@@ -225,7 +243,7 @@ public class GrapplGUI {
         char[] password = jPasswordField.getPassword();
 
         try {
-            if(!isActuallyHash) {
+            if(!isActuallyHash || !GrapplClientState.usingSavedHashPass) {
                 password = (new String(password).hashCode() + "").toCharArray();
             }
 
