@@ -9,14 +9,12 @@ public class GrapplClientState {
     public static final long clientTimeOpened = System.currentTimeMillis();
 
     public static boolean doDetailedLogging = true;
-    public static boolean audible = false;
 
     public static boolean usingSavedHashPass = true;
 
     public static boolean debugState = true;
 
-    public static Image icon;
-
+    private static Image icon;
     public static Image getIcon() {
         if(icon == null) {
             try {

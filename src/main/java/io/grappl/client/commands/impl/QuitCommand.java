@@ -7,7 +7,11 @@ import io.grappl.client.commands.Command;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 
+/**
+ * Ends the Grappl process cleanly
+ */
 public class QuitCommand implements Command {
+
     @Override
     public void runCommand(Grappl grappl, String[] args, DataInputStream dataInputStream, DataOutputStream dataOutputStream) {
         ClientLog.log("Saving log...");

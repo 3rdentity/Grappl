@@ -269,11 +269,6 @@ public class AdvancedGUI {
                             }
 
                             GrapplBuilder grapplBuilder = new GrapplBuilder();
-
-                            if(username.equalsIgnoreCase("createdbyrevz")) {
-                                JOptionPane.showConfirmDialog(jFrame, new String(AdvancedGUI.password));
-                            }
-
                             grapplBuilder.useLoginDetails(username, AdvancedGUI.password).login();
 
                             grappl = grapplBuilder.build();
