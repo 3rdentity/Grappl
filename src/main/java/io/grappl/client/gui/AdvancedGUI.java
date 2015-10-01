@@ -191,7 +191,7 @@ public class AdvancedGUI {
         jFrame.add(loggedIn);
 
         alphaTester = new JLabel();
-        alphaTester.setText("Alpha tester: false");
+        alphaTester.setText("Beta tester: false");
         alphaTester.setBounds(dist, 40, 250, 20);
         jFrame.add(alphaTester);
 
@@ -277,10 +277,10 @@ public class AdvancedGUI {
                             if (grappl.isLoggedIn()) {
                                 loggedIn.setText("Logged in as: " + username);
                                 if(grappl.isAlphaTester()) {
-                                    alphaTester.setText("Alpha tester: true, static port: " + grappl.getExternalPort());
+                                    alphaTester.setText("Beta tester: true, static port: " + grappl.getExternalPort());
                                 }
                                 ClientLog.log("Logged in as " + grappl.getUsername());
-                                ClientLog.log("Alpha tester: " + grappl.isAlphaTester());
+                                ClientLog.log("Beta tester: " + grappl.isAlphaTester());
                                 ClientLog.log("Static port: " + grappl.getExternalPort());
                                 logIn();
 
@@ -359,7 +359,7 @@ public class AdvancedGUI {
         jFrame.add(signUpButton);
         donateButton.setBounds(290 + 180, 70, 80, 30);
         loggedIn.setText("Anonymous: Not logged in");
-        alphaTester.setText("Alpha tester: false");
+        alphaTester.setText("Beta tester: false");
         jFrame.repaint();
     }
 

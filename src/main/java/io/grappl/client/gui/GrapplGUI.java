@@ -48,7 +48,6 @@ public class GrapplGUI {
         jFrame.setVisible(true);
         jFrame.setLayout(null);
         jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        jFrame.setIconImage(GrapplClientState.getIcon());
 
         final JLabel usernameLable = new JLabel("Username");
         usernameLable.setBounds(5, 2, 250, 20);
@@ -186,6 +185,7 @@ public class GrapplGUI {
             donateButton.setBounds(200, 155, 90, 40);
             jFrame.add(donateButton);
 
+            jFrame.setIconImage(GrapplClientState.getIcon());
             jFrame.repaint();
         }
     }
