@@ -16,7 +16,7 @@ is bound to, and your server will be open for anyone to connect. No messing arou
 
 It works by transferring data through relay servers on grappl.io.
 
-The project is still in an alpha state. This repository contains all the newest client code.
+The project is in beta. This repository contains all the newest client code.
 
 ## API
 

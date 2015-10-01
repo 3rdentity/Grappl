@@ -9,6 +9,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Logging class for Grappl.
+ * Eventually start using logging framework?
+ */
 public class ClientLog {
     public static List<String> theLog = new ArrayList<String>();
 

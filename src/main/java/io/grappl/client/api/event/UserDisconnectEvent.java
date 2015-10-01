@@ -1,6 +1,7 @@
 package io.grappl.client.api.event;
 
 public class UserDisconnectEvent {
+
     private String address;
 
     public UserDisconnectEvent(String address) {
