@@ -1,6 +1,6 @@
 package com.daexsys.grappl.client;
 
-import io.grappl.GrapplGlobal;
+import io.grappl.GrapplGlobals;
 import io.grappl.client.gui.StandardGUI;
 import io.grappl.client.commands.CommandHandler;
 
@@ -38,7 +38,7 @@ public class Client {
 
         // Open connection to auth server (@ grappl.io)
         try {
-            authSocket = new Socket(GrapplGlobal.DOMAIN, GrapplGlobal.AUTHENTICATION);
+            authSocket = new Socket(GrapplGlobals.DOMAIN, GrapplGlobals.AUTHENTICATION);
         } catch (IOException e) {
             e.printStackTrace();
         }

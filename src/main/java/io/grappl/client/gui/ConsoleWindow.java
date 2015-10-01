@@ -1,6 +1,6 @@
 package io.grappl.client.gui;
 
-import io.grappl.GrapplGlobal;
+import io.grappl.GrapplGlobals;
 import com.daexsys.grappl.client.Client;
 import io.grappl.client.ClientLog;
 import io.grappl.client.GrapplClientState;
@@ -75,7 +75,7 @@ public class ConsoleWindow {
         consoleFrame.setTitle("Grappl Console");
 
         try {
-            Client.authSocket = new Socket(GrapplGlobal.DOMAIN, GrapplGlobal.AUTHENTICATION);
+            Client.authSocket = new Socket(GrapplGlobals.DOMAIN, GrapplGlobals.AUTHENTICATION);
         } catch (IOException e) {
             ClientLog.log("Could not establish auth connection");
         }

@@ -1,6 +1,6 @@
 package io.grappl.client.api;
 
-import io.grappl.GrapplGlobal;
+import io.grappl.GrapplGlobals;
 import io.grappl.client.gui.StandardGUI;
 
 import java.io.DataInputStream;
@@ -45,7 +45,7 @@ public class GrapplBuilder {
 
     public GrapplBuilder login() {
         try {
-            Socket socket = new Socket(GrapplGlobal.DOMAIN, GrapplGlobal.AUTHENTICATION);
+            Socket socket = new Socket(GrapplGlobals.DOMAIN, GrapplGlobals.AUTHENTICATION);
             DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
             DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
 

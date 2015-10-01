@@ -2,6 +2,9 @@ package io.grappl.client;
 
 import java.io.*;
 
+/**
+ * Interface to save and load data in user.dat.
+ */
 public class GrapplDataFile {
     public static String getUsername() {
         File file = new File(getOSSpecificLocation() + "/user.dat");

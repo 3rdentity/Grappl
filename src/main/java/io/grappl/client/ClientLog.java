@@ -54,10 +54,10 @@ public class ClientLog {
 
     public static void save() {
         try {
-            File dirs = new File(DataFileHelper.getOSSpecificLocation());
+            File dirs = new File(GrapplDataFile.getOSSpecificLocation());
             dirs.mkdirs();
 
-            File file = new File(DataFileHelper.getOSSpecificLocation() + GrapplClientState.clientTimeOpened + "-log.log");
+            File file = new File(GrapplDataFile.getOSSpecificLocation() + GrapplClientState.clientTimeOpened + "-log.log");
             try {
                 file.createNewFile();
             } catch (IOException e) {

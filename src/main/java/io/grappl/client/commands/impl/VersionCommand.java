@@ -1,6 +1,6 @@
 package io.grappl.client.commands.impl;
 
-import io.grappl.GrapplGlobal;
+import io.grappl.GrapplGlobals;
 import io.grappl.client.ClientLog;
 import io.grappl.client.GrapplClientState;
 import io.grappl.client.api.Grappl;
@@ -12,6 +12,6 @@ import java.io.DataOutputStream;
 public class VersionCommand implements Command {
     @Override
     public void runCommand(Grappl grappl, String[] args, DataInputStream dataInputStream, DataOutputStream dataOutputStream) {
-        ClientLog.log(GrapplGlobal.APP_NAME + " version " + GrapplClientState.VERSION);
+        ClientLog.log(GrapplGlobals.APP_NAME + " version " + GrapplClientState.VERSION);
     }
 }

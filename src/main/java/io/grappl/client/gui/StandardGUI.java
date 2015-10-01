@@ -1,6 +1,6 @@
 package io.grappl.client.gui;
 
-import io.grappl.GrapplGlobal;
+import io.grappl.GrapplGlobals;
 import io.grappl.client.ClientLog;
 import io.grappl.client.GrapplClientState;
 import io.grappl.client.GrapplDataFile;
@@ -130,7 +130,7 @@ public class StandardGUI {
                     int wX = jFrame.getX();
                     int wY = jFrame.getY();
 
-                    jFrame = new JFrame(GrapplGlobal.APP_NAME + " ");
+                    jFrame = new JFrame(GrapplGlobals.APP_NAME + " ");
                     jFrame.setSize(new Dimension(300, 240));
                     jFrame.setLocation(wX, wY);
                     jFrame.setVisible(true);
@@ -156,7 +156,7 @@ public class StandardGUI {
 
                     grappl = new GrapplBuilder().useLoginDetails("default", ("1".hashCode() + "").toCharArray()).login().withGUI(theGUI).build();
 
-                    JButton jButton = new JButton("Close " + GrapplGlobal.APP_NAME + " Client");
+                    JButton jButton = new JButton("Close " + GrapplGlobals.APP_NAME + " Client");
                     jButton.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
@@ -168,7 +168,7 @@ public class StandardGUI {
 
                     String ports = JOptionPane.showInputDialog("What port does your server run on?");
                     grappl.setInternalPort(Integer.parseInt(ports));
-                    grappl.connect(grappl.getPrefix() + "." + GrapplGlobal.DOMAIN);
+                    grappl.connect(grappl.getPrefix() + "." + GrapplGlobals.DOMAIN);
                 }
             });
             beAnonymousButton.setBounds(4, 155, 192, 40);
@@ -264,14 +264,14 @@ public class StandardGUI {
                 // options: nyc. sf. pac. lon. deu.
                 String prefix = grappl.getPrefix();
 
-                String domain = prefix + "." + GrapplGlobal.DOMAIN;
+                String domain = prefix + "." + GrapplGlobals.DOMAIN;
 
                 int wX = jFrame.getX();
                 int wY = jFrame.getY();
 
                 jFrame.setVisible(false);
 
-                JFrame newJframe = new JFrame(GrapplGlobal.APP_NAME + " Client ("+ grappl.getUsername() + ")");
+                JFrame newJframe = new JFrame(GrapplGlobals.APP_NAME + " Client ("+ grappl.getUsername() + ")");
                 // 300, 240
                 newJframe.setSize(new Dimension(300, 240));
                 newJframe.setLocation(wX, wY);
@@ -282,7 +282,7 @@ public class StandardGUI {
                 newJframe.setLayout(null);
                 newJframe.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-                JButton jButton = new JButton("Close " + GrapplGlobal.APP_NAME + " Client");
+                JButton jButton = new JButton("Close " + GrapplGlobals.APP_NAME + " Client");
                 jButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {

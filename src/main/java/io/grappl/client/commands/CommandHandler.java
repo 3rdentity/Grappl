@@ -1,6 +1,6 @@
 package io.grappl.client.commands;
 
-import io.grappl.GrapplGlobal;
+import io.grappl.GrapplGlobals;
 import com.daexsys.grappl.client.Client;
 import io.grappl.client.ClientLog;
 import io.grappl.client.api.Grappl;
@@ -52,7 +52,7 @@ public class CommandHandler {
         String[] args = command.split("\\s+");
 
         if (commandMap.containsKey(args[0].toLowerCase())) {
-            commandMap.get(args[0].toLowerCase()).runCommand(GrapplGlobal.theGrappl, args, dataInputStream, dataOutputStream);
+            commandMap.get(args[0].toLowerCase()).runCommand(GrapplGlobals.theGrappl, args, dataInputStream, dataOutputStream);
         }
 
         else {
@@ -74,7 +74,7 @@ public class CommandHandler {
                     e.printStackTrace();
                 }
 
-                ClientLog.log(GrapplGlobal.APP_NAME + " Command Line");
+                ClientLog.log(GrapplGlobals.APP_NAME + " Command Line");
 
                 Scanner scanner = new Scanner(System.in);
 
@@ -84,7 +84,7 @@ public class CommandHandler {
                         String[] args = line.split("\\s+");
 
                         if (commandMap.containsKey(args[0].toLowerCase())) {
-                            commandMap.get(args[0].toLowerCase()).runCommand(GrapplGlobal.theGrappl, args, dataInputStream, dataOutputStream);
+                            commandMap.get(args[0].toLowerCase()).runCommand(GrapplGlobals.theGrappl, args, dataInputStream, dataOutputStream);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();

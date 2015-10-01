@@ -3,9 +3,11 @@ package io.grappl;
 import io.grappl.client.api.Grappl;
 
 /**
- * Lots of global variables
+ * Lots of global variables.
+ * Largely port numbers and messages that appear in many places.
  */
-public class GrapplGlobal {
+public class GrapplGlobals {
+
     public static final String APP_NAME = "Grappl";
     public static final String DOMAIN = "grappl.io";
 

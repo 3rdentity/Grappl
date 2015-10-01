@@ -1,6 +1,6 @@
 package io.grappl.client.commands.impl;
 
-import io.grappl.GrapplGlobal;
+import io.grappl.GrapplGlobals;
 import io.grappl.client.ClientLog;
 import io.grappl.client.api.Grappl;
 import io.grappl.client.api.StatsMonitor;
@@ -16,7 +16,7 @@ public class StatsCommand implements Command {
 
         /* If grappl connection isn't open */
         if(grappl == null) {
-            ClientLog.log(GrapplGlobal.NO_GRAPPL_MESSAGE);
+            ClientLog.log(GrapplGlobals.NO_GRAPPL_MESSAGE);
         }
 
         else {

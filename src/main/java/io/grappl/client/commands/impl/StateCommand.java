@@ -1,6 +1,6 @@
 package io.grappl.client.commands.impl;
 
-import io.grappl.GrapplGlobal;
+import io.grappl.GrapplGlobals;
 import io.grappl.client.ClientLog;
 import io.grappl.client.api.Grappl;
 import io.grappl.client.commands.Command;
@@ -16,7 +16,7 @@ public class StateCommand implements Command {
     @Override
     public void runCommand(Grappl grappl, String[] args, DataInputStream dataInputStream, DataOutputStream dataOutputStream) {
         if(grappl == null) {
-            ClientLog.log(GrapplGlobal.NO_GRAPPL_MESSAGE);
+            ClientLog.log(GrapplGlobals.NO_GRAPPL_MESSAGE);
         } else {
             ClientLog.log(grappl.getRelayServer() + " relay server");
             ClientLog.log(grappl.getExternalPort() + " external port");

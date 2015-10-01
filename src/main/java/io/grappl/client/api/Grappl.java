@@ -1,6 +1,6 @@
 package io.grappl.client.api;
 
-import io.grappl.GrapplGlobal;
+import io.grappl.GrapplGlobals;
 import io.grappl.client.ClientLog;
 import io.grappl.client.api.event.UserConnectEvent;
 import io.grappl.client.api.event.UserConnectListener;
@@ -69,7 +69,7 @@ public class Grappl {
      */
     public Grappl() {
         // Allows the terminal console to have commands act on the newest grappl object
-        GrapplGlobal.theGrappl = this;
+        GrapplGlobals.theGrappl = this;
 
         locationProvider = new LocationProvider() {
             public NetworkLocation getLocation() {
@@ -89,7 +89,7 @@ public class Grappl {
 
         try {
             // Create socket listener
-            final Socket messageSocket = new Socket(relayServer, GrapplGlobal.MESSAGING_PORT);
+            final Socket messageSocket = new Socket(relayServer, GrapplGlobals.MESSAGING_PORT);
             sockets.add(messageSocket);
 
             // Get port that the server will be hosted on remotely
@@ -129,7 +129,7 @@ public class Grappl {
             DataOutputStream dataOutputStream;
 
             try {
-                Socket socket = new Socket(GrapplGlobal.DOMAIN, GrapplGlobal.AUTHENTICATION);
+                Socket socket = new Socket(GrapplGlobals.DOMAIN, GrapplGlobals.AUTHENTICATION);
                 dataInputStream = new DataInputStream(socket.getInputStream());
                 dataOutputStream = new DataOutputStream(socket.getOutputStream());
 
@@ -154,7 +154,7 @@ public class Grappl {
                     // options: nyc. sf. pac. lon. deu.
                     String prefix = dataInputStream.readLine();
 
-                    String domain = prefix + "." + GrapplGlobal.DOMAIN;
+                    String domain = prefix + "." + GrapplGlobals.DOMAIN;
 
                     ClientLog.log(domain);
 
@@ -163,7 +163,7 @@ public class Grappl {
                         int wY = gui.getjFrame().getY();
 
                         gui.getjFrame().setVisible(false);
-                        gui.jFrame = new JFrame(GrapplGlobal.APP_NAME + " Client (" + username + ")");
+                        gui.jFrame = new JFrame(GrapplGlobals.APP_NAME + " Client (" + username + ")");
                         // 300, 240
                         gui.getjFrame().setSize(new Dimension(300, 240));
                         gui.getjFrame().setLocation(wX, wY);
@@ -172,7 +172,7 @@ public class Grappl {
                         gui.getjFrame().setLayout(null);
                         gui.getjFrame().setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-                        JButton jButton = new JButton("Close " + GrapplGlobal.APP_NAME + " Client");
+                        JButton jButton = new JButton("Close " + GrapplGlobals.APP_NAME + " Client");
                         jButton.addActionListener(new ActionListener() {
                             public void actionPerformed(ActionEvent e) {
                                 System.exit(0);
@@ -381,7 +381,7 @@ public class Grappl {
             public void run() {
                 while (true) {
                     try {
-                        Socket testSocket = new Socket(GrapplGlobal.DOMAIN, GrapplGlobal.HEARTBEAT);
+                        Socket testSocket = new Socket(GrapplGlobals.DOMAIN, GrapplGlobals.HEARTBEAT);
                         testSocket.close();
                         restart();
                         return;
@@ -412,7 +412,7 @@ public class Grappl {
                 DataOutputStream dataOutputStream = null;
 
                 try {
-                    heartBeat = new Socket(relayServerIP, GrapplGlobal.HEARTBEAT);
+                    heartBeat = new Socket(relayServerIP, GrapplGlobals.HEARTBEAT);
                     sockets.add(heartBeat);
                     dataOutputStream = new DataOutputStream(heartBeat.getOutputStream());
                 } catch (IOException e) {
