@@ -4,7 +4,7 @@ import io.grappl.client.api.handler.DataHandler;
 
 public class HttpDataHandler implements DataHandler {
 
-    private boolean beVerbose = true;
+    private boolean beVerbose = false;
     private HttpState httpState;
 
     public HttpDataHandler() {
