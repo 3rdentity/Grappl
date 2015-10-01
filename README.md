@@ -6,6 +6,8 @@ Donations: http://grappl.io/donate
 
 Compiled .jar: http://grappl.io:888/html/GrapplLauncher.jar
 
+Relay server code: https://github.com/Cactose/GrapplRelay
+
 Grappl is a tool for hosting servers behind closed ports.
 People connecting don't have to download anything to connect to Grappl'd servers, unlike with other programs such as hamachi.
 
