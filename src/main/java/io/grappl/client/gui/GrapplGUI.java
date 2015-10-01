@@ -174,16 +174,16 @@ public class GrapplGUI {
             beAnonymousButton.setBounds(4, 155, 192, 40);
             jFrame.add(beAnonymousButton);
 
-            JButton donateButton = new JButton("Advanced");
-            donateButton.addActionListener(new ActionListener() {
+            JButton advancedButton = new JButton("Advanced");
+            advancedButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     jFrame.setVisible(false);
                     new AdvancedGUI().create();
                 }
             });
-            donateButton.setBounds(200, 155, 90, 40);
-            jFrame.add(donateButton);
+            advancedButton.setBounds(200, 155, 90, 40);
+            jFrame.add(advancedButton);
 
             jFrame.setIconImage(GrapplClientState.getIcon());
             jFrame.repaint();
