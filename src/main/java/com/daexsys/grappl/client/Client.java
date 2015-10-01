@@ -1,7 +1,7 @@
 package com.daexsys.grappl.client;
 
 import io.grappl.GrapplGlobal;
-import io.grappl.client.gui.GrapplGUI;
+import io.grappl.client.gui.StandardGUI;
 import io.grappl.client.commands.CommandHandler;
 
 import java.io.*;
@@ -33,7 +33,7 @@ public class Client {
 
         // If there should be a gui, create it
         if(displayGui) {
-            new GrapplGUI();
+            new StandardGUI();
         }
 
         // Open connection to auth server (@ grappl.io)

@@ -8,7 +8,11 @@ import io.grappl.client.commands.Command;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 
+/**
+ * Displays the state of the current Grappl connection.
+ */
 public class StateCommand implements Command {
+
     @Override
     public void runCommand(Grappl grappl, String[] args, DataInputStream dataInputStream, DataOutputStream dataOutputStream) {
         if(grappl == null) {

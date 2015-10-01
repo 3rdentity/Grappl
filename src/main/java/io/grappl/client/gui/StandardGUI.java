@@ -19,7 +19,7 @@ import java.net.URI;
 /**
  * The standard Grappl gui.
  */
-public class GrapplGUI {
+public class StandardGUI {
 
     private static final String COMMAND_BUTTON_TEXT = "...";
 
@@ -29,7 +29,7 @@ public class GrapplGUI {
     protected ConsoleWindow theConsoleWindow;
     public JLabel jLabel3;
 
-    public GrapplGUI() {
+    public StandardGUI() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException e) {
@@ -94,7 +94,7 @@ public class GrapplGUI {
         rememberMeLabel.setBounds(35, 87, 250, 20);
         jFrame.add(rememberMeLabel);
 
-        final GrapplGUI theGUI = this;
+        final StandardGUI theGUI = this;
         if(isActuallyHash) {
             rememberMeBox.setSelected(true);
         } {
@@ -235,7 +235,7 @@ public class GrapplGUI {
         return jFrame;
     }
 
-    public void login(JTextField usernamef, JPasswordField jPasswordField, GrapplGUI theGUI, JCheckBox rememberMeBox) {
+    public void login(JTextField usernamef, JPasswordField jPasswordField, StandardGUI theGUI, JCheckBox rememberMeBox) {
 
         GrapplBuilder grapplBuilder = new GrapplBuilder();
 

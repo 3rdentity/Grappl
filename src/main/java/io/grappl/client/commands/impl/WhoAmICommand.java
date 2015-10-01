@@ -8,9 +8,9 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 
 public class WhoAmICommand implements Command {
+
     @Override
     public void runCommand(Grappl grappl, String[] args, DataInputStream dataInputStream, DataOutputStream dataOutputStream) {
-
         if(grappl == null) {
             ClientLog.log("Grappl has not been initialized");
         } else {

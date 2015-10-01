@@ -6,7 +6,7 @@ import io.grappl.client.api.event.UserConnectEvent;
 import io.grappl.client.api.event.UserConnectListener;
 import io.grappl.client.api.event.UserDisconnectEvent;
 import io.grappl.client.api.event.UserDisconnectListener;
-import io.grappl.client.gui.GrapplGUI;
+import io.grappl.client.gui.StandardGUI;
 import io.grappl.client.other.ExClientConnection;
 
 import javax.swing.*;
@@ -50,7 +50,7 @@ public class Grappl {
     private boolean intentionallyDisconnected = false;
 
     // The GUI associated with this Grappl. Will be null if the advanced GUI is being used
-    protected GrapplGUI gui;
+    protected StandardGUI gui;
 
     // An ExClientConnection is created and stored here for every client that connects through the tunnel.
     // The objects are removed (usually) when the client disconnects, but stray objects have been known to remain.
@@ -61,7 +61,7 @@ public class Grappl {
     private List<UserDisconnectListener> userDisconnectListeners = new ArrayList<UserDisconnectListener>();
 
     // Various experiments and such
-    private StatsManager statsManager = new StatsManager();
+    private StatsMonitor statsManager = new StatsMonitor();
     private List<Socket> sockets = new ArrayList<Socket>();
 
     /**
@@ -243,7 +243,7 @@ public class Grappl {
         return relayServerIP;
     }
 
-    public GrapplGUI getGui() {
+    public StandardGUI getGui() {
         return gui;
     }
 
@@ -255,7 +255,7 @@ public class Grappl {
         this.internalPort = internalPort;
     }
 
-    public StatsManager getStatsManager() {
+    public StatsMonitor getStatsManager() {
         return statsManager;
     }
 

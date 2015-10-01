@@ -12,16 +12,15 @@ public class IpUnbanCommand implements Command {
     @Override
     public void runCommand(Grappl grappl, String[] args, DataInputStream dataInputStream, DataOutputStream dataOutputStream) {
 
-
         if (grappl.isLoggedIn()) {
             try {
-                String ipToBAN = args[1];
+                String ipToUnban = args[1];
 
                 dataOutputStream.writeByte(8);
                 PrintStream printStream = new PrintStream(dataOutputStream);
-                printStream.println(ipToBAN);
+                printStream.println(ipToUnban);
 
-                ClientLog.log("Unbanned ip: " + ipToBAN);
+                ClientLog.log("Unbanned ip: " + ipToUnban);
             } catch (Exception e) {
                 e.printStackTrace();
             }

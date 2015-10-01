@@ -15,6 +15,7 @@ public class ListAddCommand implements Command {
 
         try {
             ClientLog.log("Adding to server list");
+
             dataOutputStream.writeByte(6);
             String game = args[1];
             PrintStream printStream = new PrintStream(dataOutputStream);

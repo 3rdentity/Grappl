@@ -1,7 +1,7 @@
 package io.grappl.client.api;
 
 import io.grappl.GrapplGlobal;
-import io.grappl.client.gui.GrapplGUI;
+import io.grappl.client.gui.StandardGUI;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -16,7 +16,7 @@ public class GrapplBuilder {
         grappl = new Grappl();
     }
 
-    public GrapplBuilder withGUI(GrapplGUI gui) {
+    public GrapplBuilder withGUI(StandardGUI gui) {
         grappl.gui = gui;
         return this;
     }

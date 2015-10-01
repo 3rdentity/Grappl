@@ -1,5 +1,7 @@
 package io.grappl.client.api.user;
 
+import io.grappl.client.api.StatsMonitor;
+
 /**
  * Class representing a user of Grappl.
  *

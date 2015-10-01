@@ -4,6 +4,7 @@ import io.grappl.client.ClientLog;
 import io.grappl.client.api.Grappl;
 import io.grappl.client.api.NetworkLocation;
 import io.grappl.client.api.handler.DataHandler;
+import io.grappl.client.api.handler.NullHandler;
 import io.grappl.client.api.handler.http.HttpDataHandler;
 
 import java.io.IOException;
@@ -35,7 +36,7 @@ public class ExClientConnection {
         this.grappl = grappl;
         this.address = address;
 
-        dataHandler = new HttpDataHandler();
+        dataHandler = new NullHandler();
         exConnectionStats = new ExConnectionStats();
         uuid = UUID.randomUUID();
     }
@@ -59,7 +60,8 @@ public class ExClientConnection {
             final Socket outward = new Socket(grappl.getRelayServer(), relayPort);
             grappl.getSockets().add(outward);
 
-            ClientLog.detailed(uuid + " connection active " + address.substring(1, address.length()) + " -> " + internalServer.getAddress() + ":" + internalServer.getPort());
+            ClientLog.detailed(uuid + " connection active " + address.substring(1, address.length())
+                    + " -> " + internalServer.getAddress() + ":" + internalServer.getPort());
 
             // Start the local -> remote thread
             final Thread outwardCurrent = new Thread(new Runnable() {
