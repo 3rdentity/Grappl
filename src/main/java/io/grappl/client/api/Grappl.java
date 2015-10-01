@@ -223,8 +223,13 @@ public class Grappl {
         this.isLoggedIn = isLoggedIn;
     }
 
+    @Deprecated
     public void setAlphaTester(boolean isAlphaTester) {
         this.isPremium = isAlphaTester;
+    }
+
+    public void setPremium(boolean isPremium) {
+        this.isPremium = isPremium;
     }
 
     public boolean isLoggedIn() {
@@ -235,7 +240,12 @@ public class Grappl {
         return username;
     }
 
+    @Deprecated
     public boolean isAlphaTester() {
+        return isPremium;
+    }
+
+    public boolean isPremium() {
         return isPremium;
     }
 
