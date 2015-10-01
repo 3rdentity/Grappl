@@ -1,9 +1,10 @@
 package io.grappl.client.other;
 
 import io.grappl.client.ClientLog;
-import io.grappl.client.GrapplClientState;
 import io.grappl.client.api.Grappl;
 import io.grappl.client.api.NetworkLocation;
+import io.grappl.client.api.handler.DataHandler;
+import io.grappl.client.api.handler.http.HttpDataHandler;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -28,10 +29,13 @@ public class ExClientConnection {
     // The UUID of this connection
     private UUID uuid;
 
+    private DataHandler dataHandler;
+
     public ExClientConnection(Grappl grappl, String address) {
         this.grappl = grappl;
         this.address = address;
 
+        dataHandler = new HttpDataHandler();
         exConnectionStats = new ExConnectionStats();
         uuid = UUID.randomUUID();
     }
@@ -68,6 +72,7 @@ public class ExClientConnection {
                         while ((size = inward.getInputStream().read(buffer)) != -1) {
                             outward.getOutputStream().write(buffer, 0, size);
                             grappl.getStatsManager().dataSent(size);
+                            dataHandler.handleOutgoing(buffer, size);
                         }
                     } catch (IOException e) {
                         try {
@@ -99,6 +104,7 @@ public class ExClientConnection {
                         while ((size = outward.getInputStream().read(buffer)) != -1) {
                             inward.getOutputStream().write(buffer, 0, size);
                             grappl.getStatsManager().dataReceived(size);
+                            dataHandler.handleIncoming(buffer, size);
                         }
                     } catch (IOException e) {
                         try {

@@ -9,12 +9,10 @@ public class StatsManager {
 
     public void dataSent(int size) {
         amountSent += size;
-        System.out.println(amountReceived + " bytes sent");
     }
 
     public void dataReceived(int size) {
         amountReceived += size;
-        System.out.println(amountReceived + " bytes received");
     }
 
     public void openConnection() {

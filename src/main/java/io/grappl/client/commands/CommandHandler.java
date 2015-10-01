@@ -37,6 +37,7 @@ public class CommandHandler {
         commandMap.put("audible", new AudibleCommand());
         commandMap.put("state", new StateCommand());
         commandMap.put("account", new AccountCommand());
+        commandMap.put("dummy", new DummyServer());
 
         commandMap.put("setstaticport", new SetStaticPortCommand());
         commandMap.put("setport", new SetStaticPortCommand());
