@@ -2,17 +2,19 @@ package io.grappl.client.api;
 
 public class StatsManager {
 
-    private int blocksSent;
-    private int blocksReceived;
+    private int amountSent;
+    private int amountReceived;
     private int connectionsOpened;
     private int grapplsStarted;
 
-    public void sendBlock() {
-        blocksSent++;
+    public void dataSent(int size) {
+        amountSent += size;
+        System.out.println(amountReceived + " bytes sent");
     }
 
-    public void receiveBlock() {
-        blocksReceived++;
+    public void dataReceived(int size) {
+        amountReceived += size;
+        System.out.println(amountReceived + " bytes received");
     }
 
     public void openConnection() {
@@ -23,12 +25,19 @@ public class StatsManager {
         grapplsStarted++;
     }
 
+    public int getSentDataKB() {
+        return amountSent / 1000;
+    }
+
+    public int getReceivedKB() {
+        return amountReceived / 1000;
+    }
     public int getSentData() {
-        return blocksSent;
+        return amountSent;
     }
 
     public int getReceivedData() {
-        return blocksReceived;
+        return amountReceived;
     }
 
     public int getOpenConnections() {
@@ -36,8 +45,8 @@ public class StatsManager {
     }
 
     public void reset() {
-        blocksSent = 0;
-        blocksReceived = 0;
+        amountSent = 0;
+        amountReceived = 0;
         connectionsOpened = 0;
         grapplsStarted = 0;
     }

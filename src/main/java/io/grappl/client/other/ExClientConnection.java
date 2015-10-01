@@ -67,11 +67,7 @@ public class ExClientConnection {
                     try {
                         while ((size = inward.getInputStream().read(buffer)) != -1) {
                             outward.getOutputStream().write(buffer, 0, size);
-                            grappl.getStatsManager().sendBlock();
-//
-//                            if(grappl.getFreezer() != null) {
-//                                grappl.getFreezer().sendBlock(buffer);
-//                            }
+                            grappl.getStatsManager().dataSent(size);
                         }
                     } catch (IOException e) {
                         try {
@@ -102,19 +98,7 @@ public class ExClientConnection {
                     try {
                         while ((size = outward.getInputStream().read(buffer)) != -1) {
                             inward.getOutputStream().write(buffer, 0, size);
-                            grappl.getStatsManager().receiveBlock();
-
-                            if(GrapplClientState.audible) {
-                                for(byte bite : buffer) {
-                                    if(bite != 0) {
-                                        System.out.println(bite);
-                                    }
-                                }
-                            }
-//
-//                            if(grappl.getFreezer() != null) {
-//                                grappl.getFreezer().receiveBlock(buffer);
-//                            }
+                            grappl.getStatsManager().dataReceived(size);
                         }
                     } catch (IOException e) {
                         try {

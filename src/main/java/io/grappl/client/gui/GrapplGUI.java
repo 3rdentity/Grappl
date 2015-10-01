@@ -217,7 +217,7 @@ public class GrapplGUI {
                 while (true) {
                     if (jLabel4 != null && jLabel3 != null) {
                         jLabel3.setText("Connected clients: " + grappl.getStatsManager().getOpenConnections());
-                        jLabel4.setText("Sent Data: " + (grappl.getStatsManager().getSentData() * 4) + "KB - Recv Data: " + (0 *  grappl.getStatsManager().getReceivedData()) + "KB");
+                        jLabel4.setText("Sent Data: " + grappl.getStatsManager().getSentDataKB() + "KB - Recv Data: " + grappl.getStatsManager().getReceivedKB() + "KB");
                         getjFrame().repaint();
                     }
 
