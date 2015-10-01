@@ -63,6 +63,10 @@ public class AdvancedGUI {
         jFrame.add(relayLab);
 
         final JComboBox<String> jComboBox = new JComboBox<String>(new String[]{"n.grappl.io (East Coast NA)", "s.grappl.io (West Coast NA)", "e.grappl.io (Europe)", "p.grappl.io (Oceania)"});
+        if(GrapplClientState.debugState) {
+            jComboBox.addItem("localhost (if you're testing)");
+        }
+
         jComboBox.setBounds(20, 40, 200, 20);
         jFrame.add(jComboBox);
 

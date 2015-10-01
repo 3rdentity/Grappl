@@ -13,6 +13,8 @@ public class GrapplClientState {
 
     public static boolean usingSavedHashPass = true;
 
+    public static boolean debugState = true;
+
     public static Image icon;
 
     public static Image getIcon() {
