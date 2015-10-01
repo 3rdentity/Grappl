@@ -29,11 +29,11 @@ import java.util.List;
  */
 public class Grappl {
 
-    // User data
+    // User data. Will be replaced with UserData object sooner or later.
     protected String username;
     protected char[] password;
     protected boolean isLoggedIn = false;
-    protected boolean isAlphaTester = false;
+    protected boolean isPremium = false;
 
     // Internal data
     protected String internalAddress = "127.0.0.1";
@@ -143,7 +143,7 @@ public class Grappl {
                 boolean success = dataInputStream.readBoolean();
                 boolean alpha = dataInputStream.readBoolean();
                 int port = dataInputStream.readInt();
-                isAlphaTester = alpha;
+                isPremium = alpha;
                 isLoggedIn = success;
 
                 if (success) {
@@ -224,7 +224,7 @@ public class Grappl {
     }
 
     public void setAlphaTester(boolean isAlphaTester) {
-        this.isAlphaTester = isAlphaTester;
+        this.isPremium = isAlphaTester;
     }
 
     public boolean isLoggedIn() {
@@ -236,7 +236,7 @@ public class Grappl {
     }
 
     public boolean isAlphaTester() {
-        return isAlphaTester;
+        return isPremium;
     }
 
     public String getRelayServer() {

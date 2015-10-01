@@ -16,6 +16,7 @@ import java.net.Socket;
  * Returns large text "'Hello world' -Grappl" in HTML.
  */
 public class DummyServer implements Command {
+
     @Override
     public void runCommand(Grappl grappl, String[] args, DataInputStream dataInputStream, DataOutputStream dataOutputStream) {
 

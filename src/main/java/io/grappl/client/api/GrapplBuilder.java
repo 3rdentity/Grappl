@@ -65,7 +65,7 @@ public class GrapplBuilder {
 
             grappl.prefix = dataInputStream.readLine();
 
-            grappl.isAlphaTester = alpha;
+            grappl.isPremium = alpha;
             grappl.isLoggedIn = success;
 
             grappl.externalPort = port + "";

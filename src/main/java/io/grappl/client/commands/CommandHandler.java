@@ -34,7 +34,6 @@ public class CommandHandler {
         commandMap.put("changeserver", new ChangeServerCommand());
         commandMap.put("resetstats", new ResetStatsCommand());
         commandMap.put("quit", new QuitCommand());
-        commandMap.put("audible", new AudibleCommand());
         commandMap.put("state", new StateCommand());
         commandMap.put("account", new AccountCommand());
         commandMap.put("dummy", new DummyServer());

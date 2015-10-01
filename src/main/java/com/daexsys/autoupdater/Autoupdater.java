@@ -73,7 +73,6 @@ public class Autoupdater {
         File localFile = new File(localURL);
 
         try {
-            System.out.println(localFile.getCanonicalPath());
             localFile.createNewFile();
 
             BufferedInputStream stream = new BufferedInputStream(new URL(url).openStream());
