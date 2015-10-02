@@ -9,7 +9,5 @@ import java.io.DataOutputStream;
 public class PlaybackCommand implements Command {
     @Override
     public void runCommand(Grappl grappl, String[] args, DataInputStream dataInputStream, DataOutputStream dataOutputStream) {
-
-        final String argument = args[0];
     }
 }
