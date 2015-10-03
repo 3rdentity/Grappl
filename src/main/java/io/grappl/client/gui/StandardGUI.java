@@ -216,8 +216,8 @@ public class StandardGUI {
             public void run() {
                 while (true) {
                     if (jLabel4 != null && jLabel3 != null) {
-                        jLabel3.setText("Connected clients: " + grappl.getStatsManager().getOpenConnections());
-                        jLabel4.setText("Sent Data: " + grappl.getStatsManager().getSentDataKB() + "KB - Recv Data: " + grappl.getStatsManager().getReceivedKB() + "KB");
+                        jLabel3.setText("Connected clients: " + grappl.getStatMonitor().getOpenConnections());
+                        jLabel4.setText("Sent Data: " + grappl.getStatMonitor().getSentDataKB() + "KB - Recv Data: " + grappl.getStatMonitor().getReceivedKB() + "KB");
                         getjFrame().repaint();
                     }
 

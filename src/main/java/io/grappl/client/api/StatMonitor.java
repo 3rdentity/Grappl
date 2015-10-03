@@ -1,6 +1,6 @@
 package io.grappl.client.api;
 
-public class StatsMonitor {
+public class StatMonitor {
 
     private int amountSent;
     private int amountReceived;

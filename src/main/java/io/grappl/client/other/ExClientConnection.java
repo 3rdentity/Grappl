@@ -5,7 +5,6 @@ import io.grappl.client.api.Grappl;
 import io.grappl.client.api.NetworkLocation;
 import io.grappl.client.api.handler.DataHandler;
 import io.grappl.client.api.handler.NullHandler;
-import io.grappl.client.api.handler.http.HttpDataHandler;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -47,7 +46,7 @@ public class ExClientConnection {
      */
     public void open() {
         // Increment the connected player counter.
-        getGrappl().getStatsManager().openConnection();
+        getGrappl().getStatMonitor().openConnection();
 
         final int relayPort = Integer.parseInt(grappl.getExternalPort()) + 1;
 
@@ -73,7 +72,7 @@ public class ExClientConnection {
                     try {
                         while ((size = inward.getInputStream().read(buffer)) != -1) {
                             outward.getOutputStream().write(buffer, 0, size);
-                            grappl.getStatsManager().dataSent(size);
+                            grappl.getStatMonitor().dataSent(size);
                             dataHandler.handleOutgoing(buffer, size);
                         }
                     } catch (IOException e) {
@@ -105,7 +104,7 @@ public class ExClientConnection {
                     try {
                         while ((size = outward.getInputStream().read(buffer)) != -1) {
                             inward.getOutputStream().write(buffer, 0, size);
-                            grappl.getStatsManager().dataReceived(size);
+                            grappl.getStatMonitor().dataReceived(size);
                             dataHandler.handleIncoming(buffer, size);
                         }
                     } catch (IOException e) {

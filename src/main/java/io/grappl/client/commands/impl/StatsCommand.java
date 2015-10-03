@@ -3,7 +3,7 @@ package io.grappl.client.commands.impl;
 import io.grappl.GrapplGlobals;
 import io.grappl.client.ClientLog;
 import io.grappl.client.api.Grappl;
-import io.grappl.client.api.StatsMonitor;
+import io.grappl.client.api.StatMonitor;
 import io.grappl.client.commands.Command;
 
 import java.io.DataInputStream;
@@ -20,7 +20,7 @@ public class StatsCommand implements Command {
         }
 
         else {
-            StatsMonitor statsManager = grappl.getStatsManager();
+            StatMonitor statsManager = grappl.getStatMonitor();
 
             ClientLog.log("== CURRENT CONNECTION STATISTICS ====");
             ClientLog.log(statsManager.getReceivedData() + " bytes received");

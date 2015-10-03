@@ -61,7 +61,7 @@ public class Grappl {
     private List<UserDisconnectListener> userDisconnectListeners = new ArrayList<UserDisconnectListener>();
 
     // Various experiments and such
-    private StatsMonitor statsManager = new StatsMonitor();
+    private StatMonitor statMonitor = new StatMonitor();
     private List<Socket> sockets = new ArrayList<Socket>();
 
     /**
@@ -265,8 +265,8 @@ public class Grappl {
         this.internalPort = internalPort;
     }
 
-    public StatsMonitor getStatsManager() {
-        return statsManager;
+    public StatMonitor getStatMonitor() {
+        return statMonitor;
     }
 
     public String getInternalAddress() {
@@ -307,7 +307,7 @@ public class Grappl {
         final List<ExClientConnection> connectedClients = new ArrayList<ExClientConnection>();
 
         if(gui != null) {
-            getGui().jLabel3 = new JLabel("Connected clients: " + getStatsManager().getOpenConnections());
+            getGui().jLabel3 = new JLabel("Connected clients: " + getStatMonitor().getOpenConnections());
             getGui().jLabel3.setBounds(5, 45, 450, 20);
             gui.getjFrame().add(getGui().jLabel3);
             gui.getjFrame().repaint();
