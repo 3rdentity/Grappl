@@ -1,16 +1,8 @@
 package io.grappl.client.api;
 
-import io.grappl.GrapplGlobals;
 import io.grappl.client.gui.StandardGUI;
 
 import javax.swing.*;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.PrintStream;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.net.SocketTimeoutException;
 
 public class GrapplBuilder {
 
@@ -51,48 +43,7 @@ public class GrapplBuilder {
      * JFrame is optional
      */
     public GrapplBuilder login(JFrame jFrame) {
-        try {
-            final int timeOut = 2000;
-
-            Socket socket = new Socket();
-            socket.connect(new InetSocketAddress(GrapplGlobals.DOMAIN, GrapplGlobals.AUTHENTICATION), timeOut);
-            socket.setSoTimeout(timeOut);
-
-            DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
-            DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
-
-            try {
-                dataOutputStream.writeByte(0);
-                PrintStream printStream = new PrintStream(dataOutputStream);
-                printStream.println(grappl.username);
-                printStream.println(grappl.password);
-            } catch (SocketTimeoutException e) {
-                if(jFrame != null)
-                    JOptionPane.showMessageDialog(jFrame, "Broken connection, authentication failed");
-            }
-
-            boolean success = dataInputStream.readBoolean();
-            boolean alpha = dataInputStream.readBoolean();
-            int port = dataInputStream.readInt();
-
-            try {
-                grappl.prefix = dataInputStream.readLine();
-
-                grappl.isPremium = alpha;
-                grappl.isLoggedIn = success;
-
-                grappl.externalPort = port + "";
-            } catch (SocketTimeoutException e) {
-                if(jFrame != null)
-                    JOptionPane.showMessageDialog(jFrame, "Login failed, incorrect username or password");
-            }
-
-            socket.close();
-        } catch (IOException e) {
-            if(jFrame != null)
-                JOptionPane.showMessageDialog(jFrame, "Broken connection, authentication failed");
-        }
-
+        new Authentication(jFrame).login(grappl.username, grappl.password);
         return this;
     }
 

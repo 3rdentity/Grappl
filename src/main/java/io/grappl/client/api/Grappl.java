@@ -6,6 +6,7 @@ import io.grappl.client.api.event.UserConnectEvent;
 import io.grappl.client.api.event.UserConnectListener;
 import io.grappl.client.api.event.UserDisconnectEvent;
 import io.grappl.client.api.event.UserDisconnectListener;
+import io.grappl.client.api.user.UserData;
 import io.grappl.client.gui.StandardGUI;
 import io.grappl.client.other.ExClientConnection;
 
