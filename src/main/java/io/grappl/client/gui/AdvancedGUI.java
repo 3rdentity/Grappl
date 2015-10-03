@@ -269,7 +269,7 @@ public class AdvancedGUI {
                             }
 
                             GrapplBuilder grapplBuilder = new GrapplBuilder();
-                            grapplBuilder.useLoginDetails(username, AdvancedGUI.password).login();
+                            grapplBuilder.useLoginDetails(username, AdvancedGUI.password).login(jFrame);
 
                             grappl = grapplBuilder.build();
 

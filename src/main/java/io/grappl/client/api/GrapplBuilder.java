@@ -3,10 +3,13 @@ package io.grappl.client.api;
 import io.grappl.GrapplGlobals;
 import io.grappl.client.gui.StandardGUI;
 
+import javax.swing.*;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.PrintStream;
+import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 
 public class GrapplBuilder {
 
@@ -43,32 +46,44 @@ public class GrapplBuilder {
         return this;
     }
 
-    public GrapplBuilder login() {
+    /**
+     * JFrame is optional
+     */
+    public GrapplBuilder login(JFrame jFrame) {
         try {
-            Socket socket = new Socket(GrapplGlobals.DOMAIN, GrapplGlobals.AUTHENTICATION);
+            final int timeOut = 2000;
+
+            Socket socket = new Socket();
+            socket.connect(new InetSocketAddress(GrapplGlobals.DOMAIN, GrapplGlobals.AUTHENTICATION), timeOut);
+            socket.setSoTimeout(timeOut);
+
             DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
             DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
 
-            dataOutputStream.writeByte(0);
-
             try {
+                dataOutputStream.writeByte(0);
                 PrintStream printStream = new PrintStream(dataOutputStream);
                 printStream.println(grappl.username);
                 printStream.println(grappl.password);
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (SocketTimeoutException e) {
+                if(jFrame != null) JOptionPane.showMessageDialog(jFrame, "Broken connection, authentication failed");
             }
 
             boolean success = dataInputStream.readBoolean();
             boolean alpha = dataInputStream.readBoolean();
             int port = dataInputStream.readInt();
 
-            grappl.prefix = dataInputStream.readLine();
+            try {
+                grappl.prefix = dataInputStream.readLine();
 
-            grappl.isPremium = alpha;
-            grappl.isLoggedIn = success;
+                grappl.isPremium = alpha;
+                grappl.isLoggedIn = success;
 
-            grappl.externalPort = port + "";
+                grappl.externalPort = port + "";
+            } catch (SocketTimeoutException e) {
+                if(jFrame != null) JOptionPane.showMessageDialog(jFrame, "Login failed, incorrect username or password");
+            }
+
             socket.close();
         } catch (Exception e) {
             e.printStackTrace();
