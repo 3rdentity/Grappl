@@ -327,7 +327,8 @@ public class StandardGUI {
                 ClientLog.log("Login failed!");
             }
         } catch (Exception esdfe) {
-            esdfe.printStackTrace();
+            ClientLog.log("Yeah... that shouldn't have happened. Type the darn port next time!");
+            return;
         }
     }
 }

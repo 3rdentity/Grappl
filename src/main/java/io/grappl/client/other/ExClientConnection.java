@@ -55,8 +55,10 @@ public class ExClientConnection {
             NetworkLocation internalServer = grappl.getInternalServer();
 
             final Socket inward = new Socket(internalServer.getAddress(), internalServer.getPort());
+            inward.setSoTimeout(10000);
             grappl.getSockets().add(inward);
             final Socket outward = new Socket(grappl.getRelayServer(), relayPort);
+            outward.setSoTimeout(10000);
             grappl.getSockets().add(outward);
 
             ClientLog.detailed(uuid + " connection active " + address.substring(1, address.length())
@@ -79,7 +81,9 @@ public class ExClientConnection {
                         try {
                             inward.close();
                             outward.close();
+                            acknowledgeDisconnect();
                         } catch (IOException e1) {
+                            acknowledgeDisconnect();
                             e1.printStackTrace();
                         }
                     }
@@ -87,7 +91,9 @@ public class ExClientConnection {
                     try {
                         inward.close();
                         outward.close();
+                        acknowledgeDisconnect();
                     } catch (IOException e) {
+                        acknowledgeDisconnect();
                         e.printStackTrace();
                     }
                 }
@@ -111,13 +117,17 @@ public class ExClientConnection {
                         try {
                             inward.close();
                             outward.close();
-                        } catch (IOException e1) {                                        }
+                            acknowledgeDisconnect();
+                        } catch (IOException e1) {
+                            acknowledgeDisconnect();                                   }
                     }
 
                     try {
                         inward.close();
                         outward.close();
+                        acknowledgeDisconnect();
                     } catch (IOException e) {
+                        acknowledgeDisconnect();
                         e.printStackTrace();
                     }
                 }
@@ -125,6 +135,7 @@ public class ExClientConnection {
             inwardCurrent.start();
         } catch (Exception e) {
             ClientLog.log("ERROR: Failed to connect " + address.substring(1, address.length()) + " to internal server!");
+            acknowledgeDisconnect();
         }
     }
 
@@ -145,8 +156,11 @@ public class ExClientConnection {
     }
 
     public void acknowledgeDisconnect() {
-        open = false;
-        ClientLog.log(address + " has been disconnected");
+        if(!open) {
+            open = false;
+            grappl.getStatMonitor().closeConnection();
+            ClientLog.log(address + " has been disconnected");
+        }
     }
 
     public UUID getUUID() {

@@ -4,7 +4,8 @@ public class StatMonitor {
 
     private int amountSent;
     private int amountReceived;
-    private int connectionsOpened;
+    private int connectionsOpen;
+    private int totalConnections;
     private int grapplsStarted;
 
     public void dataSent(int size) {
@@ -16,8 +17,10 @@ public class StatMonitor {
     }
 
     public void openConnection() {
-        connectionsOpened++;
+        connectionsOpen++;
     }
+
+    public void closeConnection() { connectionsOpen--; }
 
     public void startGrappl() {
         grapplsStarted++;
@@ -39,13 +42,13 @@ public class StatMonitor {
     }
 
     public int getOpenConnections() {
-        return connectionsOpened;
+        return connectionsOpen;
     }
 
     public void reset() {
         amountSent = 0;
         amountReceived = 0;
-        connectionsOpened = 0;
+        connectionsOpen = 0;
         grapplsStarted = 0;
     }
 }

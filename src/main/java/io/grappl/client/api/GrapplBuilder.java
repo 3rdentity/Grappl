@@ -6,6 +6,7 @@ import io.grappl.client.gui.StandardGUI;
 import javax.swing.*;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -66,7 +67,8 @@ public class GrapplBuilder {
                 printStream.println(grappl.username);
                 printStream.println(grappl.password);
             } catch (SocketTimeoutException e) {
-                if(jFrame != null) JOptionPane.showMessageDialog(jFrame, "Broken connection, authentication failed");
+                if(jFrame != null)
+                    JOptionPane.showMessageDialog(jFrame, "Broken connection, authentication failed");
             }
 
             boolean success = dataInputStream.readBoolean();
@@ -81,12 +83,14 @@ public class GrapplBuilder {
 
                 grappl.externalPort = port + "";
             } catch (SocketTimeoutException e) {
-                if(jFrame != null) JOptionPane.showMessageDialog(jFrame, "Login failed, incorrect username or password");
+                if(jFrame != null)
+                    JOptionPane.showMessageDialog(jFrame, "Login failed, incorrect username or password");
             }
 
             socket.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
+            if(jFrame != null)
+                JOptionPane.showMessageDialog(jFrame, "Broken connection, authentication failed");
         }
 
         return this;
