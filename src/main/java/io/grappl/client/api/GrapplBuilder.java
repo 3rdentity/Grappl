@@ -17,13 +17,6 @@ public class GrapplBuilder {
         return this;
     }
 
-    public GrapplBuilder useLoginDetails(String username, char[] password) {
-        grappl.username = username;
-        grappl.password = password;
-
-        return this;
-    }
-
     public GrapplBuilder atLocalAddress(String serverIP) {
         grappl.internalAddress = serverIP;
         return this;
@@ -42,8 +35,11 @@ public class GrapplBuilder {
     /**
      * JFrame is optional
      */
-    public GrapplBuilder login(JFrame jFrame) {
-        new Authentication(jFrame).login(grappl.username, grappl.password);
+    public GrapplBuilder login(String username, char[] password, JFrame jFrame) {
+        Authentication authentication = new Authentication(jFrame);
+        authentication.login(username, password);
+        grappl.useAuthentication(authentication);
+
         return this;
     }
 

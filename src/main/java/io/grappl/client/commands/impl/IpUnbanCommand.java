@@ -12,7 +12,7 @@ public class IpUnbanCommand implements Command {
     @Override
     public void runCommand(Grappl grappl, String[] args, DataInputStream dataInputStream, DataOutputStream dataOutputStream) {
 
-        if (grappl.isLoggedIn()) {
+        if (grappl.getAuthentication().isLoggedIn()) {
             try {
                 String ipToUnban = args[1];
 

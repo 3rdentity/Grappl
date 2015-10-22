@@ -11,7 +11,7 @@ import java.io.PrintStream;
 public class IpBanCommand implements Command {
     @Override
     public void runCommand(Grappl grappl, String[] args, DataInputStream dataInputStream, DataOutputStream dataOutputStream) {
-        if (grappl.isLoggedIn()) {
+        if (grappl.getAuthentication().isLoggedIn()) {
             try {
                 String ipToBAN = args[1];
 

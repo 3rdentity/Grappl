@@ -154,7 +154,7 @@ public class StandardGUI {
                     consoleButton.setBounds(235, 40, 40, 40);
                     jFrame.add(consoleButton);
 
-                    grappl = new GrapplBuilder().useLoginDetails("default", ("1".hashCode() + "").toCharArray()).login(jFrame).withGUI(theGUI).build();
+                    grappl = new GrapplBuilder().login("default", ("1".hashCode() + "").toCharArray(), jFrame).withGUI(theGUI).build();
 
                     JButton jButton = new JButton("Close " + GrapplGlobals.APP_NAME + " Client");
                     jButton.addActionListener(new ActionListener() {
@@ -168,7 +168,7 @@ public class StandardGUI {
 
                     String ports = JOptionPane.showInputDialog("What port does your server run on?");
                     grappl.setInternalPort(Integer.parseInt(ports));
-                    grappl.connect(grappl.getPrefix() + "." + GrapplGlobals.DOMAIN);
+                    grappl.connect(grappl.getAuthentication().getLocalizedRelayPrefix() + "." + GrapplGlobals.DOMAIN);
                 }
             });
             beAnonymousButton.setBounds(4, 155, 192, 40);
@@ -247,12 +247,12 @@ public class StandardGUI {
                 password = (new String(password).hashCode() + "").toCharArray();
             }
 
-            grapplBuilder.useLoginDetails(username, password).login(jFrame).withGUI(theGUI);
+            grapplBuilder.login(username, password, jFrame).withGUI(theGUI);
             grappl = grapplBuilder.build();
 
-            if(grappl.isLoggedIn()) {
+            if(grappl.getAuthentication().isLoggedIn()) {
                 ClientLog.log("Logged in as " + grappl.getUsername());
-                ClientLog.log("Alpha tester: " + grappl.isAlphaTester());
+                ClientLog.log("Alpha tester: " + grappl.getAuthentication().isPremium());
                 ClientLog.log("Static port: " + grappl.getExternalPort());
 
                 if(!rememberMeBox.isSelected()) {
@@ -262,7 +262,7 @@ public class StandardGUI {
                 GrapplDataFile.saveUsername(grappl.getUsername(), password);
 
                 // options: nyc. sf. pac. lon. deu.
-                String prefix = grappl.getPrefix();
+                String prefix = grappl.getAuthentication().getLocalizedRelayPrefix();
 
                 String domain = prefix + "." + GrapplGlobals.DOMAIN;
 

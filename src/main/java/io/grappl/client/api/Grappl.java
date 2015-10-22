@@ -6,18 +6,13 @@ import io.grappl.client.api.event.UserConnectEvent;
 import io.grappl.client.api.event.UserConnectListener;
 import io.grappl.client.api.event.UserDisconnectEvent;
 import io.grappl.client.api.event.UserDisconnectListener;
-import io.grappl.client.api.user.UserData;
 import io.grappl.client.gui.StandardGUI;
 import io.grappl.client.other.ExClientConnection;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.net.Socket;
 import java.util.*;
 import java.util.List;
@@ -30,18 +25,14 @@ import java.util.List;
  */
 public class Grappl {
 
-    // User data. Will be replaced with UserData object sooner or later.
-    protected String username;
-    protected char[] password;
-    protected boolean isLoggedIn = false;
-    protected boolean isPremium = false;
+    /* Data relating to the user who is logged in. */
+    private Authentication authentication;
 
-    // Internal data
+    // Internal server data
     protected String internalAddress = "127.0.0.1";
     protected int internalPort;
 
-    // External data
-    protected String prefix; // Subdomain of grappl.io the relay server is located at (if it is there)
+    // External server data
     protected String relayServerIP;
     protected String externalPort;
     protected LocationProvider locationProvider; // LocationProvider object that is used to get internal server location
@@ -71,6 +62,7 @@ public class Grappl {
     public Grappl() {
         // Allows the terminal console to have commands act on the newest grappl object
         GrapplGlobals.theGrappl = this;
+        authentication = new Authentication();
 
         locationProvider = new LocationProvider() {
             public NetworkLocation getLocation() {
@@ -125,70 +117,70 @@ public class Grappl {
 
         ClientLog.log("Reconnecting...");
 
-        if(isLoggedIn) {
-            DataInputStream dataInputStream;
-            DataOutputStream dataOutputStream;
-
-            try {
-                Socket socket = new Socket(GrapplGlobals.DOMAIN, GrapplGlobals.AUTHENTICATION);
-                dataInputStream = new DataInputStream(socket.getInputStream());
-                dataOutputStream = new DataOutputStream(socket.getOutputStream());
-
-                dataOutputStream.writeByte(0);
-
-                PrintStream printStream = new PrintStream(dataOutputStream);
-
-                printStream.println(username.toLowerCase());
-                printStream.println(password);
-
-                boolean success = dataInputStream.readBoolean();
-                boolean alpha = dataInputStream.readBoolean();
-                int port = dataInputStream.readInt();
-                isPremium = alpha;
-                isLoggedIn = success;
-
-                if (success) {
-                    ClientLog.log("Logged in as " + username);
-                    ClientLog.log("Alpha tester: " + alpha);
-                    ClientLog.log("Static port: " + port);
-
-                    // options: nyc. sf. pac. lon. deu.
-                    String prefix = dataInputStream.readLine();
-
-                    String domain = prefix + "." + GrapplGlobals.DOMAIN;
-
-                    ClientLog.log(domain);
-
-                    if(gui != null) {
-                        int wX = gui.getjFrame().getX();
-                        int wY = gui.getjFrame().getY();
-
-                        gui.getjFrame().setVisible(false);
-                        gui.jFrame = new JFrame(GrapplGlobals.APP_NAME + " Client (" + username + ")");
-                        // 300, 240
-                        gui.getjFrame().setSize(new Dimension(300, 240));
-                        gui.getjFrame().setLocation(wX, wY);
-
-                        gui.getjFrame().setVisible(true);
-                        gui.getjFrame().setLayout(null);
-                        gui.getjFrame().setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
-                        JButton jButton = new JButton("Close " + GrapplGlobals.APP_NAME + " Client");
-                        jButton.addActionListener(new ActionListener() {
-                            public void actionPerformed(ActionEvent e) {
-                                System.exit(0);
-                            }
-                        });
-                        gui.getjFrame().add(jButton);
-                        jButton.setBounds(0, 95, 280, 100);
-                    }
-                } else {
-                    ClientLog.log("Login failed!");
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+//        if(getAuthentication().isLoggedIn()) {
+//            DataInputStream dataInputStream;
+//            DataOutputStream dataOutputStream;
+//
+//            try {
+//                Socket socket = new Socket(GrapplGlobals.DOMAIN, GrapplGlobals.AUTHENTICATION);
+//                dataInputStream = new DataInputStream(socket.getInputStream());
+//                dataOutputStream = new DataOutputStream(socket.getOutputStream());
+//
+//                dataOutputStream.writeByte(0);
+//
+//                PrintStream printStream = new PrintStream(dataOutputStream);
+//
+//                printStream.println(username.toLowerCase());
+//                printStream.println(password);
+//
+//                boolean success = dataInputStream.readBoolean();
+//                boolean alpha = dataInputStream.readBoolean();
+//                int port = dataInputStream.readInt();
+//                isPremium = alpha;
+//                isLoggedIn = success;
+//
+//                if (success) {
+//                    ClientLog.log("Logged in as " + username);
+//                    ClientLog.log("Alpha tester: " + alpha);
+//                    ClientLog.log("Static port: " + port);
+//
+//                    // options: nyc. sf. pac. lon. deu.
+//                    String prefix = dataInputStream.readLine();
+//
+//                    String domain = prefix + "." + GrapplGlobals.DOMAIN;
+//
+//                    ClientLog.log(domain);
+//
+//                    if(gui != null) {
+//                        int wX = gui.getjFrame().getX();
+//                        int wY = gui.getjFrame().getY();
+//
+//                        gui.getjFrame().setVisible(false);
+//                        gui.jFrame = new JFrame(GrapplGlobals.APP_NAME + " Client (" + username + ")");
+//                        // 300, 240
+//                        gui.getjFrame().setSize(new Dimension(300, 240));
+//                        gui.getjFrame().setLocation(wX, wY);
+//
+//                        gui.getjFrame().setVisible(true);
+//                        gui.getjFrame().setLayout(null);
+//                        gui.getjFrame().setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+//
+//                        JButton jButton = new JButton("Close " + GrapplGlobals.APP_NAME + " Client");
+//                        jButton.addActionListener(new ActionListener() {
+//                            public void actionPerformed(ActionEvent e) {
+//                                System.exit(0);
+//                            }
+//                        });
+//                        gui.getjFrame().add(jButton);
+//                        jButton.setBounds(0, 95, 280, 100);
+//                    }
+//                } else {
+//                    ClientLog.log("Login failed!");
+//                }
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
 
         connect(relayServerIP);
     }
@@ -196,8 +188,8 @@ public class Grappl {
     public String getPublicAddress() {
         String publicAddress = "grappl.io:" + getExternalPort();
 
-        if(getPrefix() != null) {
-            return getPrefix() + "." + publicAddress;
+        if(getAuthentication().getLocalizedRelayPrefix() != null) {
+            return getAuthentication().getLocalizedRelayPrefix() + "." + publicAddress;
         }
 
         return "";
@@ -220,34 +212,16 @@ public class Grappl {
         return externalPort;
     }
 
-    public void setLoggedIn(boolean isLoggedIn) {
-        this.isLoggedIn = isLoggedIn;
-    }
-
-    @Deprecated
-    public void setAlphaTester(boolean isAlphaTester) {
-        this.isPremium = isAlphaTester;
-    }
-
-    public void setPremium(boolean isPremium) {
-        this.isPremium = isPremium;
-    }
-
-    public boolean isLoggedIn() {
-        return isLoggedIn;
-    }
-
     public String getUsername() {
-        return username;
+        return getAuthentication().getUsername();
     }
 
-    @Deprecated
-    public boolean isAlphaTester() {
-        return isPremium;
+    public void useAuthentication(Authentication authentication) {
+        this.authentication = authentication;
     }
 
-    public boolean isPremium() {
-        return isPremium;
+    public Authentication getAuthentication() {
+        return authentication;
     }
 
     public String getRelayServer() {
@@ -256,10 +230,6 @@ public class Grappl {
 
     public StandardGUI getGui() {
         return gui;
-    }
-
-    public String getPrefix() {
-        return prefix;
     }
 
     public void setInternalPort(int internalPort) {

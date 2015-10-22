@@ -27,7 +27,7 @@ public class AdvancedGUI {
     public static JList<String> jList;
 
     public static JLabel loggedIn;
-    public static JLabel alphaTester;
+    public static JLabel premium;
 
     private static String username;
     private static char[] password;
@@ -194,10 +194,10 @@ public class AdvancedGUI {
         loggedIn.setBounds(dist, 20, 250, 20);
         jFrame.add(loggedIn);
 
-        alphaTester = new JLabel();
-        alphaTester.setText("Beta tester: false");
-        alphaTester.setBounds(dist, 40, 250, 20);
-        jFrame.add(alphaTester);
+        premium = new JLabel();
+        premium.setText("Beta tester: false");
+        premium.setBounds(dist, 40, 250, 20);
+        jFrame.add(premium);
 
         logIn = new JButton("Log in");
         logIn.setBounds(dist, 70, 80, 30);
@@ -269,18 +269,18 @@ public class AdvancedGUI {
                             }
 
                             GrapplBuilder grapplBuilder = new GrapplBuilder();
-                            grapplBuilder.useLoginDetails(username, AdvancedGUI.password).login(jFrame);
+                            grapplBuilder.login(username, AdvancedGUI.password, jFrame);
 
                             grappl = grapplBuilder.build();
 
-                            if (grappl.isLoggedIn()) {
+                            if (grappl.getAuthentication().isLoggedIn()) {
                                 loggedIn.setText("Logged in as: " + username);
-                                if(grappl.isAlphaTester()) {
-                                    alphaTester.setText("Beta tester: true, static port: " + grappl.getExternalPort());
+                                if(grappl.getAuthentication().isPremium()) {
+                                    premium.setText("Beta tester: true, static port: " + grappl.getAuthentication().getStaticPort());
                                 }
                                 ClientLog.log("Logged in as " + grappl.getUsername());
-                                ClientLog.log("Beta tester: " + grappl.isAlphaTester());
-                                ClientLog.log("Static port: " + grappl.getExternalPort());
+                                ClientLog.log("Beta tester: " + grappl.getAuthentication().isPremium());
+                                ClientLog.log("Static port: " + grappl.getAuthentication().getStaticPort());
                                 logIn();
 
                                 GrapplDataFile.saveUsername(grappl.getUsername(), AdvancedGUI.password);
@@ -328,7 +328,6 @@ public class AdvancedGUI {
         jFrame.add(donateButton);
 
         jFrame.repaint();
-
     }
 
     public void logIn() {
@@ -356,9 +355,10 @@ public class AdvancedGUI {
         jFrame.remove(logOut);
         jFrame.add(logIn);
         jFrame.add(signUpButton);
+//        grappl.getAuthentication().logout();
         donateButton.setBounds(290 + 180, 70, 80, 30);
         loggedIn.setText("Anonymous: Not logged in");
-        alphaTester.setText("Beta tester: false");
+        premium.setText("Beta tester: false");
         jFrame.repaint();
     }
 

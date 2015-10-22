@@ -10,9 +10,9 @@ import java.io.DataOutputStream;
 public class SetStaticPortCommand implements Command {
     @Override
     public void runCommand(Grappl grappl, String[] args, DataInputStream dataInputStream, DataOutputStream dataOutputStream) {
-        if (grappl.isLoggedIn()) {
+        if (grappl.getAuthentication().isLoggedIn()) {
             try {
-                if (grappl.isAlphaTester()) {
+                if (grappl.getAuthentication().isPremium()) {
                     dataOutputStream.writeByte(2);
                     dataOutputStream.writeInt(Integer.parseInt(args[1]));
                     ClientLog.log("Your port was set to: " + Integer.parseInt(args[1]));

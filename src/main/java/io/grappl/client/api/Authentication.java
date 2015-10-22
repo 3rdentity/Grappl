@@ -14,12 +14,14 @@ import java.net.SocketTimeoutException;
 public class Authentication {
 
     private String username;
+
     private boolean isPremium;
-    private boolean loginSuccessful;
-    private String prefix;
+    private boolean loginSuccessful = false;
+    private String localizedRelayPrefix;
     private int staticPort;
 
     private JFrame optionalJframe;
+    private Socket authSocket;
 
     public Authentication() {}
     public Authentication(JFrame jFrame) { this.optionalJframe = jFrame; }
@@ -30,12 +32,12 @@ public class Authentication {
         try {
             final int timeOut = 2000;
 
-            Socket socket = new Socket();
-            socket.connect(new InetSocketAddress(GrapplGlobals.DOMAIN, GrapplGlobals.AUTHENTICATION), timeOut);
-            socket.setSoTimeout(timeOut);
+            authSocket = new Socket();
+            authSocket.connect(new InetSocketAddress(GrapplGlobals.DOMAIN, GrapplGlobals.AUTHENTICATION), timeOut);
+            authSocket.setSoTimeout(timeOut);
 
-            DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
-            DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+            DataInputStream dataInputStream = new DataInputStream(authSocket.getInputStream());
+            DataOutputStream dataOutputStream = new DataOutputStream(authSocket.getOutputStream());
 
             try {
                 dataOutputStream.writeByte(0);
@@ -47,27 +49,41 @@ public class Authentication {
                     JOptionPane.showMessageDialog(optionalJframe, "Broken connection, authentication failed");
             }
 
-            boolean success = dataInputStream.readBoolean();
-            boolean alpha = dataInputStream.readBoolean();
+            boolean loginSuccess = dataInputStream.readBoolean();
+            boolean isPremiumUser = dataInputStream.readBoolean();
             int port = dataInputStream.readInt();
 
             try {
-                prefix = dataInputStream.readLine();
+                localizedRelayPrefix = dataInputStream.readLine();
 
-                isPremium = alpha;
-                loginSuccessful = success;
+                isPremium = isPremiumUser;
+                loginSuccessful = loginSuccess;
 
                 staticPort = port;
             } catch (SocketTimeoutException e) {
                 if(optionalJframe != null)
                     JOptionPane.showMessageDialog(optionalJframe, "Login failed, incorrect username or password");
             }
-
-            socket.close();
         } catch (IOException e) {
             if(optionalJframe != null)
                 JOptionPane.showMessageDialog(optionalJframe, "Broken connection, authentication failed");
         }
+    }
+
+    public void logout() {
+        loginSuccessful = false;
+        isPremium = false;
+        staticPort = -1;
+        localizedRelayPrefix = "";
+        username = null;
+
+        try {
+            authSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        authSocket = null;
     }
 
     public String getUsername() {
@@ -78,12 +94,12 @@ public class Authentication {
         return isPremium;
     }
 
-    public boolean wasLoginSuccessful() {
+    public boolean isLoggedIn() {
         return loginSuccessful;
     }
 
-    public String getPrefix() {
-        return prefix;
+    public String getLocalizedRelayPrefix() {
+        return localizedRelayPrefix;
     }
 
     public int getStaticPort() {

@@ -5,6 +5,7 @@ import com.daexsys.grappl.client.Client;
 import io.grappl.client.ClientLog;
 import io.grappl.client.GrapplClientState;
 import io.grappl.client.api.Grappl;
+import io.grappl.client.commands.Command;
 import io.grappl.client.commands.CommandHandler;
 
 import javax.swing.*;
@@ -75,14 +76,14 @@ public class ConsoleWindow {
         consoleFrame.setTitle("Grappl Console");
 
         try {
-            Client.authSocket = new Socket(GrapplGlobals.DOMAIN, GrapplGlobals.AUTHENTICATION);
+            CommandHandler.authSocket = new Socket(GrapplGlobals.DOMAIN, GrapplGlobals.AUTHENTICATION);
         } catch (IOException e) {
             ClientLog.log("Could not establish auth connection");
         }
 
         try {
-            dataInputStream = new DataInputStream(Client.authSocket.getInputStream());
-            dataOutputStream = new DataOutputStream(Client.authSocket.getOutputStream());
+            dataInputStream = new DataInputStream(CommandHandler.authSocket.getInputStream());
+            dataOutputStream = new DataOutputStream(CommandHandler.authSocket.getOutputStream());
         } catch (Exception e) {
             ClientLog.log("Failed to create streams");
         }

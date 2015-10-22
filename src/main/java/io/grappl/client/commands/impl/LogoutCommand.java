@@ -1,5 +1,6 @@
 package io.grappl.client.commands.impl;
 
+import io.grappl.GrapplGlobals;
 import io.grappl.client.ClientLog;
 import io.grappl.client.api.Grappl;
 import io.grappl.client.commands.Command;
@@ -7,18 +8,15 @@ import io.grappl.client.commands.Command;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 
-public class WhoAmICommand implements Command {
-
+public class LogoutCommand implements Command {
     @Override
     public void runCommand(Grappl grappl, String[] args, DataInputStream dataInputStream, DataOutputStream dataOutputStream) {
+
         if(grappl == null) {
-            ClientLog.log("Grappl has not been initialized");
+            ClientLog.log(GrapplGlobals.NO_GRAPPL_MESSAGE);
         } else {
-            if (grappl.getAuthentication().isLoggedIn()) {
-                ClientLog.log("You are logged in as: " + grappl.getAuthentication().getUsername());
-            } else {
-                ClientLog.log("You are not logged in.");
-            }
+            grappl.getAuthentication().logout();
+            ClientLog.log("Logged out");
         }
     }
 }
