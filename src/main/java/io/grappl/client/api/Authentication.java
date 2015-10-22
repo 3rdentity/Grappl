@@ -20,11 +20,13 @@ public class Authentication {
     private String localizedRelayPrefix;
     private int staticPort;
 
-    private JFrame optionalJframe;
+    private JFrame optionalFrame;
     private Socket authSocket;
+    private DataInputStream authDataInputStream;
+    private DataOutputStream authDataOutputStream;
 
     public Authentication() {}
-    public Authentication(JFrame jFrame) { this.optionalJframe = jFrame; }
+    public Authentication(JFrame jFrame) { this.optionalFrame = jFrame; }
 
     public void login(String username, char[] password) {
         this.username = username;
@@ -36,37 +38,37 @@ public class Authentication {
             authSocket.connect(new InetSocketAddress(GrapplGlobals.DOMAIN, GrapplGlobals.AUTHENTICATION), timeOut);
             authSocket.setSoTimeout(timeOut);
 
-            DataInputStream dataInputStream = new DataInputStream(authSocket.getInputStream());
-            DataOutputStream dataOutputStream = new DataOutputStream(authSocket.getOutputStream());
+            authDataInputStream = new DataInputStream(authSocket.getInputStream());
+            authDataOutputStream = new DataOutputStream(authSocket.getOutputStream());
 
             try {
-                dataOutputStream.writeByte(0);
-                PrintStream printStream = new PrintStream(dataOutputStream);
+                authDataOutputStream.writeByte(0);
+                PrintStream printStream = new PrintStream(authDataOutputStream);
                 printStream.println(username);
                 printStream.println(password);
             } catch (SocketTimeoutException e) {
-                if(optionalJframe != null)
-                    JOptionPane.showMessageDialog(optionalJframe, "Broken connection, authentication failed");
+                if(optionalFrame != null)
+                    JOptionPane.showMessageDialog(optionalFrame, "Broken connection, authentication failed");
             }
 
-            boolean loginSuccess = dataInputStream.readBoolean();
-            boolean isPremiumUser = dataInputStream.readBoolean();
-            int port = dataInputStream.readInt();
+            boolean loginSuccess = authDataInputStream.readBoolean();
+            boolean isPremiumUser = authDataInputStream.readBoolean();
+            int port = authDataInputStream.readInt();
 
             try {
-                localizedRelayPrefix = dataInputStream.readLine();
+                localizedRelayPrefix = authDataInputStream.readLine();
 
                 isPremium = isPremiumUser;
                 loginSuccessful = loginSuccess;
 
                 staticPort = port;
             } catch (SocketTimeoutException e) {
-                if(optionalJframe != null)
-                    JOptionPane.showMessageDialog(optionalJframe, "Login failed, incorrect username or password");
+                if(optionalFrame != null)
+                    JOptionPane.showMessageDialog(optionalFrame, "Login failed, incorrect username or password");
             }
         } catch (IOException e) {
-            if(optionalJframe != null)
-                JOptionPane.showMessageDialog(optionalJframe, "Broken connection, authentication failed");
+            if(optionalFrame != null)
+                JOptionPane.showMessageDialog(optionalFrame, "Broken connection, authentication failed");
         }
     }
 
@@ -104,5 +106,13 @@ public class Authentication {
 
     public int getStaticPort() {
         return staticPort;
+    }
+
+    public DataInputStream getAuthDataInputStream() {
+        return authDataInputStream;
+    }
+
+    public DataOutputStream getAuthDataOutputStream() {
+        return authDataOutputStream;
     }
 }
