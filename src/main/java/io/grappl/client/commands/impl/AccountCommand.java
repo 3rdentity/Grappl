@@ -12,7 +12,7 @@ import java.net.URI;
 
 public class AccountCommand implements Command {
     @Override
-    public void runCommand(Grappl grappl, String[] args, DataInputStream dataInputStream, DataOutputStream dataOutputStream) {
+    public void runCommand(Grappl grappl, String[] args) {
 
         final String subCommand = args[1];
 

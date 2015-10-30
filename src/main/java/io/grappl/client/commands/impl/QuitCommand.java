@@ -13,7 +13,7 @@ import java.io.DataOutputStream;
 public class QuitCommand implements Command {
 
     @Override
-    public void runCommand(Grappl grappl, String[] args, DataInputStream dataInputStream, DataOutputStream dataOutputStream) {
+    public void runCommand(Grappl grappl, String[] args) {
         ClientLog.log("Saving log...");
         ClientLog.save();
         ClientLog.log("Saved log");

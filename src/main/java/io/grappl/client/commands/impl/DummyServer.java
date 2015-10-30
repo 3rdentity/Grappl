@@ -18,7 +18,7 @@ import java.net.Socket;
 public class DummyServer implements Command {
 
     @Override
-    public void runCommand(Grappl grappl, String[] args, DataInputStream dataInputStream, DataOutputStream dataOutputStream) {
+    public void runCommand(Grappl grappl, String[] args) {
 
         final int port = Integer.parseInt(args[1]);
 

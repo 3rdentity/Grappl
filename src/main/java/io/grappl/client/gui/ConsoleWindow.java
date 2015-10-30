@@ -74,19 +74,6 @@ public class ConsoleWindow {
         consoleFrame.setTitle("Grappl Console");
 
         try {
-            CommandHandler.authSocket = new Socket(GrapplGlobals.DOMAIN, GrapplGlobals.AUTHENTICATION);
-        } catch (IOException e) {
-            ClientLog.log("Could not establish auth connection");
-        }
-
-        try {
-            dataInputStream = new DataInputStream(CommandHandler.authSocket.getInputStream());
-            dataOutputStream = new DataOutputStream(CommandHandler.authSocket.getOutputStream());
-        } catch (Exception e) {
-            ClientLog.log("Failed to create streams");
-        }
-
-        try {
             consoleFrame.setIconImage(GrapplClientState.getIcon());
         } catch (Exception ee) {
             ee.printStackTrace();
@@ -137,7 +124,7 @@ public class ConsoleWindow {
     }
 
     public void enterCommand(String command) {
-        CommandHandler.handleCommand(grappl, command, dataInputStream, dataOutputStream);
+        CommandHandler.handleCommand(grappl, command);
     }
 
     public JFrame getTheFrame() {

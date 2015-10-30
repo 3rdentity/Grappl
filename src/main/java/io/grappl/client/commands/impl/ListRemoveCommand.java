@@ -11,11 +11,11 @@ import java.io.PrintStream;
 
 public class ListRemoveCommand implements Command {
     @Override
-    public void runCommand(Grappl grappl, String[] args, DataInputStream dataInputStream, DataOutputStream dataOutputStream) {
+    public void runCommand(Grappl grappl, String[] args) {
         try {
             ClientLog.log("Removing from server list");
-            dataOutputStream.writeByte(7);
-            PrintStream printStream = new PrintStream(dataOutputStream);
+            grappl.getAuthentication().getAuthDataOutputStream().writeByte(7);
+            PrintStream printStream = new PrintStream(grappl.getAuthentication().getAuthDataOutputStream());
             printStream.println(CommandHandler.send);
         } catch (Exception e) {
             e.printStackTrace();

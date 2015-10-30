@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class HelpCommand implements Command{
     @Override
-    public void runCommand(Grappl grappl, String[] args, DataInputStream dataInputStream, DataOutputStream dataOutputStream) {
+    public void runCommand(Grappl grappl, String[] args) {
         String printedOutput = "Commands: ";
 
         for(Map.Entry<String, Command> entries : CommandHandler.commandMap.entrySet()) {

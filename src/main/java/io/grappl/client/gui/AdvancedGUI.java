@@ -5,7 +5,6 @@ import io.grappl.client.GrapplClientState;
 import io.grappl.client.GrapplDataFile;
 import io.grappl.client.api.Authentication;
 import io.grappl.client.api.Grappl;
-import io.grappl.client.api.GrapplBuilder;
 import io.grappl.client.api.event.UserConnectEvent;
 import io.grappl.client.api.event.UserConnectListener;
 import io.grappl.client.api.event.UserDisconnectEvent;
@@ -46,8 +45,6 @@ public class AdvancedGUI {
 
     private Authentication activeAuthentication;
 
-    private Grappl localGrappl;
-
     public void create() {
 
         jFrame = new JFrame();
@@ -63,11 +60,18 @@ public class AdvancedGUI {
         jFrame.setResizable(false);
         jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        final JLabel relayLab = new JLabel("Relay Server");
+        final JLabel relayLab = new JLabel("Relay server");
         relayLab.setBounds(20, 20, 100, 20);
         jFrame.add(relayLab);
 
-        final JComboBox<String> jComboBox = new JComboBox<String>(new String[]{"n.grappl.io (East Coast NA)", "s.grappl.io (West Coast NA)", "e.grappl.io (Europe)", "p.grappl.io (Oceania)"});
+        final JComboBox<String> jComboBox = new JComboBox<String>(
+                new String[]{
+                        "n.grappl.io (East Coast NA)",
+                        "s.grappl.io (West Coast NA)",
+                        "e.grappl.io (Europe)",
+                        "p.grappl.io (Oceania)"
+                }
+        );
         if(GrapplClientState.debugState) {
             jComboBox.addItem("localhost (if you're testing)");
         }
@@ -82,7 +86,9 @@ public class AdvancedGUI {
             public void actionPerformed(ActionEvent e) {
                 String rServer = JOptionPane.showInputDialog(jFrame, "New relay server address");
                 if (rServer == null) {} else if(!rServer.equals("")) {
+                    int index = jComboBox.getItemCount();
                     jComboBox.addItem(rServer);
+                    jComboBox.setSelectedIndex(index);
                 }
             }
         });

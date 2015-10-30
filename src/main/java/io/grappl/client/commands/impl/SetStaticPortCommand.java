@@ -9,12 +9,12 @@ import java.io.DataOutputStream;
 
 public class SetStaticPortCommand implements Command {
     @Override
-    public void runCommand(Grappl grappl, String[] args, DataInputStream dataInputStream, DataOutputStream dataOutputStream) {
+    public void runCommand(Grappl grappl, String[] args) {
         if (grappl.getAuthentication().isLoggedIn()) {
             try {
                 if (grappl.getAuthentication().isPremium()) {
-                    dataOutputStream.writeByte(2);
-                    dataOutputStream.writeInt(Integer.parseInt(args[1]));
+                    grappl.getAuthentication().getAuthDataOutputStream().writeByte(2);
+                    grappl.getAuthentication().getAuthDataOutputStream().writeInt(Integer.parseInt(args[1]));
                     ClientLog.log("Your port was set to: " + Integer.parseInt(args[1]));
                 } else {
                     ClientLog.log("You are not an alpha tester, so you can't set static ports.");

@@ -12,7 +12,7 @@ import java.io.DataOutputStream;
 public class StatsCommand implements Command {
 
     @Override
-    public void runCommand(Grappl grappl, String[] args, DataInputStream dataInputStream, DataOutputStream dataOutputStream) {
+    public void runCommand(Grappl grappl, String[] args) {
 
         /* If grappl connection isn't open */
         if(grappl == null) {

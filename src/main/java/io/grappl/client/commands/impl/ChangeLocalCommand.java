@@ -9,7 +9,7 @@ import java.io.DataOutputStream;
 
 public class ChangeLocalCommand implements Command {
     @Override
-    public void runCommand(Grappl grappl, String[] args, DataInputStream dataInputStream, DataOutputStream dataOutputStream) {
+    public void runCommand(Grappl grappl, String[] args) {
 
         if(grappl == null) {
             ClientLog.log("Grappl has not been created");

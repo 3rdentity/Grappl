@@ -11,7 +11,7 @@ import java.io.DataOutputStream;
 public class InitCommand implements Command {
 
     @Override
-    public void runCommand(Grappl grappl, String[] args, DataInputStream dataInputStream, DataOutputStream dataOutputStream) {
+    public void runCommand(Grappl grappl, String[] args) {
 
         grappl = new GrapplBuilder().build();
         ClientLog.log("Starting...");

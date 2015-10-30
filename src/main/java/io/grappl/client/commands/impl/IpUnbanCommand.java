@@ -10,14 +10,14 @@ import java.io.PrintStream;
 
 public class IpUnbanCommand implements Command {
     @Override
-    public void runCommand(Grappl grappl, String[] args, DataInputStream dataInputStream, DataOutputStream dataOutputStream) {
+    public void runCommand(Grappl grappl, String[] args) {
 
         if (grappl.getAuthentication().isLoggedIn()) {
             try {
                 String ipToUnban = args[1];
 
-                dataOutputStream.writeByte(8);
-                PrintStream printStream = new PrintStream(dataOutputStream);
+                grappl.getAuthentication().getAuthDataOutputStream().writeByte(8);
+                PrintStream printStream = new PrintStream(grappl.getAuthentication().getAuthDataOutputStream());
                 printStream.println(ipToUnban);
 
                 ClientLog.log("Unbanned ip: " + ipToUnban);

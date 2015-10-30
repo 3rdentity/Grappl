@@ -11,14 +11,14 @@ import java.io.PrintStream;
 
 public class ListAddCommand implements Command {
     @Override
-    public void runCommand(Grappl grappl, String[] args, DataInputStream dataInputStream, DataOutputStream dataOutputStream) {
+    public void runCommand(Grappl grappl, String[] args) {
 
         try {
             ClientLog.log("Adding to server list");
 
-            dataOutputStream.writeByte(6);
+            grappl.getAuthentication().getAuthDataOutputStream().writeByte(6);
             String game = args[1];
-            PrintStream printStream = new PrintStream(dataOutputStream);
+            PrintStream printStream = new PrintStream(grappl.getAuthentication().getAuthDataOutputStream());
             CommandHandler.send = game + " - " + grappl.getRelayServer() + ":" + grappl.getExternalPort();
             printStream.println(CommandHandler.send);
         } catch (Exception e) {

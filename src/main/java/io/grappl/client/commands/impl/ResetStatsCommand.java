@@ -9,7 +9,7 @@ import java.io.DataOutputStream;
 
 public class ResetStatsCommand implements Command {
     @Override
-    public void runCommand(Grappl grappl, String[] args, DataInputStream dataInputStream, DataOutputStream dataOutputStream) {
+    public void runCommand(Grappl grappl, String[] args) {
         grappl.getStatMonitor().reset();
         ClientLog.log("Reset stats");
     }

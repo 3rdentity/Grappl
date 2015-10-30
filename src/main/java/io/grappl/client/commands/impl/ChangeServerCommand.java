@@ -9,7 +9,7 @@ import java.io.DataOutputStream;
 
 public class ChangeServerCommand implements Command {
     @Override
-    public void runCommand(Grappl grappl, String[] args, DataInputStream dataInputStream, DataOutputStream dataOutputStream) {
+    public void runCommand(Grappl grappl, String[] args) {
         String server = args[1];
         grappl.setInternalAddress(server);
         ClientLog.log("Server is now " + server);
