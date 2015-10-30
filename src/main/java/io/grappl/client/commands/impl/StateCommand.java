@@ -5,9 +5,6 @@ import io.grappl.client.ClientLog;
 import io.grappl.client.api.Grappl;
 import io.grappl.client.commands.Command;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-
 /**
  * Displays the state of the current Grappl connection.
  */

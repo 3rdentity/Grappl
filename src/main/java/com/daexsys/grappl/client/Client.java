@@ -4,8 +4,6 @@ import io.grappl.client.Application;
 import io.grappl.client.api.Grappl;
 import io.grappl.client.api.GrapplBuilder;
 import io.grappl.client.gui.StandardGUI;
-import io.grappl.client.commands.CommandHandler;
-import sun.security.krb5.internal.APOptions;
 
 /**
  * Class that hosts the main method called when Grappl is started.

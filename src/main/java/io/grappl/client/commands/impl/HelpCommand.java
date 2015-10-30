@@ -4,10 +4,7 @@ import io.grappl.client.Application;
 import io.grappl.client.ClientLog;
 import io.grappl.client.api.Grappl;
 import io.grappl.client.commands.Command;
-import io.grappl.client.commands.CommandHandler;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.util.Map;
 
 public class HelpCommand implements Command{

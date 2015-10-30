@@ -1,6 +1,5 @@
 package io.grappl.client.api.handler.http;
 
-import javax.xml.ws.spi.http.HttpExchange;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

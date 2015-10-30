@@ -21,6 +21,7 @@ public class GrapplGlobals {
     public static final String NO_GRAPPL_MESSAGE = "There is no grappl open!";
 
     public static final String VERSION = "Beta 1.2";
+
     public static final long clientTimeOpened = System.currentTimeMillis();
     public static boolean doDetailedLogging = true;
     public static boolean usingSavedHashPass = true;

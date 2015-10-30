@@ -4,8 +4,6 @@ import io.grappl.client.ClientLog;
 import io.grappl.client.api.Grappl;
 import io.grappl.client.commands.Command;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.PrintStream;
 
 public class IpUnbanCommand implements Command {

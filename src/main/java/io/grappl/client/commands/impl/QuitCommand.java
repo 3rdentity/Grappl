@@ -4,9 +4,6 @@ import io.grappl.client.ClientLog;
 import io.grappl.client.api.Grappl;
 import io.grappl.client.commands.Command;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-
 /**
  * Ends the Grappl process cleanly
  */
