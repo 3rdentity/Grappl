@@ -3,7 +3,7 @@ package io.grappl.client.api;
 import java.io.DataOutputStream;
 
 /**
- * Handles the statistics for a single Grappl instance.
+ * Handles the statistics management for a single Grappl instance.
  *
  * It monitors:
  *      - The bytes sent
@@ -16,12 +16,16 @@ import java.io.DataOutputStream;
  */
 public class StatMonitor {
 
+    /*
+        Variables pertaining to a specific Grappl instance, which are
+        tracked throughout the instances' life.
+     */
     private int amountSent;
     private int amountReceived;
     private int connectionsOpen;
     private int totalConnections;
 
-    /* The Grappl this StatMonitor is associated with */
+    /* The Grappl instance this StatMonitor is associated with */
     private Grappl grappl;
 
     public StatMonitor(Grappl grappl) {
@@ -34,11 +38,13 @@ public class StatMonitor {
 
     public void dataSent(int bytesSent) {
         amountSent += bytesSent;
+        bytesInTemp += bytesSent;
         tryUpdatingRemote();
     }
 
     public void dataReceived(int bytesReceived) {
         amountReceived += bytesReceived;
+        bytesOutTemp += bytesReceived;
         tryUpdatingRemote();
     }
 

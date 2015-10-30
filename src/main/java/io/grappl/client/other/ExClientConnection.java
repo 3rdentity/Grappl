@@ -12,7 +12,7 @@ import java.util.UUID;
 
 public class ExClientConnection {
 
-    public static final int BLOCK_SIZE = 4096;
+    public final int BLOCK_SIZE = 4096;
 
     // The address of the external client
     private String address;

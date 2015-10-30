@@ -1,6 +1,7 @@
 package io.grappl.client.api;
 
 import io.grappl.GrapplGlobals;
+import io.grappl.client.ClientLog;
 
 import javax.swing.*;
 import java.io.DataInputStream;
@@ -10,6 +11,7 @@ import java.io.PrintStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+import java.util.UUID;
 
 public class Authentication {
 
@@ -25,8 +27,29 @@ public class Authentication {
     private DataInputStream authDataInputStream;
     private DataOutputStream authDataOutputStream;
 
-    public Authentication() {}
-    public Authentication(JFrame jFrame) { this.optionalFrame = jFrame; }
+    private UUID connectionUUID = UUID.randomUUID();
+
+    public UUID getConnectionUUID() {
+        return connectionUUID;
+    }
+
+    public Authentication() {
+        ClientLog.log("AUTHENTICATION CONNECTION CREATED " + getConnectionUUID());
+//        dumpStackTrace();
+    }
+
+    public Authentication(JFrame jFrame) {
+        ClientLog.log("AUTHENTICATION CONNECTION CREATED " + getConnectionUUID()); this.optionalFrame = jFrame;
+//        dumpStackTrace();
+    }
+
+    public void dumpStackTrace() {
+        StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
+
+        for(StackTraceElement stackTraceElement : stackTraceElements) {
+            System.out.println(stackTraceElement);
+        }
+    }
 
     public void login(String username, char[] password) {
         this.username = username;
@@ -38,8 +61,8 @@ public class Authentication {
             authSocket.connect(new InetSocketAddress(GrapplGlobals.DOMAIN, GrapplGlobals.AUTHENTICATION), timeOut);
             authSocket.setSoTimeout(timeOut);
 
-            authDataInputStream = new DataInputStream(authSocket.getInputStream());
-            authDataOutputStream = new DataOutputStream(authSocket.getOutputStream());
+            this.authDataInputStream = new DataInputStream(authSocket.getInputStream());
+            this.authDataOutputStream = new DataOutputStream(authSocket.getOutputStream());
 
             try {
                 authDataOutputStream.writeByte(0);

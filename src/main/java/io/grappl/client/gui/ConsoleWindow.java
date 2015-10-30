@@ -1,11 +1,9 @@
 package io.grappl.client.gui;
 
 import io.grappl.GrapplGlobals;
-import com.daexsys.grappl.client.Client;
 import io.grappl.client.ClientLog;
 import io.grappl.client.GrapplClientState;
 import io.grappl.client.api.Grappl;
-import io.grappl.client.commands.Command;
 import io.grappl.client.commands.CommandHandler;
 
 import javax.swing.*;
@@ -20,10 +18,10 @@ import java.net.Socket;
 
 public class ConsoleWindow {
 
+    public static JTextArea display;
+
     private DataInputStream dataInputStream = null;
     private DataOutputStream dataOutputStream = null;
-
-    public static JTextArea display;
 
     private Grappl grappl;
     private JFrame theFrame;
@@ -104,8 +102,6 @@ public class ConsoleWindow {
         JScrollPane jScrollPane = new JScrollPane(display,
                 JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
                 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-
-        ClientLog.log("Console window launched");
 
         jScrollPane.setVisible(true);
         jScrollPane.setBounds(10, 10, 670, 260);

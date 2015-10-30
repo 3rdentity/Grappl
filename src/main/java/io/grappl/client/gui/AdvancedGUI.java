@@ -3,6 +3,7 @@ package io.grappl.client.gui;
 import io.grappl.client.ClientLog;
 import io.grappl.client.GrapplClientState;
 import io.grappl.client.GrapplDataFile;
+import io.grappl.client.api.Authentication;
 import io.grappl.client.api.Grappl;
 import io.grappl.client.api.GrapplBuilder;
 import io.grappl.client.api.event.UserConnectEvent;
@@ -43,6 +44,10 @@ public class AdvancedGUI {
     public JButton logOut;
     public JFrame jFrame;
 
+    private Authentication activeAuthentication;
+
+    private Grappl localGrappl;
+
     public void create() {
 
         jFrame = new JFrame();
@@ -70,7 +75,7 @@ public class AdvancedGUI {
         jComboBox.setBounds(20, 40, 200, 20);
         jFrame.add(jComboBox);
 
-        JButton addRelay = new JButton("+");
+        final JButton addRelay = new JButton("+");
         addRelay.setBounds(220, 40, 20, 20);
         addRelay.addActionListener(new ActionListener() {
             @Override
@@ -121,10 +126,10 @@ public class AdvancedGUI {
             public void actionPerformed(ActionEvent e) {
                 if (grappl == null) {
 
-                    GrapplBuilder grapplBuilder = new GrapplBuilder();
+                    grappl = new Grappl();
+                    grappl.useAuthentication(activeAuthentication);
+                    grappl.setInternalPort(Integer.parseInt(jTextField.getText()));
 
-                    grapplBuilder.atLocalPort(Integer.parseInt(jTextField.getText()));
-                    grappl = grapplBuilder.build();
                     grappl.connect(((String) jComboBox.getSelectedItem()).split("\\s+")[0]);
 
                     grappl.addUserConnectListener(new UserConnectListener() {
@@ -229,7 +234,7 @@ public class AdvancedGUI {
 
                 final JPasswordField jPasswordField = new JPasswordField("");
                 jPasswordField.setBounds(5, 62, 250, 20);
-                String password = GrapplDataFile.getPassword();
+                final String password = GrapplDataFile.getPassword();
                 jPasswordField.addKeyListener(new KeyListener() {
                     @Override
                     public void keyTyped(KeyEvent e) {
@@ -255,12 +260,13 @@ public class AdvancedGUI {
                     ClientLog.log("Password is null");
                 }
                 jFrame.add(jPasswordField);
-//
+
                 final JButton login = new JButton("Log in");
                 login.setBounds(22, 102, 120, 40);
                 login.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
+                        Authentication authentication = new Authentication();
                         login(usernamef, jPasswordField);
 
                         try {
@@ -268,24 +274,23 @@ public class AdvancedGUI {
                                 AdvancedGUI.password = (new String(AdvancedGUI.password).hashCode() + "").toCharArray();
                             }
 
-                            GrapplBuilder grapplBuilder = new GrapplBuilder();
-                            grapplBuilder.login(username, AdvancedGUI.password, jFrame);
+                            authentication.login(username, AdvancedGUI.password);
+                            activeAuthentication = authentication;
 
-                            grappl = grapplBuilder.build();
-
-                            if (grappl.getAuthentication().isLoggedIn()) {
+                            if (authentication.isLoggedIn()) {
                                 loggedIn.setText("Logged in as: " + username);
-                                if(grappl.getAuthentication().isPremium()) {
-                                    premium.setText("Beta tester: true, static port: " + grappl.getAuthentication().getStaticPort());
+
+                                if(authentication.isPremium()) {
+                                    premium.setText("Beta tester: true, static port: " + authentication.getStaticPort());
                                 }
-                                ClientLog.log("Logged in as " + grappl.getUsername());
-                                ClientLog.log("Beta tester: " + grappl.getAuthentication().isPremium());
-                                ClientLog.log("Static port: " + grappl.getAuthentication().getStaticPort());
+
+                                ClientLog.log("Logged in as " + authentication.getUsername());
+                                ClientLog.log("Beta tester: " + authentication.isPremium());
+                                ClientLog.log("Static port: " + authentication.getStaticPort());
                                 logIn();
 
-                                GrapplDataFile.saveUsername(grappl.getUsername(), AdvancedGUI.password);
+                                GrapplDataFile.saveUsername(authentication.getUsername(), AdvancedGUI.password);
                             }
-                            grappl = null;
                         } catch (Exception ere) {
                             ere.printStackTrace();
                         }

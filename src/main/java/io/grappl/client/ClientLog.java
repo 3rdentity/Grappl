@@ -22,15 +22,17 @@ public class ClientLog {
         System.out.println(theS);
         theLog.add(theS);
 
-        if(ConsoleWindow.display != null) {
-            JTextArea display = ConsoleWindow.display;
-            display.setText(null);
+        try {
+            if (ConsoleWindow.display != null) {
+                JTextArea display = ConsoleWindow.display;
+                display.setText(null);
 
-            List<String> log = ClientLog.getTheLog();
-            for(String s : log) {
-                display.append(s + "\n");
+                List<String> log = ClientLog.getTheLog();
+                for (String s : log) {
+                    display.append(s + "\n");
+                }
             }
-        }
+        } catch (Exception ignore) {}
 
         save();
     }
@@ -81,7 +83,7 @@ public class ClientLog {
                 e.printStackTrace();
             }
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         }
     }
 

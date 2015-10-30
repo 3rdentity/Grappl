@@ -61,12 +61,12 @@ public class Grappl {
      * Constructs a new Grappl and sets a generic locationprovider
      */
     public Grappl() {
+
+        ClientLog.log("CREATING GRAPPL CONNECTION");
         // Allows the terminal console to have commands act on the newest grappl object
 
         // Start command line command handling thread
         CommandHandler.createCommandThread(this);
-
-        authentication = new Authentication();
 
         locationProvider = new LocationProvider() {
             public NetworkLocation getLocation() {
@@ -424,5 +424,11 @@ public class Grappl {
         });
         heartBeatThread.setName("Grappl Heartbeat Thread");
         heartBeatThread.start();
+    }
+
+    private ClientLog clientLog = new ClientLog();;
+
+    public ClientLog getLog() {
+        return clientLog;
     }
 }
