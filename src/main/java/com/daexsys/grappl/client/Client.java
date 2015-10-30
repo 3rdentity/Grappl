@@ -35,11 +35,11 @@ public class Client {
             }
         }
 
+        Application.create(args);
+
         // If there should be a gui, create it
         if(displayGui) {
             new StandardGUI();
         }
-
-        Application.create(args);
     }
 }
