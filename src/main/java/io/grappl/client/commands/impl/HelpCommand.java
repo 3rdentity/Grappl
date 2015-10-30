@@ -16,6 +16,6 @@ public class HelpCommand implements Command{
             printedOutput += entries.getKey() + ", ";
         }
 
-        ClientLog.log(printedOutput.substring(0, printedOutput.length() - 2));
+        Application.getClientLog().log(printedOutput.substring(0, printedOutput.length() - 2));
     }
 }

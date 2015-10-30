@@ -1,5 +1,6 @@
 package io.grappl.client.commands.impl;
 
+import io.grappl.client.Application;
 import io.grappl.client.ClientLog;
 import io.grappl.client.api.Grappl;
 import io.grappl.client.commands.Command;
@@ -23,12 +24,12 @@ public class AccountCommand implements Command {
         }
 
         else if(subCommand.equalsIgnoreCase("info")) {
-            ClientLog.log(grappl.getUsername());
+            Application.getClientLog().log(grappl.getUsername());
         }
 
         // Need to redo to actually fetch static port related info.
         else if(subCommand.equalsIgnoreCase("staticports")) {
-            ClientLog.log(grappl.getExternalPort());
+            Application.getClientLog().log(grappl.getExternalPort());
         }
     }
 }

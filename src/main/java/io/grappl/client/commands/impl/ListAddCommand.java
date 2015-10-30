@@ -12,7 +12,7 @@ public class ListAddCommand implements Command {
     public void runCommand(Grappl grappl, String[] args) {
 
         try {
-            ClientLog.log("Adding to server list");
+            Application.getClientLog().log("Adding to server list");
 
             grappl.getAuthentication().getAuthDataOutputStream().writeByte(6);
             String game = args[1];

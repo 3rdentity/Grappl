@@ -1,5 +1,6 @@
 package io.grappl.client.commands.impl;
 
+import io.grappl.client.Application;
 import io.grappl.client.ClientLog;
 import io.grappl.client.api.Grappl;
 import io.grappl.client.commands.Command;
@@ -17,12 +18,12 @@ public class IpBanCommand implements Command {
                 PrintStream printStream = new PrintStream(grappl.getAuthentication().getAuthDataOutputStream());
                 printStream.println(ipToBAN);
 
-                ClientLog.log("Banned ip: " + ipToBAN);
+                Application.getClientLog().log("Banned ip: " + ipToBAN);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         } else {
-            ClientLog.log("You must be logged in to ban IPs.");
+            Application.getClientLog().log("You must be logged in to ban IPs.");
         }
     }
 }

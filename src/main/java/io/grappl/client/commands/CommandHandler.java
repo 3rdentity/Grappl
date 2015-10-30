@@ -1,6 +1,7 @@
 package io.grappl.client.commands;
 
 import io.grappl.GrapplGlobals;
+import io.grappl.client.Application;
 import io.grappl.client.ClientLog;
 import io.grappl.client.api.Grappl;
 import io.grappl.client.commands.impl.*;
@@ -56,7 +57,7 @@ public class CommandHandler {
             commandMap.get(args[0].toLowerCase()).runCommand(grappl, args);
         }
         else {
-            ClientLog.log("Unknown command");
+            Application.getClientLog().log("Unknown command");
         }
     }
 
@@ -67,7 +68,7 @@ public class CommandHandler {
                 @Override
                 public void run() {
 
-                    ClientLog.log(GrapplGlobals.APP_NAME + " Command Line");
+                    Application.getClientLog().log(GrapplGlobals.APP_NAME + " Command Line");
 
                     Scanner scanner = new Scanner(System.in);
 

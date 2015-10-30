@@ -1,5 +1,6 @@
 package io.grappl.client.commands.impl;
 
+import io.grappl.client.Application;
 import io.grappl.client.ClientLog;
 import io.grappl.client.api.Grappl;
 import io.grappl.client.commands.Command;
@@ -12,15 +13,15 @@ public class SetStaticPortCommand implements Command {
                 if (grappl.getAuthentication().isPremium()) {
                     grappl.getAuthentication().getAuthDataOutputStream().writeByte(2);
                     grappl.getAuthentication().getAuthDataOutputStream().writeInt(Integer.parseInt(args[1]));
-                    ClientLog.log("Your port was set to: " + Integer.parseInt(args[1]));
+                    Application.getClientLog().log("Your port was set to: " + Integer.parseInt(args[1]));
                 } else {
-                    ClientLog.log("You are not an alpha tester, so you can't set static ports.");
+                    Application.getClientLog().log("You are not an alpha tester, so you can't set static ports.");
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         } else {
-            ClientLog.log("You are not logged in.");
+            Application.getClientLog().log("You are not logged in.");
         }
     }
 }

@@ -61,7 +61,7 @@ public class Grappl {
      */
     public Grappl() {
 
-        ClientLog.log("CREATING GRAPPL CONNECTION");
+        Application.getClientLog().log("CREATING GRAPPL CONNECTION");
         // Allows the terminal console to have commands act on the newest grappl object
 
         // Start command line command handling thread
@@ -81,7 +81,7 @@ public class Grappl {
     public void connect(final String relayServer) {
         this.relayServerIP = relayServer;
 
-        ClientLog.log("Connecting: relayserver=" + relayServer + " localport=" + internalPort);
+        Application.getClientLog().log("Connecting: relayserver=" + relayServer + " localport=" + internalPort);
 
         try {
             // Create socket listener
@@ -95,12 +95,12 @@ public class Grappl {
                Currently can't because readLine() blocks the execution.
              */
 
-            ClientLog.log("Hosting on: " + relayServer + ":" + externalPort);
+            Application.getClientLog().log("Hosting on: " + relayServer + ":" + externalPort);
 
             // If a GUI is associated with this Grappl, do GUI things
             if (gui != null) {
                 gui.initializeGUI(relayServer, externalPort, internalPort);
-                ClientLog.log("GUI aspects initialized");
+                Application.getClientLog().log("GUI aspects initialized");
             }
 
             // Create heartbeat thread that is used to monitor whether or not the client is still connected to the server.
@@ -118,7 +118,7 @@ public class Grappl {
     public void restart() {
         if(intentionallyDisconnected) return;
 
-        ClientLog.log("Reconnecting...");
+        Application.getClientLog().log("Reconnecting...");
 
 //        if(getAuthentication().isLoggedIn()) {
 ////            DataInputStream dataInputStream;
@@ -143,16 +143,16 @@ public class Grappl {
 ////                isLoggedIn = success;
 ////
 ////                if (success) {
-////                    ClientLog.log("Logged in as " + username);
-////                    ClientLog.log("Alpha tester: " + alpha);
-////                    ClientLog.log("Static port: " + port);
+////                    Application.getClientLog().log("Logged in as " + username);
+////                    Application.getClientLog().log("Alpha tester: " + alpha);
+////                    Application.getClientLog().log("Static port: " + port);
 ////
 ////                    // options: nyc. sf. pac. lon. deu.
 ////                    String prefix = dataInputStream.readLine();
 ////
 ////                    String domain = prefix + "." + GrapplGlobals.DOMAIN;
 ////
-////                    ClientLog.log(domain);
+////                    Application.getClientLog().log(domain);
 ////
 ////                    if(gui != null) {
 ////                        int wX = gui.getjFrame().getX();
@@ -178,7 +178,7 @@ public class Grappl {
 ////                        jButton.setBounds(0, 95, 280, 100);
 ////                    }
 ////                } else {
-////                    ClientLog.log("Login failed!");
+////                    Application.getClientLog().log("Login failed!");
 ////                }
 ////            } catch (Exception e) {
 ////                e.printStackTrace();
@@ -281,9 +281,9 @@ public class Grappl {
         final List<ExClientConnection> connectedClients = new ArrayList<ExClientConnection>();
 
         if(gui != null) {
-            getGui().jLabel3 = new JLabel("Connected clients: " + getStatMonitor().getOpenConnections());
-            getGui().jLabel3.setBounds(5, 45, 450, 20);
-            gui.getjFrame().add(getGui().jLabel3);
+            getGui().getConnectedClientsLabel().setText("Connected clients: " + getStatMonitor().getOpenConnections());
+            getGui().getConnectedClientsLabel().setBounds(5, 45, 450, 20);
+            gui.getjFrame().add(getGui().getConnectedClientsLabel());
             gui.getjFrame().repaint();
         }
 
@@ -294,7 +294,7 @@ public class Grappl {
                     while(true) {
                         // This goes off when a new client attempts to connect.
                         String userIP = messageInputStream.readLine();
-                        ClientLog.log("A user has connected from ip " + userIP.substring(1, userIP.length()));
+                        Application.getClientLog().log("A user has connected from ip " + userIP.substring(1, userIP.length()));
 
                         userConnects(new UserConnectEvent(userIP));
 
@@ -306,7 +306,7 @@ public class Grappl {
                 } catch (IOException e) {
                     try {
                         messageSocket.close();
-                        ClientLog.log("Connection with message server has been broken. Unfortunate.");
+                        Application.getClientLog().log("Connection with message server has been broken. Unfortunate.");
                     } catch (IOException ignore) {}
                 }
             }
@@ -349,7 +349,7 @@ public class Grappl {
             }
         }
 
-        ClientLog.log("Sockets closed");
+        Application.getClientLog().log("Sockets closed");
     }
 
     /**
@@ -357,7 +357,7 @@ public class Grappl {
      * when the heartbeat thread is interrupted.
      */
     private void isDown() {
-        ClientLog.log("Lost connection to remote");
+        Application.getClientLog().log("Lost connection to remote");
         closeAllSockets();
 
         Thread reconnectThread = new Thread(new Runnable() {
@@ -370,7 +370,7 @@ public class Grappl {
                         restart();
                         return;
                     } catch (IOException e) {
-                        ClientLog.log("Attempting reconnect");
+                        Application.getClientLog().log("Attempting reconnect");
                     }
 
                     try {
@@ -404,7 +404,7 @@ public class Grappl {
                     e.printStackTrace();
                 }
 
-                ClientLog.log("Connected to heartbeat server");
+                Application.getClientLog().log("Connected to heartbeat server");
 
                 while(true) {
                     try {

@@ -1,6 +1,7 @@
 package io.grappl.client.gui;
 
 import io.grappl.GrapplGlobals;
+import io.grappl.client.Application;
 import io.grappl.client.ClientLog;
 import io.grappl.client.GrapplDataFile;
 import io.grappl.client.api.Authentication;
@@ -26,14 +27,14 @@ import java.net.URI;
 public class AdvancedGUI {
     private JList<String> jList;
 
-    private JLabel loggedIn;
-    private JLabel premium;
+    private JLabel isLoggedInLabel;
+    private JLabel premiumLabel;
 
     private String username;
     private char[] password;
     private boolean isActuallyHash;
 
-    private Grappl grappl;
+    private Grappl focusedGrappl;
     private JLabel connectionLabel;
     private JLabel portLabel;
 
@@ -105,15 +106,15 @@ public class AdvancedGUI {
         update.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (grappl != null) {
+                if (focusedGrappl != null) {
                     try {
                         int portValue = Integer.parseInt(jTextField.getText());
 
                         if (portValue > 65535) {
                             JOptionPane.showConfirmDialog(jFrame, "Value too high. Port must be equal to or lower than 65535");
                         } else {
-                            grappl.setInternalPort(Integer.parseInt(jTextField.getText()));
-                            portLabel.setText("Local port: " + grappl.getInternalPort());
+                            focusedGrappl.setInternalPort(Integer.parseInt(jTextField.getText()));
+                            portLabel.setText("Local port: " + focusedGrappl.getInternalPort());
                         }
                     } catch (NumberFormatException ignore) {
                         JOptionPane.showConfirmDialog(jFrame, "Value too high. Port must be equal to or lower than 65535");
@@ -130,29 +131,29 @@ public class AdvancedGUI {
         open.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (grappl == null) {
+                if (focusedGrappl == null) {
 
-                    grappl = new Grappl();
-                    grappl.useAuthentication(activeAuthentication);
-                    grappl.setInternalPort(Integer.parseInt(jTextField.getText()));
+                    focusedGrappl = new Grappl();
+                    focusedGrappl.useAuthentication(activeAuthentication);
+                    focusedGrappl.setInternalPort(Integer.parseInt(jTextField.getText()));
 
-                    grappl.connect(((String) jComboBox.getSelectedItem()).split("\\s+")[0]);
+                    focusedGrappl.connect(((String) jComboBox.getSelectedItem()).split("\\s+")[0]);
 
-                    grappl.addUserConnectListener(new UserConnectListener() {
+                    focusedGrappl.addUserConnectListener(new UserConnectListener() {
                         @Override
                         public void userConnected(UserConnectEvent userConnectEvent) {
                             ((DefaultListModel<String>) jList.getModel()).addElement(userConnectEvent.getAddress());
                         }
                     });
 
-                    grappl.addUserDisconnectListener(new UserDisconnectListener() {
+                    focusedGrappl.addUserDisconnectListener(new UserDisconnectListener() {
                         @Override
                         public void userDisconnected(UserDisconnectEvent userDisconnectEvent) {
                             ((DefaultListModel<String>) jList.getModel()).addElement(userDisconnectEvent.getAddress());
                         }
                     });
-                    connectionLabel.setText("Public at: " + grappl.getRelayServer() + ":" + grappl.getExternalPort());
-                    portLabel.setText("Local port: " + grappl.getInternalPort());
+                    connectionLabel.setText("Public at: " + focusedGrappl.getRelayServer() + ":" + focusedGrappl.getExternalPort());
+                    portLabel.setText("Local port: " + focusedGrappl.getInternalPort());
                     close.setEnabled(true);
                 } else {
                     JOptionPane.showMessageDialog(jFrame, "Grappl connection already open! Close it before opening another.");
@@ -165,10 +166,10 @@ public class AdvancedGUI {
         close.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                grappl.disconnect();
+                focusedGrappl.disconnect();
                 connectionLabel.setText("Not connected - Tunnel closed");
-                ClientLog.log("Disconnected..");
-                grappl = null;
+                Application.getClientLog().log("Disconnected..");
+                focusedGrappl = null;
                 close.setEnabled(false);
             }
         });
@@ -189,7 +190,7 @@ public class AdvancedGUI {
         jButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new ConsoleWindow(grappl);
+                new ConsoleWindow(focusedGrappl);
             }
         });
         jButton.setBounds(dist, 200, 250, 30);
@@ -200,15 +201,15 @@ public class AdvancedGUI {
         jScrollPane.setBounds(dist, 130, 250, 60);
         jFrame.add(jScrollPane);
 
-        loggedIn = new JLabel();
-        loggedIn.setText("Anonymous: Not logged in");
-        loggedIn.setBounds(dist, 20, 250, 20);
-        jFrame.add(loggedIn);
+        isLoggedInLabel = new JLabel();
+        isLoggedInLabel.setText("Anonymous: Not logged in");
+        isLoggedInLabel.setBounds(dist, 20, 250, 20);
+        jFrame.add(isLoggedInLabel);
 
-        premium = new JLabel();
-        premium.setText("Beta tester: false");
-        premium.setBounds(dist, 40, 250, 20);
-        jFrame.add(premium);
+        premiumLabel = new JLabel();
+        premiumLabel.setText("Beta tester: false");
+        premiumLabel.setBounds(dist, 40, 250, 20);
+        jFrame.add(premiumLabel);
 
         final AdvancedGUI theGUI = this;
         logIn = new JButton("Log in");
@@ -264,7 +265,7 @@ public class AdvancedGUI {
                     jPasswordField.setText(password);
                     isActuallyHash = true;
                 } else {
-                    ClientLog.log("Password is null");
+                    Application.getClientLog().log("Password is null");
                 }
                 jFrame.add(jPasswordField);
 
@@ -285,15 +286,15 @@ public class AdvancedGUI {
                             activeAuthentication = authentication;
 
                             if (authentication.isLoggedIn()) {
-                                loggedIn.setText("Logged in as: " + username);
+                                isLoggedInLabel.setText("Logged in as: " + username);
 
                                 if(authentication.isPremium()) {
-                                    premium.setText("Beta tester: true, static port: " + authentication.getStaticPort());
+                                    premiumLabel.setText("Beta tester: true, static port: " + authentication.getStaticPort());
                                 }
 
-                                ClientLog.log("Logged in as " + authentication.getUsername());
-                                ClientLog.log("Beta tester: " + authentication.isPremium());
-                                ClientLog.log("Static port: " + authentication.getStaticPort());
+                                Application.getClientLog().log("Logged in as " + authentication.getUsername());
+                                Application.getClientLog().log("Beta tester: " + authentication.isPremium());
+                                Application.getClientLog().log("Static port: " + authentication.getStaticPort());
                                 logIn();
 
                                 GrapplDataFile.saveUsername(authentication.getUsername(), theGUI.password);
@@ -368,8 +369,8 @@ public class AdvancedGUI {
         jFrame.add(logIn);
         jFrame.add(signUpButton);
         donateButton.setBounds(290 + 180, 70, 80, 30);
-        loggedIn.setText("Anonymous: Not logged in");
-        premium.setText("Beta tester: false");
+        isLoggedInLabel.setText("Anonymous: Not logged in");
+        premiumLabel.setText("Beta tester: false");
         jFrame.repaint();
     }
 

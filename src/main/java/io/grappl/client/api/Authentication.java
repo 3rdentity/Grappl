@@ -1,6 +1,7 @@
 package io.grappl.client.api;
 
 import io.grappl.GrapplGlobals;
+import io.grappl.client.Application;
 import io.grappl.client.ClientLog;
 
 import javax.swing.*;
@@ -34,11 +35,11 @@ public class Authentication {
     }
 
     public Authentication() {
-        ClientLog.log("AUTHENTICATION CONNECTION CREATED " + getConnectionUUID());
+        Application.getClientLog().log("AUTHENTICATION CONNECTION CREATED " + getConnectionUUID());
     }
 
     public Authentication(JFrame jFrame) {
-        ClientLog.log("AUTHENTICATION CONNECTION CREATED " + getConnectionUUID());
+        Application.getClientLog().log("AUTHENTICATION CONNECTION CREATED " + getConnectionUUID());
         this.optionalFrame = jFrame;
     }
 

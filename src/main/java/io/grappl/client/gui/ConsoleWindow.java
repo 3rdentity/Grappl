@@ -31,7 +31,7 @@ public class ConsoleWindow {
             @Override
             public void windowClosing(WindowEvent e) {
                 try {
-                    grappl.getGui().theConsoleWindow = null;
+                    grappl.getGui().destroyConsoleWindow();
                 } catch (Exception ignore) {}
 
             }

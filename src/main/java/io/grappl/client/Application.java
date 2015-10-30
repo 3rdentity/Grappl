@@ -9,9 +9,15 @@ import io.grappl.client.commands.CommandHandler;
 public class Application {
 
     private static CommandHandler commandHandler;
+    private static ClientLog clientLog;
 
     public static void create(String[] args) {
         commandHandler = new CommandHandler();
+        clientLog = new ClientLog();
+    }
+
+    public static ClientLog getClientLog() {
+        return clientLog;
     }
 
     public static CommandHandler getCommandHandler() {

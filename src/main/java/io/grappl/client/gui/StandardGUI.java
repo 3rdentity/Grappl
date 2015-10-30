@@ -1,6 +1,7 @@
 package io.grappl.client.gui;
 
 import io.grappl.GrapplGlobals;
+import io.grappl.client.Application;
 import io.grappl.client.ClientLog;
 import io.grappl.client.GrapplDataFile;
 import io.grappl.client.api.Grappl;
@@ -20,13 +21,13 @@ import java.net.URI;
  */
 public class StandardGUI {
 
-    private static final String COMMAND_BUTTON_TEXT = "...";
+    private final String COMMAND_BUTTON_TEXT = "...";
 
-    public JFrame jFrame;
+    private JFrame jFrame;
     private Grappl grappl;
     private boolean isActuallyHash = false;
-    protected ConsoleWindow theConsoleWindow;
-    public JLabel jLabel3;
+    private ConsoleWindow theConsoleWindow;
+    private JLabel connectedClientsLabel;
 
     public StandardGUI() {
         try {
@@ -83,8 +84,10 @@ public class StandardGUI {
             jPasswordField.setText(password);
             isActuallyHash = true;
         } else {
-            ClientLog.log("Password is null");
+            Application.getClientLog().log("Password is null");
         }
+
+        connectedClientsLabel = new JLabel("Waiting for connections");
 
         final JCheckBox rememberMeBox = new JCheckBox();
         rememberMeBox.setBounds(10, 87, 20, 20);
@@ -189,6 +192,10 @@ public class StandardGUI {
         }
     }
 
+    public JLabel getConnectedClientsLabel() {
+        return connectedClientsLabel;
+    }
+
     public void initializeGUI(String relayServerIP, String publicPort, int localPort) {
         final JTextPane label = new JTextPane();
         label.setContentType("text");
@@ -214,8 +221,8 @@ public class StandardGUI {
             @Override
             public void run() {
                 while (true) {
-                    if (jLabel4 != null && jLabel3 != null) {
-                        jLabel3.setText("Connected clients: " + grappl.getStatMonitor().getOpenConnections());
+                    if (jLabel4 != null && connectedClientsLabel != null) {
+                        connectedClientsLabel.setText("Connected clients: " + grappl.getStatMonitor().getOpenConnections());
                         jLabel4.setText("Sent Data: " + grappl.getStatMonitor().getSentDataKB() + "KB - Recv Data: " + grappl.getStatMonitor().getReceivedKB() + "KB");
                         getjFrame().repaint();
                     }
@@ -250,9 +257,9 @@ public class StandardGUI {
             grappl = grapplBuilder.build();
 
             if(grappl.getAuthentication().isLoggedIn()) {
-                ClientLog.log("Logged in as " + grappl.getUsername());
-                ClientLog.log("Alpha tester: " + grappl.getAuthentication().isPremium());
-                ClientLog.log("Static port: " + grappl.getExternalPort());
+                Application.getClientLog().log("Logged in as " + grappl.getUsername());
+                Application.getClientLog().log("Alpha tester: " + grappl.getAuthentication().isPremium());
+                Application.getClientLog().log("Static port: " + grappl.getExternalPort());
 
                 if(!rememberMeBox.isSelected()) {
                     password = null;
@@ -323,10 +330,14 @@ public class StandardGUI {
                     JOptionPane.showMessageDialog(getjFrame(), "The value you entered is not a number");
                 }
             } else {
-                ClientLog.log("Login failed!");
+                Application.getClientLog().log("Login failed!");
             }
         } catch (Exception esdfe) {
-            ClientLog.log("Yeah... that shouldn't have happened. Type the darn port next time!");
+            Application.getClientLog().log("Yeah... that shouldn't have happened. Type the darn port next time!");
         }
+    }
+
+    public void destroyConsoleWindow() {
+        theConsoleWindow = null;
     }
 }

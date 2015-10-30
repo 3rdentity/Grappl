@@ -11,7 +11,7 @@ public class ListRemoveCommand implements Command {
     @Override
     public void runCommand(Grappl grappl, String[] args) {
         try {
-            ClientLog.log("Removing from server list");
+            Application.getClientLog().log("Removing from server list");
             grappl.getAuthentication().getAuthDataOutputStream().writeByte(7);
             PrintStream printStream = new PrintStream(grappl.getAuthentication().getAuthDataOutputStream());
             printStream.println(Application.getCommandHandler().returnBuffer);

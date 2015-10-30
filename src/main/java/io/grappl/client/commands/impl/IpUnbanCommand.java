@@ -1,5 +1,6 @@
 package io.grappl.client.commands.impl;
 
+import io.grappl.client.Application;
 import io.grappl.client.ClientLog;
 import io.grappl.client.api.Grappl;
 import io.grappl.client.commands.Command;
@@ -18,12 +19,12 @@ public class IpUnbanCommand implements Command {
                 PrintStream printStream = new PrintStream(grappl.getAuthentication().getAuthDataOutputStream());
                 printStream.println(ipToUnban);
 
-                ClientLog.log("Unbanned ip: " + ipToUnban);
+                Application.getClientLog().log("Unbanned ip: " + ipToUnban);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         } else {
-            ClientLog.log("You must be logged in to unban IPs.");
+            Application.getClientLog().log("You must be logged in to unban IPs.");
         }
     }
 }

@@ -1,5 +1,6 @@
 package io.grappl.client.other;
 
+import io.grappl.client.Application;
 import io.grappl.client.ClientLog;
 import io.grappl.client.api.Grappl;
 import io.grappl.client.api.NetworkLocation;
@@ -61,7 +62,7 @@ public class ExClientConnection {
             outward.setSoTimeout(10000);
             grappl.getSockets().add(outward);
 
-            ClientLog.detailed(uuid + " connection active " + address.substring(1, address.length())
+            Application.getClientLog().detailed(uuid + " connection active " + address.substring(1, address.length())
                     + " -> " + internalServer.getAddress() + ":" + internalServer.getPort());
 
             // Start the local -> remote thread
@@ -134,7 +135,7 @@ public class ExClientConnection {
             });
             inwardCurrent.start();
         } catch (Exception e) {
-            ClientLog.log("ERROR: Failed to connect " + address.substring(1, address.length()) + " to internal server!");
+            Application.getClientLog().log("ERROR: Failed to connect " + address.substring(1, address.length()) + " to internal server!");
             acknowledgeDisconnect();
         }
     }
@@ -159,7 +160,7 @@ public class ExClientConnection {
         if(!open) {
             open = false;
             grappl.getStatMonitor().closeConnection();
-            ClientLog.log(address + " has been disconnected");
+            Application.getClientLog().log(address + " has been disconnected");
         }
     }
 

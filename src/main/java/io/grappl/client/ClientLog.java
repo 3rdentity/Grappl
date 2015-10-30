@@ -15,11 +15,15 @@ import java.util.List;
  * Eventually start using logging framework?
  */
 public class ClientLog {
-    public static List<String> theLog = new ArrayList<String>();
+    private List<String> theLog = new ArrayList<String>();
 
-    public static void log(String toBeLogged) {
+    public static void log(String message) {
+        Application.getClientLog().plog(message);
+    }
+
+    public void plog(String message) {
         String tag = DateFormat.getDateTimeInstance().format(new Date(System.currentTimeMillis()));
-        String theS = "[" + tag + "] " + toBeLogged;
+        String theS = "[" + tag + "] " + message;
         System.out.println(theS);
         theLog.add(theS);
 
@@ -28,7 +32,7 @@ public class ClientLog {
                 JTextArea display = ConsoleWindow.display;
                 display.setText(null);
 
-                List<String> log = ClientLog.getTheLog();
+                List<String> log = this.getTheLog();
                 for (String s : log) {
                     display.append(s + "\n");
                 }
@@ -38,10 +42,10 @@ public class ClientLog {
         save();
     }
 
-    public static void detailed(String toBeLogged) {
+    public void detailed(String message) {
         if(GrapplGlobals.doDetailedLogging) {
             String tag = DateFormat.getDateTimeInstance().format(new Date(System.currentTimeMillis()));
-            String theS = "[" + tag + "] " + toBeLogged;
+            String theS = "[" + tag + "] " + message;
             System.out.println(theS);
             theLog.add(theS);
 
@@ -49,7 +53,7 @@ public class ClientLog {
                 JTextArea display = ConsoleWindow.display;
                 display.setText(null);
 
-                List<String> log = ClientLog.getTheLog();
+                List<String> log = this.getTheLog();
                 for (String s : log) {
                     display.append(s + "\n");
                 }
@@ -59,7 +63,7 @@ public class ClientLog {
         }
     }
 
-    public static void save() {
+    public void save() {
         try {
             File dirs = new File(GrapplDataFile.getOSSpecificLocation());
             dirs.mkdirs();
@@ -88,7 +92,7 @@ public class ClientLog {
         }
     }
 
-    public static List<String> getTheLog() {
+    public List<String> getTheLog() {
         return theLog;
     }
 }
