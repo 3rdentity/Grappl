@@ -24,24 +24,24 @@ import java.net.URI;
  * after Grappl opens.
  */
 public class AdvancedGUI {
-    public static JList<String> jList;
+    private JList<String> jList;
 
-    public static JLabel loggedIn;
-    public static JLabel premium;
+    private JLabel loggedIn;
+    private JLabel premium;
 
-    private static String username;
-    private static char[] password;
-    private static boolean isActuallyHash;
+    private String username;
+    private char[] password;
+    private boolean isActuallyHash;
 
-    public static Grappl grappl;
-    public static JLabel connectionLabel;
-    public static JLabel portLabel;
+    private Grappl grappl;
+    private JLabel connectionLabel;
+    private JLabel portLabel;
 
-    public JButton logIn;
-    public JButton signUpButton;
-    public JButton donateButton;
-    public JButton logOut;
-    public JFrame jFrame;
+    private JButton logIn;
+    private JButton signUpButton;
+    private JButton donateButton;
+    private JButton logOut;
+    private JFrame jFrame;
 
     private Authentication activeAuthentication;
 
@@ -210,6 +210,7 @@ public class AdvancedGUI {
         premium.setBounds(dist, 40, 250, 20);
         jFrame.add(premium);
 
+        final AdvancedGUI theGUI = this;
         logIn = new JButton("Log in");
         logIn.setBounds(dist, 70, 80, 30);
         logIn.addActionListener(new ActionListener() {
@@ -277,10 +278,10 @@ public class AdvancedGUI {
 
                         try {
                             if (!isActuallyHash || !GrapplGlobals.usingSavedHashPass) {
-                                AdvancedGUI.password = (new String(AdvancedGUI.password).hashCode() + "").toCharArray();
+                                theGUI.password = (new String(theGUI.password).hashCode() + "").toCharArray();
                             }
 
-                            authentication.login(username, AdvancedGUI.password);
+                            authentication.login(username, theGUI.password);
                             activeAuthentication = authentication;
 
                             if (authentication.isLoggedIn()) {
@@ -295,7 +296,7 @@ public class AdvancedGUI {
                                 ClientLog.log("Static port: " + authentication.getStaticPort());
                                 logIn();
 
-                                GrapplDataFile.saveUsername(authentication.getUsername(), AdvancedGUI.password);
+                                GrapplDataFile.saveUsername(authentication.getUsername(), theGUI.password);
                             }
                         } catch (Exception ere) {
                             ere.printStackTrace();

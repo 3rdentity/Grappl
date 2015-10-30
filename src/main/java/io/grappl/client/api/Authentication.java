@@ -35,12 +35,11 @@ public class Authentication {
 
     public Authentication() {
         ClientLog.log("AUTHENTICATION CONNECTION CREATED " + getConnectionUUID());
-//        dumpStackTrace();
     }
 
     public Authentication(JFrame jFrame) {
-        ClientLog.log("AUTHENTICATION CONNECTION CREATED " + getConnectionUUID()); this.optionalFrame = jFrame;
-//        dumpStackTrace();
+        ClientLog.log("AUTHENTICATION CONNECTION CREATED " + getConnectionUUID());
+        this.optionalFrame = jFrame;
     }
 
     public void dumpStackTrace() {
