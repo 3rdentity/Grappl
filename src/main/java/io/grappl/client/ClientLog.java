@@ -17,11 +17,7 @@ import java.util.List;
 public class ClientLog {
     private List<String> theLog = new ArrayList<String>();
 
-    public static void log(String message) {
-        Application.getClientLog().plog(message);
-    }
-
-    public void plog(String message) {
+    public void log(String message) {
         String tag = DateFormat.getDateTimeInstance().format(new Date(System.currentTimeMillis()));
         String theS = "[" + tag + "] " + message;
         System.out.println(theS);
