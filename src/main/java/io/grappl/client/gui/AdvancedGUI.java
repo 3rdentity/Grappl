@@ -355,7 +355,6 @@ public class AdvancedGUI {
         jFrame.remove(logOut);
         jFrame.add(logIn);
         jFrame.add(signUpButton);
-//        grappl.getAuthentication().logout();
         donateButton.setBounds(290 + 180, 70, 80, 30);
         loggedIn.setText("Anonymous: Not logged in");
         premium.setText("Beta tester: false");
@@ -365,9 +364,5 @@ public class AdvancedGUI {
     public void login(JTextField usernamef, JPasswordField jPasswordField) {
         username = usernamef.getText().toLowerCase();
         password = jPasswordField.getPassword();
-    }
-
-    public static void main(String[] args) {
-        new AdvancedGUI().create();
     }
 }

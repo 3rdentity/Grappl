@@ -26,6 +26,7 @@ public class GrapplDataFile {
         File file = new File(getOSSpecificLocation() + "/user.dat");
 
         new File(getOSSpecificLocation()).mkdirs();
+
         try {
             file.createNewFile();
         } catch (IOException e) {

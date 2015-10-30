@@ -53,7 +53,7 @@ public class Grappl {
     private List<UserDisconnectListener> userDisconnectListeners = new ArrayList<UserDisconnectListener>();
 
     // Various experiments and such
-    private StatMonitor statMonitor = new StatMonitor();
+    private StatMonitor statMonitor = new StatMonitor(this);
     private List<Socket> sockets = new ArrayList<Socket>();
 
     /**
