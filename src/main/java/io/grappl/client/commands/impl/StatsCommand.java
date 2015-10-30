@@ -23,6 +23,7 @@ public class StatsCommand implements Command {
             StatMonitor statsManager = grappl.getStatMonitor();
 
             ClientLog.log("== CURRENT CONNECTION STATISTICS ====");
+            ClientLog.log(statsManager.getTotalConnections() + " clients connected");
             ClientLog.log(statsManager.getReceivedData() + " bytes received");
             ClientLog.log(statsManager.getSentData() + " bytes sent");
             ClientLog.log("=====================================");

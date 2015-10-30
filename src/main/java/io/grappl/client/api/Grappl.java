@@ -6,6 +6,7 @@ import io.grappl.client.api.event.UserConnectEvent;
 import io.grappl.client.api.event.UserConnectListener;
 import io.grappl.client.api.event.UserDisconnectEvent;
 import io.grappl.client.api.event.UserDisconnectListener;
+import io.grappl.client.commands.CommandHandler;
 import io.grappl.client.gui.StandardGUI;
 import io.grappl.client.other.ExClientConnection;
 
@@ -61,7 +62,10 @@ public class Grappl {
      */
     public Grappl() {
         // Allows the terminal console to have commands act on the newest grappl object
-        GrapplGlobals.theGrappl = this;
+
+        // Start command line command handling thread
+        CommandHandler.createCommandThread(this);
+
         authentication = new Authentication();
 
         locationProvider = new LocationProvider() {
@@ -118,68 +122,68 @@ public class Grappl {
         ClientLog.log("Reconnecting...");
 
 //        if(getAuthentication().isLoggedIn()) {
-//            DataInputStream dataInputStream;
-//            DataOutputStream dataOutputStream;
-//
-//            try {
-//                Socket socket = new Socket(GrapplGlobals.DOMAIN, GrapplGlobals.AUTHENTICATION);
-//                dataInputStream = new DataInputStream(socket.getInputStream());
-//                dataOutputStream = new DataOutputStream(socket.getOutputStream());
-//
-//                dataOutputStream.writeByte(0);
-//
-//                PrintStream printStream = new PrintStream(dataOutputStream);
-//
-//                printStream.println(username.toLowerCase());
-//                printStream.println(password);
-//
-//                boolean success = dataInputStream.readBoolean();
-//                boolean alpha = dataInputStream.readBoolean();
-//                int port = dataInputStream.readInt();
-//                isPremium = alpha;
-//                isLoggedIn = success;
-//
-//                if (success) {
-//                    ClientLog.log("Logged in as " + username);
-//                    ClientLog.log("Alpha tester: " + alpha);
-//                    ClientLog.log("Static port: " + port);
-//
-//                    // options: nyc. sf. pac. lon. deu.
-//                    String prefix = dataInputStream.readLine();
-//
-//                    String domain = prefix + "." + GrapplGlobals.DOMAIN;
-//
-//                    ClientLog.log(domain);
-//
-//                    if(gui != null) {
-//                        int wX = gui.getjFrame().getX();
-//                        int wY = gui.getjFrame().getY();
-//
-//                        gui.getjFrame().setVisible(false);
-//                        gui.jFrame = new JFrame(GrapplGlobals.APP_NAME + " Client (" + username + ")");
-//                        // 300, 240
-//                        gui.getjFrame().setSize(new Dimension(300, 240));
-//                        gui.getjFrame().setLocation(wX, wY);
-//
-//                        gui.getjFrame().setVisible(true);
-//                        gui.getjFrame().setLayout(null);
-//                        gui.getjFrame().setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-//
-//                        JButton jButton = new JButton("Close " + GrapplGlobals.APP_NAME + " Client");
-//                        jButton.addActionListener(new ActionListener() {
-//                            public void actionPerformed(ActionEvent e) {
-//                                System.exit(0);
-//                            }
-//                        });
-//                        gui.getjFrame().add(jButton);
-//                        jButton.setBounds(0, 95, 280, 100);
-//                    }
-//                } else {
-//                    ClientLog.log("Login failed!");
-//                }
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
+////            DataInputStream dataInputStream;
+////            DataOutputStream dataOutputStream;
+////
+////            try {
+////                Socket socket = new Socket(GrapplGlobals.DOMAIN, GrapplGlobals.AUTHENTICATION);
+////                dataInputStream = new DataInputStream(socket.getInputStream());
+////                dataOutputStream = new DataOutputStream(socket.getOutputStream());
+////
+////                dataOutputStream.writeByte(0);
+////
+////                PrintStream printStream = new PrintStream(dataOutputStream);
+////
+////                printStream.println(username.toLowerCase());
+////                printStream.println(password);
+////
+////                boolean success = dataInputStream.readBoolean();
+////                boolean alpha = dataInputStream.readBoolean();
+////                int port = dataInputStream.readInt();
+////                isPremium = alpha;
+////                isLoggedIn = success;
+////
+////                if (success) {
+////                    ClientLog.log("Logged in as " + username);
+////                    ClientLog.log("Alpha tester: " + alpha);
+////                    ClientLog.log("Static port: " + port);
+////
+////                    // options: nyc. sf. pac. lon. deu.
+////                    String prefix = dataInputStream.readLine();
+////
+////                    String domain = prefix + "." + GrapplGlobals.DOMAIN;
+////
+////                    ClientLog.log(domain);
+////
+////                    if(gui != null) {
+////                        int wX = gui.getjFrame().getX();
+////                        int wY = gui.getjFrame().getY();
+////
+////                        gui.getjFrame().setVisible(false);
+////                        gui.jFrame = new JFrame(GrapplGlobals.APP_NAME + " Client (" + username + ")");
+////                        // 300, 240
+////                        gui.getjFrame().setSize(new Dimension(300, 240));
+////                        gui.getjFrame().setLocation(wX, wY);
+////
+////                        gui.getjFrame().setVisible(true);
+////                        gui.getjFrame().setLayout(null);
+////                        gui.getjFrame().setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+////
+////                        JButton jButton = new JButton("Close " + GrapplGlobals.APP_NAME + " Client");
+////                        jButton.addActionListener(new ActionListener() {
+////                            public void actionPerformed(ActionEvent e) {
+////                                System.exit(0);
+////                            }
+////                        });
+////                        gui.getjFrame().add(jButton);
+////                        jButton.setBounds(0, 95, 280, 100);
+////                    }
+////                } else {
+////                    ClientLog.log("Login failed!");
+////                }
+////            } catch (Exception e) {
+////                e.printStackTrace();
+////            }
 //        }
 
         connect(relayServerIP);

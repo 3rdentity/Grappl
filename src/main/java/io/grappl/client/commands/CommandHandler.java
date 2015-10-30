@@ -19,6 +19,8 @@ public class CommandHandler {
 
     public static Socket authSocket;
 
+    private static boolean commandThreadStarted = false;
+
     public static Map<String, Command> commandMap = new HashMap<String, Command>();
 
     static {
@@ -56,7 +58,7 @@ public class CommandHandler {
         String[] args = command.split("\\s+");
 
         if (commandMap.containsKey(args[0].toLowerCase())) {
-            commandMap.get(args[0].toLowerCase()).runCommand(GrapplGlobals.theGrappl, args, dataInputStream, dataOutputStream);
+            commandMap.get(args[0].toLowerCase()).runCommand(grappl, args, dataInputStream, dataOutputStream);
         }
 
         else {
@@ -64,47 +66,52 @@ public class CommandHandler {
         }
     }
 
-    public static void createCommandThread() {
+    public static void createCommandThread(final Grappl grappl) {
 
         try {
-            // Open connection to auth server (@ grappl.io)
-            authSocket = new Socket(GrapplGlobals.DOMAIN, GrapplGlobals.AUTHENTICATION);
+            if(authSocket == null) {
+                // Open connection to auth server (@ grappl.io)
+                authSocket = new Socket(GrapplGlobals.DOMAIN, GrapplGlobals.AUTHENTICATION);
+            }
 
-            Thread commandThread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    DataInputStream dataInputStream = null;
-                    DataOutputStream dataOutputStream = null;
+            if(!commandThreadStarted) {
+                Thread commandThread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        DataInputStream dataInputStream = null;
+                        DataOutputStream dataOutputStream = null;
 
-                    try {
-                        dataInputStream = new DataInputStream(authSocket.getInputStream());
-                        dataOutputStream = new DataOutputStream(authSocket.getOutputStream());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    ClientLog.log(GrapplGlobals.APP_NAME + " Command Line");
-
-                    Scanner scanner = new Scanner(System.in);
-
-                    while (scanner.hasNextLine()) {
                         try {
-                            String line = scanner.nextLine();
-                            String[] args = line.split("\\s+");
-
-                            if (commandMap.containsKey(args[0].toLowerCase())) {
-                                commandMap.get(args[0].toLowerCase()).runCommand(GrapplGlobals.theGrappl, args, dataInputStream, dataOutputStream);
-                            }
-                        } catch (Exception e) {
+                            dataInputStream = new DataInputStream(authSocket.getInputStream());
+                            dataOutputStream = new DataOutputStream(authSocket.getOutputStream());
+                        } catch (IOException e) {
                             e.printStackTrace();
-                            return;
+                        }
+
+                        ClientLog.log(GrapplGlobals.APP_NAME + " Command Line");
+
+                        Scanner scanner = new Scanner(System.in);
+
+                        while (scanner.hasNextLine()) {
+                            try {
+                                String line = scanner.nextLine();
+                                String[] args = line.split("\\s+");
+
+                                if (commandMap.containsKey(args[0].toLowerCase())) {
+                                    commandMap.get(args[0].toLowerCase()).runCommand(grappl, args, dataInputStream, dataOutputStream);
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                return;
+                            }
                         }
                     }
-                }
-            });
+                });
 
-            commandThread.setName("Grappl Command Thread");
-            commandThread.start();
+                commandThread.setName("Grappl Command Thread");
+                commandThread.start();
+                commandThreadStarted = true;
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

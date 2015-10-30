@@ -39,8 +39,5 @@ public class Client {
         if(displayGui) {
             new StandardGUI();
         }
-
-        // Start command line command handling thread
-        CommandHandler.createCommandThread();
     }
 }

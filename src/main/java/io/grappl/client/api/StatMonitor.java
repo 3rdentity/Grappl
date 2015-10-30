@@ -28,6 +28,10 @@ public class StatMonitor {
         this.grappl = grappl;
     }
 
+    public Grappl getGrappl() {
+        return grappl;
+    }
+
     public void dataSent(int bytesSent) {
         amountSent += bytesSent;
         tryUpdatingRemote();
@@ -46,10 +50,6 @@ public class StatMonitor {
 
     public void closeConnection() {
         connectionsOpen--;
-    }
-
-    public Grappl getGrappl() {
-        return grappl;
     }
 
     public int getTotalConnections() {

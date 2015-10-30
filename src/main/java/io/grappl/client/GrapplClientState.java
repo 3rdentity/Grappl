@@ -5,7 +5,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class GrapplClientState {
-    public static final String VERSION = "Beta 1.2";
+    public static final String VERSION = "Beta 1.1.1";
     public static final long clientTimeOpened = System.currentTimeMillis();
 
     public static boolean doDetailedLogging = true;
