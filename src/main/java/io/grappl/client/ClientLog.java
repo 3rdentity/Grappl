@@ -1,5 +1,6 @@
 package io.grappl.client;
 
+import io.grappl.GrapplGlobals;
 import io.grappl.client.gui.ConsoleWindow;
 
 import javax.swing.*;
@@ -38,7 +39,7 @@ public class ClientLog {
     }
 
     public static void detailed(String toBeLogged) {
-        if(GrapplClientState.doDetailedLogging) {
+        if(GrapplGlobals.doDetailedLogging) {
             String tag = DateFormat.getDateTimeInstance().format(new Date(System.currentTimeMillis()));
             String theS = "[" + tag + "] " + toBeLogged;
             System.out.println(theS);
@@ -63,7 +64,7 @@ public class ClientLog {
             File dirs = new File(GrapplDataFile.getOSSpecificLocation());
             dirs.mkdirs();
 
-            File file = new File(GrapplDataFile.getOSSpecificLocation() + GrapplClientState.clientTimeOpened + "-log.log");
+            File file = new File(GrapplDataFile.getOSSpecificLocation() + GrapplGlobals.clientTimeOpened + "-log.log");
             try {
                 file.createNewFile();
             } catch (IOException e) {

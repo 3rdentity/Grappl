@@ -2,7 +2,6 @@ package io.grappl.client.gui;
 
 import io.grappl.GrapplGlobals;
 import io.grappl.client.ClientLog;
-import io.grappl.client.GrapplClientState;
 import io.grappl.client.GrapplDataFile;
 import io.grappl.client.api.Grappl;
 import io.grappl.client.api.GrapplBuilder;
@@ -42,7 +41,7 @@ public class StandardGUI {
             e.printStackTrace();
         }
 
-        jFrame = new JFrame("Grappl " + GrapplClientState.VERSION);
+        jFrame = new JFrame("Grappl " + GrapplGlobals.VERSION);
         jFrame.setSize(new Dimension(310, 240));
         jFrame.setLocationRelativeTo(null);
         jFrame.setVisible(true);
@@ -65,17 +64,17 @@ public class StandardGUI {
         jPasswordField.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
-                GrapplClientState.usingSavedHashPass = false;
+                GrapplGlobals.usingSavedHashPass = false;
             }
 
             @Override
             public void keyPressed(KeyEvent e) {
-                GrapplClientState.usingSavedHashPass = false;
+                GrapplGlobals.usingSavedHashPass = false;
             }
 
             @Override
             public void keyReleased(KeyEvent e) {
-                GrapplClientState.usingSavedHashPass = false;
+                GrapplGlobals.usingSavedHashPass = false;
             }
         });
         String password = GrapplDataFile.getPassword();
@@ -138,7 +137,7 @@ public class StandardGUI {
                     jFrame.setResizable(false);
                     jFrame.setSize(new Dimension(290, 230));
                     jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-                    jFrame.setIconImage(GrapplClientState.getIcon());
+                    jFrame.setIconImage(GrapplGlobals.getIcon());
 
                     JButton consoleButton = new JButton(COMMAND_BUTTON_TEXT);
                     consoleButton.addActionListener(new ActionListener() {
@@ -185,7 +184,7 @@ public class StandardGUI {
             advancedButton.setBounds(200, 155, 90, 40);
             jFrame.add(advancedButton);
 
-            jFrame.setIconImage(GrapplClientState.getIcon());
+            jFrame.setIconImage(GrapplGlobals.getIcon());
             jFrame.repaint();
         }
     }
@@ -243,7 +242,7 @@ public class StandardGUI {
         char[] password = jPasswordField.getPassword();
 
         try {
-            if(!isActuallyHash || !GrapplClientState.usingSavedHashPass) {
+            if(!isActuallyHash || !GrapplGlobals.usingSavedHashPass) {
                 password = (new String(password).hashCode() + "").toCharArray();
             }
 
@@ -277,7 +276,7 @@ public class StandardGUI {
                 newJframe.setLocation(wX, wY);
                 newJframe.setResizable(false);
                 newJframe.setSize(new Dimension(290, 230));
-                newJframe.setIconImage(GrapplClientState.getIcon());
+                newJframe.setIconImage(GrapplGlobals.getIcon());
                 newJframe.setVisible(true);
                 newJframe.setLayout(null);
                 newJframe.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

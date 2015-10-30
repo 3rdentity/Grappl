@@ -1,7 +1,7 @@
 package io.grappl.client.gui;
 
+import io.grappl.GrapplGlobals;
 import io.grappl.client.Application;
-import io.grappl.client.GrapplClientState;
 import io.grappl.client.api.Grappl;
 
 import javax.swing.*;
@@ -65,7 +65,7 @@ public class ConsoleWindow {
         consoleFrame.setTitle("Grappl Console");
 
         try {
-            consoleFrame.setIconImage(GrapplClientState.getIcon());
+            consoleFrame.setIconImage(GrapplGlobals.getIcon());
         } catch (Exception ee) {
             ee.printStackTrace();
         }

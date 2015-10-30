@@ -1,7 +1,7 @@
 package io.grappl.client.gui;
 
+import io.grappl.GrapplGlobals;
 import io.grappl.client.ClientLog;
-import io.grappl.client.GrapplClientState;
 import io.grappl.client.GrapplDataFile;
 import io.grappl.client.api.Authentication;
 import io.grappl.client.api.Grappl;
@@ -49,7 +49,7 @@ public class AdvancedGUI {
 
         jFrame = new JFrame();
 
-        jFrame.setIconImage(GrapplClientState.getIcon());
+        jFrame.setIconImage(GrapplGlobals.getIcon());
 
         jFrame.setTitle("Grappl Advanced");
 
@@ -72,7 +72,7 @@ public class AdvancedGUI {
                         "p.grappl.io (Oceania)"
                 }
         );
-        if(GrapplClientState.debugState) {
+        if(GrapplGlobals.debugState) {
             jComboBox.addItem("localhost (if you're testing)");
         }
 
@@ -223,7 +223,7 @@ public class AdvancedGUI {
                 jFrame.setVisible(true);
                 jFrame.setLayout(null);
 
-                jFrame.setIconImage(GrapplClientState.getIcon());
+                jFrame.setIconImage(GrapplGlobals.getIcon());
 
                 final JLabel usernameLable = new JLabel("Username");
                 usernameLable.setBounds(5, 2, 250, 20);
@@ -244,17 +244,17 @@ public class AdvancedGUI {
                 jPasswordField.addKeyListener(new KeyListener() {
                     @Override
                     public void keyTyped(KeyEvent e) {
-                        GrapplClientState.usingSavedHashPass = false;
+                        GrapplGlobals.usingSavedHashPass = false;
                     }
 
                     @Override
                     public void keyPressed(KeyEvent e) {
-                        GrapplClientState.usingSavedHashPass = false;
+                        GrapplGlobals.usingSavedHashPass = false;
                     }
 
                     @Override
                     public void keyReleased(KeyEvent e) {
-                        GrapplClientState.usingSavedHashPass = false;
+                        GrapplGlobals.usingSavedHashPass = false;
                     }
                 });
 
@@ -276,7 +276,7 @@ public class AdvancedGUI {
                         login(usernamef, jPasswordField);
 
                         try {
-                            if (!isActuallyHash || !GrapplClientState.usingSavedHashPass) {
+                            if (!isActuallyHash || !GrapplGlobals.usingSavedHashPass) {
                                 AdvancedGUI.password = (new String(AdvancedGUI.password).hashCode() + "").toCharArray();
                             }
 
