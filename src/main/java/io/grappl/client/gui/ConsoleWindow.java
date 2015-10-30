@@ -1,27 +1,18 @@
 package io.grappl.client.gui;
 
-import io.grappl.GrapplGlobals;
-import io.grappl.client.ClientLog;
+import io.grappl.client.Application;
 import io.grappl.client.GrapplClientState;
 import io.grappl.client.api.Grappl;
-import io.grappl.client.commands.CommandHandler;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.net.Socket;
 
 public class ConsoleWindow {
 
     public static JTextArea display;
-
-    private DataInputStream dataInputStream = null;
-    private DataOutputStream dataOutputStream = null;
 
     private Grappl grappl;
     private JFrame theFrame;
@@ -124,7 +115,7 @@ public class ConsoleWindow {
     }
 
     public void enterCommand(String command) {
-        CommandHandler.handleCommand(grappl, command);
+        Application.getCommandHandler().handleCommand(grappl, command);
     }
 
     public JFrame getTheFrame() {

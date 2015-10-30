@@ -1,12 +1,10 @@
 package io.grappl.client.commands.impl;
 
+import io.grappl.client.Application;
 import io.grappl.client.ClientLog;
 import io.grappl.client.api.Grappl;
 import io.grappl.client.commands.Command;
-import io.grappl.client.commands.CommandHandler;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.PrintStream;
 
 public class ListRemoveCommand implements Command {
@@ -16,7 +14,7 @@ public class ListRemoveCommand implements Command {
             ClientLog.log("Removing from server list");
             grappl.getAuthentication().getAuthDataOutputStream().writeByte(7);
             PrintStream printStream = new PrintStream(grappl.getAuthentication().getAuthDataOutputStream());
-            printStream.println(CommandHandler.send);
+            printStream.println(Application.getCommandHandler().returnBuffer);
         } catch (Exception e) {
             e.printStackTrace();
         }

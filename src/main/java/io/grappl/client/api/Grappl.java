@@ -1,12 +1,12 @@
 package io.grappl.client.api;
 
 import io.grappl.GrapplGlobals;
+import io.grappl.client.Application;
 import io.grappl.client.ClientLog;
 import io.grappl.client.api.event.UserConnectEvent;
 import io.grappl.client.api.event.UserConnectListener;
 import io.grappl.client.api.event.UserDisconnectEvent;
 import io.grappl.client.api.event.UserDisconnectListener;
-import io.grappl.client.commands.CommandHandler;
 import io.grappl.client.gui.StandardGUI;
 import io.grappl.client.other.ExClientConnection;
 
@@ -66,7 +66,7 @@ public class Grappl {
         // Allows the terminal console to have commands act on the newest grappl object
 
         // Start command line command handling thread
-        CommandHandler.createCommandThread(this);
+        Application.getCommandHandler().createConsoleCommandListenThread(this);
 
         locationProvider = new LocationProvider() {
             public NetworkLocation getLocation() {

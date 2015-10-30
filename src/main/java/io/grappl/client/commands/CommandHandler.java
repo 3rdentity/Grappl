@@ -1,27 +1,24 @@
 package io.grappl.client.commands;
 
 import io.grappl.GrapplGlobals;
-import com.daexsys.grappl.client.Client;
 import io.grappl.client.ClientLog;
 import io.grappl.client.api.Grappl;
 import io.grappl.client.commands.impl.*;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
 public class CommandHandler {
-    public static String send = "";
+    
+    public String returnBuffer = "";
 
-    private static boolean commandThreadStarted = false;
+    private boolean commandThreadStarted = false;
 
-    public static Map<String, Command> commandMap = new HashMap<String, Command>();
+    private Map<String, Command> commandMap = new HashMap<String, Command>();
 
-    static {
+    public CommandHandler() {
+        /* Add default commands */
         commandMap.put("disconnect", new DisconnectCommand());
         commandMap.put("savelog", new SaveLogCommand());
         commandMap.put("relay", new RelayCommand());
@@ -42,33 +39,28 @@ public class CommandHandler {
         commandMap.put("dummy", new DummyServer());
         commandMap.put("stats", new StatsCommand());
         commandMap.put("logout", new LogoutCommand());
-
         commandMap.put("setstaticport", new SetStaticPortCommand());
         commandMap.put("setport", new SetStaticPortCommand());
     }
 
-    public static void handleCommand(Grappl grappl, String command) {
+    public void handleCommand(Grappl grappl, String command) {
 
         // If no command was actually entered, return.
-        if(command.isEmpty()) return;
+        if(command.isEmpty())
+            return;
 
         // Split command string into words. args[0] is the commands name, all other are args.
         String[] args = command.split("\\s+");
 
         if (commandMap.containsKey(args[0].toLowerCase())) {
-            commandMap.get(args[0].toLowerCase()).runCommand(
-                    grappl,
-                    args
-            );
+            commandMap.get(args[0].toLowerCase()).runCommand(grappl, args);
         }
-
         else {
             ClientLog.log("Unknown command");
         }
     }
 
-    public static void createCommandThread(final Grappl grappl) {
-
+    public void createConsoleCommandListenThread(final Grappl grappl) {
 
         if(!commandThreadStarted) {
             Thread commandThread = new Thread(new Runnable() {
@@ -95,9 +87,13 @@ public class CommandHandler {
                 }
             });
 
-            commandThread.setName("Grappl Command Thread");
+            commandThread.setName("Grappl Console Command Thread");
             commandThread.start();
             commandThreadStarted = true;
         }
+    }
+
+    public Map<String, Command> getCommandMap() {
+        return commandMap;
     }
 }
