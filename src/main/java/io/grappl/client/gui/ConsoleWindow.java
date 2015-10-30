@@ -32,8 +32,7 @@ public class ConsoleWindow {
             public void windowClosing(WindowEvent e) {
                 try {
                     grappl.getGui().theConsoleWindow = null;
-                } catch (Exception ee) {
-                }
+                } catch (Exception ignore) {}
 
             }
 

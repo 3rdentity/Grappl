@@ -85,7 +85,7 @@ public class AdvancedGUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String rServer = JOptionPane.showInputDialog(jFrame, "New relay server address");
-                if (rServer == null) {} else if(!rServer.equals("")) {
+                if(rServer != null && !rServer.equals("")) {
                     int index = jComboBox.getItemCount();
                     jComboBox.addItem(rServer);
                     jComboBox.setSelectedIndex(index);

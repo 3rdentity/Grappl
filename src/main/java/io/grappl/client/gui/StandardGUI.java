@@ -327,7 +327,6 @@ public class StandardGUI {
             }
         } catch (Exception esdfe) {
             ClientLog.log("Yeah... that shouldn't have happened. Type the darn port next time!");
-            return;
         }
     }
 }

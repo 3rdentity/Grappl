@@ -307,7 +307,7 @@ public class Grappl {
                     try {
                         messageSocket.close();
                         ClientLog.log("Connection with message server has been broken. Unfortunate.");
-                    } catch (IOException e1) {}
+                    } catch (IOException ignore) {}
                 }
             }
         });
@@ -390,6 +390,7 @@ public class Grappl {
      */
     private void createHeartbeatThread() {
         Thread heartBeatThread = new Thread(new Runnable() {
+            @SuppressWarnings("ConstantConditions")
             @Override
             public void run() {
                 Socket heartBeat;
