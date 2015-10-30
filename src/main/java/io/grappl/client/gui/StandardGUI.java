@@ -2,7 +2,6 @@ package io.grappl.client.gui;
 
 import io.grappl.GrapplGlobals;
 import io.grappl.client.Application;
-import io.grappl.client.ClientLog;
 import io.grappl.client.GrapplDataFile;
 import io.grappl.client.api.Grappl;
 import io.grappl.client.api.GrapplBuilder;
@@ -52,10 +51,10 @@ public class StandardGUI {
         final JLabel usernameLable = new JLabel("Username");
         usernameLable.setBounds(5, 2, 250, 20);
         jFrame.add(usernameLable);
-        final JTextField usernamef = new JTextField("");
-        usernamef.setBounds(5, 22, 250, 20);
-        usernamef.setText(GrapplDataFile.getUsername());
-        jFrame.add(usernamef);
+        final JTextField usernameField = new JTextField("");
+        usernameField.setBounds(5, 22, 250, 20);
+        usernameField.setText(GrapplDataFile.getUsername());
+        jFrame.add(usernameField);
 
         final JLabel passwordLabel = new JLabel("Password");
         passwordLabel.setBounds(5, 42, 250, 20);
@@ -105,7 +104,7 @@ public class StandardGUI {
             logInButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    login(usernamef, jPasswordField, theGUI, rememberMeBox);
+                    login(usernameField, jPasswordField, theGUI, rememberMeBox);
                 }
             });
             jFrame.add(logInButton);
@@ -200,32 +199,31 @@ public class StandardGUI {
         final JTextPane label = new JTextPane();
         label.setContentType("text");
         label.setText("Public address: " + relayServerIP + ":" + publicPort);
+
         label.setBorder(null);
         label.setBackground(null);
         label.setEditable(false);
         label.setBounds(5, 8, 450, 20);
-        getjFrame().add(label);
+        getFrame().add(label);
 
         JLabel jLabel2 = new JLabel("Server on local port: " + localPort);
         jLabel2.setBounds(5, 25, 450, 20);
-        getjFrame().add(jLabel2);
+        getFrame().add(jLabel2);
 
-        final JLabel jLabel4 = new JLabel("Waiting for data");
-        jLabel4.setBounds(5, 65, 450, 20);
-        getjFrame().add(jLabel4);
+        final JLabel dataTransferredLabel = new JLabel("Waiting for data");
+        dataTransferredLabel.setBounds(5, 65, 450, 20);
+        getFrame().add(dataTransferredLabel);
 
-        getjFrame().repaint();
+        getFrame().repaint();
 
         /* GUI update thread */
         new Thread(new Runnable() {
             @Override
             public void run() {
                 while (true) {
-                    if (jLabel4 != null && connectedClientsLabel != null) {
-                        connectedClientsLabel.setText("Connected clients: " + grappl.getStatMonitor().getOpenConnections());
-                        jLabel4.setText("Sent Data: " + grappl.getStatMonitor().getSentDataKB() + "KB - Recv Data: " + grappl.getStatMonitor().getReceivedKB() + "KB");
-                        getjFrame().repaint();
-                    }
+                    connectedClientsLabel.setText("Connected clients: " + grappl.getStatMonitor().getOpenConnections());
+                    dataTransferredLabel.setText("Sent Data: " + grappl.getStatMonitor().getSentDataKB() + "KB - Recv Data: " + grappl.getStatMonitor().getReceivedKB() + "KB");
+                    getFrame().repaint();
 
                     try {
                         Thread.sleep(1000);
@@ -237,15 +235,15 @@ public class StandardGUI {
         }).start();
     }
 
-    public JFrame getjFrame() {
+    public JFrame getFrame() {
         return jFrame;
     }
 
-    public void login(JTextField usernamef, JPasswordField jPasswordField, StandardGUI theGUI, JCheckBox rememberMeBox) {
+    public void login(JTextField usernameField, JPasswordField jPasswordField, StandardGUI theGUI, JCheckBox rememberMeBox) {
 
         GrapplBuilder grapplBuilder = new GrapplBuilder();
 
-        String username = usernamef.getText().toLowerCase();
+        String username = usernameField.getText().toLowerCase();
         char[] password = jPasswordField.getPassword();
 
         try {
@@ -258,7 +256,7 @@ public class StandardGUI {
 
             if(grappl.getAuthentication().isLoggedIn()) {
                 Application.getClientLog().log("Logged in as " + grappl.getUsername());
-                Application.getClientLog().log("Alpha tester: " + grappl.getAuthentication().isPremium());
+                Application.getClientLog().log("Beta tester: " + grappl.getAuthentication().isPremium());
                 Application.getClientLog().log("Static port: " + grappl.getExternalPort());
 
                 if(!rememberMeBox.isSelected()) {
@@ -327,7 +325,7 @@ public class StandardGUI {
                 try {
                     grappl.connect(domain);
                 } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(getjFrame(), "The value you entered is not a number");
+                    JOptionPane.showMessageDialog(getFrame(), "The value you entered is not a number");
                 }
             } else {
                 Application.getClientLog().log("Login failed!");

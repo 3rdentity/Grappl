@@ -15,20 +15,21 @@ import java.util.List;
  * Eventually start using logging framework?
  */
 public class ClientLog {
-    private List<String> theLog = new ArrayList<String>();
+
+    private List<String> loggedMessages = new ArrayList<String>();
 
     public void log(String message) {
         String tag = DateFormat.getDateTimeInstance().format(new Date(System.currentTimeMillis()));
         String theS = "[" + tag + "] " + message;
         System.out.println(theS);
-        theLog.add(theS);
+        loggedMessages.add(theS);
 
         try {
             if (ConsoleWindow.display != null) {
                 JTextArea display = ConsoleWindow.display;
                 display.setText(null);
 
-                List<String> log = this.getTheLog();
+                List<String> log = this.getLoggedMessages();
                 for (String s : log) {
                     display.append(s + "\n");
                 }
@@ -43,13 +44,13 @@ public class ClientLog {
             String tag = DateFormat.getDateTimeInstance().format(new Date(System.currentTimeMillis()));
             String theS = "[" + tag + "] " + message;
             System.out.println(theS);
-            theLog.add(theS);
+            loggedMessages.add(theS);
 
             if (ConsoleWindow.display != null) {
                 JTextArea display = ConsoleWindow.display;
                 display.setText(null);
 
-                List<String> log = this.getTheLog();
+                List<String> log = this.getLoggedMessages();
                 for (String s : log) {
                     display.append(s + "\n");
                 }
@@ -59,6 +60,7 @@ public class ClientLog {
         }
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     public void save() {
         try {
             File dirs = new File(GrapplDataFile.getOSSpecificLocation());
@@ -74,7 +76,7 @@ public class ClientLog {
             FileOutputStream fileOutputStream = new FileOutputStream(file);
             PrintStream printStream = new PrintStream(fileOutputStream);
 
-            for(String s : theLog) {
+            for(String s : loggedMessages) {
                 printStream.println(s);
             }
             printStream.close();
@@ -83,12 +85,10 @@ public class ClientLog {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-        }
+        } catch (FileNotFoundException ignore) {}
     }
 
-    public List<String> getTheLog() {
-        return theLog;
+    public List<String> getLoggedMessages() {
+        return loggedMessages;
     }
 }

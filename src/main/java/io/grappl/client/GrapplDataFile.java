@@ -4,24 +4,28 @@ import java.io.*;
 
 /**
  * Interface to save and load data in user.dat.
+ *
+ * Can get away with being full of static methods since there is only one data file!
+ * The class also carries no state (other than user.dat :P).
  */
 public class GrapplDataFile {
+
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     public static String getUsername() {
         File file = new File(getOSSpecificLocation() + "/user.dat");
         try {
             file.createNewFile();
-        } catch (IOException e) {
-        }
+        } catch (IOException ignore) {}
 
         try {
             DataInputStream dataInputStream = new DataInputStream(new FileInputStream(file));
             return dataInputStream.readLine();
-        } catch (Exception e) {
-        }
+        } catch (Exception ignore) {}
 
         return "";
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     public static String getPassword() {
         File file = new File(getOSSpecificLocation() + "/user.dat");
 
@@ -29,8 +33,7 @@ public class GrapplDataFile {
 
         try {
             file.createNewFile();
-        } catch (IOException e) {
-        }
+        } catch (IOException ignore) {}
 
         try {
             DataInputStream dataInputStream = new DataInputStream(new FileInputStream(file));
@@ -44,6 +47,7 @@ public class GrapplDataFile {
         return "";
     }
 
+    @SuppressWarnings({"ResultOfMethodCallIgnored"})
     public static void saveUsername(String username, char[] password) {
         File file = new File(getOSSpecificLocation() + "/user.dat");
 

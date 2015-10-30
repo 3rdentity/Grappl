@@ -10,7 +10,6 @@ import io.grappl.client.api.event.UserDisconnectListener;
 import io.grappl.client.gui.StandardGUI;
 import io.grappl.client.other.ExClientConnection;
 
-import javax.swing.*;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -155,18 +154,18 @@ public class Grappl {
 ////                    Application.getClientLog().log(domain);
 ////
 ////                    if(gui != null) {
-////                        int wX = gui.getjFrame().getX();
-////                        int wY = gui.getjFrame().getY();
+////                        int wX = gui.getFrame().getX();
+////                        int wY = gui.getFrame().getY();
 ////
-////                        gui.getjFrame().setVisible(false);
+////                        gui.getFrame().setVisible(false);
 ////                        gui.jFrame = new JFrame(GrapplGlobals.APP_NAME + " Client (" + username + ")");
 ////                        // 300, 240
-////                        gui.getjFrame().setSize(new Dimension(300, 240));
-////                        gui.getjFrame().setLocation(wX, wY);
+////                        gui.getFrame().setSize(new Dimension(300, 240));
+////                        gui.getFrame().setLocation(wX, wY);
 ////
-////                        gui.getjFrame().setVisible(true);
-////                        gui.getjFrame().setLayout(null);
-////                        gui.getjFrame().setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+////                        gui.getFrame().setVisible(true);
+////                        gui.getFrame().setLayout(null);
+////                        gui.getFrame().setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 ////
 ////                        JButton jButton = new JButton("Close " + GrapplGlobals.APP_NAME + " Client");
 ////                        jButton.addActionListener(new ActionListener() {
@@ -174,7 +173,7 @@ public class Grappl {
 ////                                System.exit(0);
 ////                            }
 ////                        });
-////                        gui.getjFrame().add(jButton);
+////                        gui.getFrame().add(jButton);
 ////                        jButton.setBounds(0, 95, 280, 100);
 ////                    }
 ////                } else {
@@ -283,8 +282,8 @@ public class Grappl {
         if(gui != null) {
             getGui().getConnectedClientsLabel().setText("Connected clients: " + getStatMonitor().getOpenConnections());
             getGui().getConnectedClientsLabel().setBounds(5, 45, 450, 20);
-            gui.getjFrame().add(getGui().getConnectedClientsLabel());
-            gui.getjFrame().repaint();
+            gui.getFrame().add(getGui().getConnectedClientsLabel());
+            gui.getFrame().repaint();
         }
 
         Thread exClientHandler = new Thread(new Runnable() {
@@ -426,8 +425,7 @@ public class Grappl {
         heartBeatThread.start();
     }
 
-    private ClientLog clientLog = new ClientLog();;
-
+    private ClientLog clientLog = new ClientLog();
     public ClientLog getLog() {
         return clientLog;
     }

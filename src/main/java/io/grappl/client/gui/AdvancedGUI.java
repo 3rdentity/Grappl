@@ -2,7 +2,6 @@ package io.grappl.client.gui;
 
 import io.grappl.GrapplGlobals;
 import io.grappl.client.Application;
-import io.grappl.client.ClientLog;
 import io.grappl.client.GrapplDataFile;
 import io.grappl.client.api.Authentication;
 import io.grappl.client.api.Grappl;
@@ -231,10 +230,10 @@ public class AdvancedGUI {
                 usernameLable.setBounds(5, 2, 250, 20);
                 jFrame.add(usernameLable);
 
-                final JTextField usernamef = new JTextField("");
-                usernamef.setBounds(5, 22, 250, 20);
-                usernamef.setText(GrapplDataFile.getUsername());
-                jFrame.add(usernamef);
+                final JTextField usernameField = new JTextField("");
+                usernameField.setBounds(5, 22, 250, 20);
+                usernameField.setText(GrapplDataFile.getUsername());
+                jFrame.add(usernameField);
 
                 final JLabel passwordLabel = new JLabel("Password");
                 passwordLabel.setBounds(5, 42, 250, 20);
@@ -275,7 +274,7 @@ public class AdvancedGUI {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         Authentication authentication = new Authentication();
-                        login(usernamef, jPasswordField);
+                        login(usernameField, jPasswordField);
 
                         try {
                             if (!isActuallyHash || !GrapplGlobals.usingSavedHashPass) {
@@ -374,8 +373,8 @@ public class AdvancedGUI {
         jFrame.repaint();
     }
 
-    public void login(JTextField usernamef, JPasswordField jPasswordField) {
-        username = usernamef.getText().toLowerCase();
+    public void login(JTextField usernameField, JPasswordField jPasswordField) {
+        username = usernameField.getText().toLowerCase();
         password = jPasswordField.getPassword();
     }
 }

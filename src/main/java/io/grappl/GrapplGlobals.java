@@ -28,6 +28,7 @@ public class GrapplGlobals {
     public static boolean debugState = true;
     private static Image icon;
 
+    @SuppressWarnings("SpellCheckingInspection")
     public static Image getIcon() {
         if(icon == null) {
             try {

@@ -1,7 +1,6 @@
 package io.grappl.client.other;
 
 import io.grappl.client.Application;
-import io.grappl.client.ClientLog;
 import io.grappl.client.api.Grappl;
 import io.grappl.client.api.NetworkLocation;
 import io.grappl.client.api.handler.DataHandler;
