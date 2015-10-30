@@ -2,6 +2,18 @@ package io.grappl.client.api;
 
 import java.io.DataOutputStream;
 
+/**
+ * Handles the statistics for a single Grappl instance.
+ *
+ * It monitors:
+ *      - The bytes sent
+ *      - The bytes received
+ *      - The connections currently open
+ *      - The total connection opened
+ *
+ * It also will attempt to update the Grappl central server with the sent, received,
+ * and total connections statistics every ten seconds.
+ */
 public class StatMonitor {
 
     private int amountSent;
@@ -9,20 +21,21 @@ public class StatMonitor {
     private int connectionsOpen;
     private int totalConnections;
 
+    /* The Grappl this StatMonitor is associated with */
     private Grappl grappl;
 
     public StatMonitor(Grappl grappl) {
         this.grappl = grappl;
     }
 
-    public void dataSent(int size) {
-        amountSent += size;
-        attemptSend();
+    public void dataSent(int bytesSent) {
+        amountSent += bytesSent;
+        tryUpdatingRemote();
     }
 
-    public void dataReceived(int size) {
-        amountReceived += size;
-        attemptSend();
+    public void dataReceived(int bytesReceived) {
+        amountReceived += bytesReceived;
+        tryUpdatingRemote();
     }
 
     public void openConnection() {
@@ -45,20 +58,22 @@ public class StatMonitor {
 
     /**
      * Website update stats buffer.
+     * Displays the bytes sent and received, as well as how many connections have been opened, on your account page.
      */
     private int bytesInTemp;
     private int bytesOutTemp;
     private int connectionBufferForWebsite;
     private long lastTimeSent = System.currentTimeMillis(); // Used to delay the updating, so it doesn't update the website CONSTANTLY.
 
-    public void attemptSend() {
+    public void tryUpdatingRemote() {
+        final int STAT_UPDATE_PACKET_NUMBER = 100;
         final int TEN_SECONDS = 10000;
 
         if(System.currentTimeMillis() > lastTimeSent + TEN_SECONDS) {
             DataOutputStream dataOutputStream = getGrappl().getAuthentication().getAuthDataOutputStream();
 
             try {
-                dataOutputStream.writeByte(100);
+                dataOutputStream.writeByte(STAT_UPDATE_PACKET_NUMBER);
                 dataOutputStream.writeInt(connectionBufferForWebsite);
                 dataOutputStream.writeInt(bytesInTemp);
                 dataOutputStream.writeInt(bytesOutTemp);
@@ -79,10 +94,17 @@ public class StatMonitor {
     public int getReceivedKB() {
         return amountReceived / 1000;
     }
+
+    /**
+     * In bytes
+     */
     public int getSentData() {
         return amountSent;
     }
 
+    /**
+     * In bytes
+     */
     public int getReceivedData() {
         return amountReceived;
     }
