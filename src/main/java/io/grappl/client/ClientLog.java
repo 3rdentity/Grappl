@@ -63,10 +63,11 @@ public class ClientLog {
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public void save() {
         try {
-            File dirs = new File(GrapplDataFile.getOSSpecificLocation());
+            File dirs = new File(GrapplDataFile.getOSSpecificLocation() + "/logs/");
             dirs.mkdirs();
 
-            File file = new File(GrapplDataFile.getOSSpecificLocation() + GrapplGlobals.clientTimeOpened + "-log.log");
+            File file = new File(GrapplDataFile.getOSSpecificLocation() + "/logs/" + GrapplGlobals.clientTimeOpened + "-log.log");
+
             try {
                 file.createNewFile();
             } catch (IOException e) {
