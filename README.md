@@ -1,6 +1,6 @@
 ![Grappl Logo](https://dl.dropboxusercontent.com/u/34769058/grappl/glogo3.png)
 
-(https://travis-ci.org/Cactose/Grappl.svg?branch=master)
+![passing-or-failing-ci](https://travis-ci.org/Cactose/Grappl.svg?branch=master)
 
 Website: http://grappl.io/
 
