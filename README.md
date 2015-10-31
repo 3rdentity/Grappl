@@ -1,10 +1,12 @@
 ![Grappl Logo](https://dl.dropboxusercontent.com/u/34769058/grappl/glogo3.png)
 
+(https://travis-ci.org/Cactose/Grappl.svg?branch=master)
+
 Website: http://grappl.io/
 
 Donations: http://grappl.io/donate
 
-Compiled .jar: http://grappl.io:888/html/GrapplLauncher.jar
+Compiled .jar: http://grappl.io:888/html/GrapplLauncher.jar (Beta 1.2.1 currently, autoupdates)
 
 Relay server code: https://github.com/Cactose/GrapplRelay
 
