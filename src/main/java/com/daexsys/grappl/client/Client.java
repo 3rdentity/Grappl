@@ -12,6 +12,8 @@ public class Client {
 
     public static void main(String[] args) {
 
+        Application.create(args);
+
         boolean displayGui = true;
 
         // Handle command line arguments
@@ -34,8 +36,6 @@ public class Client {
                 grappl.connect("n.grappl.io");
             }
         }
-
-        Application.create(args);
 
         // If there should be a gui, create it
         if(displayGui) {

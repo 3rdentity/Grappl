@@ -55,12 +55,14 @@ public class Grappl {
     private StatMonitor statMonitor = new StatMonitor(this);
     private List<Socket> sockets = new ArrayList<Socket>();
 
+    private UUID uuid = UUID.randomUUID();
+
     /**
      * Constructs a new Grappl and sets a generic locationprovider
      */
     public Grappl() {
 
-        Application.getClientLog().log("CREATING GRAPPL CONNECTION");
+        Application.getClientLog().log("Creating grappl connection " + uuid);
         // Allows the terminal console to have commands act on the newest grappl object
 
         // Start command line command handling thread
@@ -188,13 +190,13 @@ public class Grappl {
     }
 
     public String getPublicAddress() {
-        String publicAddress = "grappl.io:" + getExternalPort();
+        return getRelayServer() + ":" + getExternalPort();
 
-        if(getAuthentication().getLocalizedRelayPrefix() != null) {
-            return getAuthentication().getLocalizedRelayPrefix() + "." + publicAddress;
-        }
+//        if(getAuthentication().getLocalizedRelayPrefix() != null) {
+//            return getAuthentication().getLocalizedRelayPrefix() + "." + publicAddress;
+//        }
 
-        return "";
+//        return "";
     }
 
     public int getInternalPort() {
@@ -269,7 +271,7 @@ public class Grappl {
     }
 
     public void userDisconnects(UserDisconnectEvent userDisconnectEvent) {
-        for(UserDisconnectListener userDisconnectListener : userDisconnectListeners) {
+        for (UserDisconnectListener userDisconnectListener : userDisconnectListeners) {
             userDisconnectListener.userDisconnected(userDisconnectEvent);
         }
     }
@@ -428,5 +430,19 @@ public class Grappl {
     private ClientLog clientLog = new ClientLog();
     public ClientLog getLog() {
         return clientLog;
+    }
+
+    public UUID getUUID() {
+        return uuid;
+    }
+
+    @Override
+    public String toString() {
+        return
+                "TCP | " +
+                        getInternalServer().getAddress() + ":" + getInternalServer().getPort()
+                        + " <-> " +
+                        getRelayServer() + ":" + getExternalPort() +
+                        " ( " + getUUID() + " )";
     }
 }

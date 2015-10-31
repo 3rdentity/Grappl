@@ -12,8 +12,8 @@ public class Application {
     private static ClientLog clientLog;
 
     public static void create(String[] args) {
-        commandHandler = new CommandHandler();
         clientLog = new ClientLog();
+        commandHandler = new CommandHandler();
     }
 
     public static ClientLog getClientLog() {
