@@ -1,5 +1,6 @@
 package io.grappl.client.api;
 
+import io.grappl.client.gui.AdvancedGUI;
 import io.grappl.client.gui.StandardGUI;
 
 import javax.swing.*;
@@ -14,6 +15,11 @@ public class GrapplBuilder {
 
     public GrapplBuilder withGUI(StandardGUI gui) {
         grappl.gui = gui;
+        return this;
+    }
+
+    public GrapplBuilder withAdvancedGUI(AdvancedGUI gui) {
+        grappl.aGUI = gui;
         return this;
     }
 

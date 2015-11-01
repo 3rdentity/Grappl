@@ -43,7 +43,14 @@ public class AdvancedGUI {
     private JButton logOut;
     private JFrame jFrame;
 
+    private JButton open;
+    private JButton close;
+
     private Authentication activeAuthentication;
+
+    public JFrame getFrame() {
+        return jFrame;
+    }
 
     public void create() {
 
@@ -124,36 +131,42 @@ public class AdvancedGUI {
         update.setBounds(150, 100, 90, 20);
         jFrame.add(update);
 
-        final JButton close = new JButton("Close");
-        JButton open = new JButton("Open");
+        close = new JButton("Close");
+        open = new JButton("Open");
         open.setBounds(20, 140, 100, 40);
+        final AdvancedGUI advancedGUI = this;
         open.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (focusedGrappl == null) {
 
+                if (focusedGrappl == null) {
                     focusedGrappl = new Grappl();
+                    focusedGrappl.aGUI = advancedGUI;
                     focusedGrappl.useAuthentication(activeAuthentication);
                     focusedGrappl.setInternalPort(Integer.parseInt(jTextField.getText()));
 
-                    focusedGrappl.connect(((String) jComboBox.getSelectedItem()).split("\\s+")[0]);
+                    boolean success = focusedGrappl.connect(((String) jComboBox.getSelectedItem()).split("\\s+")[0]);
 
-                    focusedGrappl.addUserConnectListener(new UserConnectListener() {
-                        @Override
-                        public void userConnected(UserConnectEvent userConnectEvent) {
-                            ((DefaultListModel<String>) jList.getModel()).addElement(userConnectEvent.getAddress());
-                        }
-                    });
+                    if(success) {
+                        focusedGrappl.addUserConnectListener(new UserConnectListener() {
+                            @Override
+                            public void userConnected(UserConnectEvent userConnectEvent) {
+                                ((DefaultListModel<String>) jList.getModel()).addElement(userConnectEvent.getAddress());
+                            }
+                        });
 
-                    focusedGrappl.addUserDisconnectListener(new UserDisconnectListener() {
-                        @Override
-                        public void userDisconnected(UserDisconnectEvent userDisconnectEvent) {
-                            ((DefaultListModel<String>) jList.getModel()).addElement(userDisconnectEvent.getAddress());
-                        }
-                    });
-                    connectionLabel.setText("Public at: " + focusedGrappl.getRelayServer() + ":" + focusedGrappl.getExternalPort());
-                    portLabel.setText("Local port: " + focusedGrappl.getInternalPort());
-                    close.setEnabled(true);
+                        focusedGrappl.addUserDisconnectListener(new UserDisconnectListener() {
+                            @Override
+                            public void userDisconnected(UserDisconnectEvent userDisconnectEvent) {
+                                ((DefaultListModel<String>) jList.getModel()).addElement(userDisconnectEvent.getAddress());
+                            }
+                        });
+                        connectionLabel.setText("Public at: " + focusedGrappl.getRelayServer() + ":" + focusedGrappl.getExternalPort());
+                        portLabel.setText("Local port: " + focusedGrappl.getInternalPort());
+                        close.setEnabled(true);
+                    } else {
+                        focusedGrappl = null;
+                    }
                 } else {
                     JOptionPane.showMessageDialog(jFrame, "Grappl connection already open! Close it before opening another.");
                 }
@@ -371,6 +384,12 @@ public class AdvancedGUI {
         isLoggedInLabel.setText("Anonymous: Not logged in");
         premiumLabel.setText("Beta tester: false");
         jFrame.repaint();
+    }
+
+    public void triggerClosing() {
+        focusedGrappl.disconnect();
+        open.setEnabled(true);
+        close.setEnabled(false);
     }
 
     public void login(JTextField usernameField, JPasswordField jPasswordField) {
