@@ -1,6 +1,8 @@
 package io.grappl.client;
 
 import io.grappl.client.commands.CommandHandler;
+import io.grappl.client.log.ClientLog;
+import io.grappl.client.log.SilentClientLog;
 
 /**
  * Represents a single running instance of the Grappl application.
@@ -17,10 +19,18 @@ public class Application {
     }
 
     public static ClientLog getClientLog() {
+        if(clientLog == null) {
+            clientLog = new SilentClientLog();
+        }
+
         return clientLog;
     }
 
     public static CommandHandler getCommandHandler() {
+        if(commandHandler == null) {
+            commandHandler = new CommandHandler();
+        }
+
         return commandHandler;
     }
 }

@@ -2,7 +2,7 @@ package io.grappl.client.api;
 
 import io.grappl.GrapplGlobals;
 import io.grappl.client.Application;
-import io.grappl.client.ClientLog;
+import io.grappl.client.log.ClientLog;
 import io.grappl.client.api.event.UserConnectEvent;
 import io.grappl.client.api.event.UserConnectListener;
 import io.grappl.client.api.event.UserDisconnectEvent;
@@ -15,7 +15,6 @@ import javax.swing.*;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.net.*;
 import java.util.*;
 

@@ -1,6 +1,7 @@
-package io.grappl.client;
+package io.grappl.client.log;
 
 import io.grappl.GrapplGlobals;
+import io.grappl.client.GrapplDataFile;
 import io.grappl.client.gui.ConsoleGUI;
 
 import javax.swing.*;
