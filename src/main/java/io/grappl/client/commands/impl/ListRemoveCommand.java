@@ -9,6 +9,7 @@ import java.io.PrintStream;
 public class ListRemoveCommand implements Command {
     @Override
     public void runCommand(Grappl grappl, String[] args) {
+
         try {
             Application.getClientLog().log("Removing from server list");
             grappl.getAuthentication().getAuthDataOutputStream().writeByte(7);

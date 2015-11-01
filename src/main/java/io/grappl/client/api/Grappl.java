@@ -7,13 +7,16 @@ import io.grappl.client.api.event.UserConnectEvent;
 import io.grappl.client.api.event.UserConnectListener;
 import io.grappl.client.api.event.UserDisconnectEvent;
 import io.grappl.client.api.event.UserDisconnectListener;
+import io.grappl.client.gui.AdvancedGUI;
 import io.grappl.client.gui.StandardGUI;
 import io.grappl.client.other.ExClientConnection;
 
+import javax.swing.*;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.Socket;
+import java.io.PrintStream;
+import java.net.*;
 import java.util.*;
 
 /**
@@ -42,9 +45,11 @@ public class Grappl {
 
     // The GUI associated with this Grappl. Will be null if the advanced GUI is being used
     protected StandardGUI gui;
+    public AdvancedGUI aGUI;
 
     // An ExClientConnection is created and stored here for every client that connects through the tunnel.
     // The objects are removed (usually) when the client disconnects, but stray objects have been known to remain.
+    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     private Map<UUID, ExClientConnection> clients = new HashMap<UUID, ExClientConnection>();
 
     // Event listeners that listen for user connection/disconnection
@@ -79,40 +84,66 @@ public class Grappl {
      * Opens a tunnel to a relay server.
      * @param relayServer the relay server to connect to
      */
-    public void connect(final String relayServer) {
+    @SuppressWarnings("SpellCheckingInspection")
+    public boolean connect(final String relayServer) {
         this.relayServerIP = relayServer;
 
         Application.getClientLog().log("Connecting: relayserver=" + relayServer + " localport=" + internalPort);
 
         try {
             // Create socket listener
-            final Socket messageSocket = new Socket(relayServer, GrapplGlobals.MESSAGING_PORT);
-            sockets.add(messageSocket);
+            final Socket messageSocket = new Socket();
 
-            // Get port that the server will be hosted on remotely
-            final DataInputStream messageInputStream = new DataInputStream(messageSocket.getInputStream());
-            externalPort = messageInputStream.readLine();
-            /* If the message is not received, something went terribly wrong. Need to display an error message here.
-               Currently can't because readLine() blocks the execution.
-             */
+            try {
+                final int oneSecondDelay = 1000;
+                messageSocket.connect(new InetSocketAddress(relayServer, GrapplGlobals.MESSAGING_PORT), oneSecondDelay);
+                sockets.add(messageSocket);
 
-            Application.getClientLog().log("Hosting on: " + relayServer + ":" + externalPort);
+                // Get port that the server will be hosted on remotely
+                final DataInputStream messageInputStream = new DataInputStream(messageSocket.getInputStream());
+                externalPort = messageInputStream.readLine();
+                /* If the message is not received, something went terribly wrong. Need to display an error message here.
+                   Currently can't because readLine() blocks the execution.
+                 */
 
-            // If a GUI is associated with this Grappl, do GUI things
-            if (gui != null) {
-                gui.initializeGUI(relayServer, externalPort, internalPort);
-                Application.getClientLog().log("GUI aspects initialized");
+                Application.getClientLog().log("Hosting on: " + relayServer + ":" + externalPort);
+
+                // If a GUI is associated with this Grappl, do GUI things
+                if (gui != null) {
+                    gui.initializeGUI(relayServer, externalPort, internalPort);
+                    Application.getClientLog().log("GUI aspects initialized");
+                }
+
+                // Create heartbeat thread that is used to monitor whether or not the client is still connected to the server.
+                createHeartbeatThread();
+
+                // Create thread that routes incoming connections to the local server.
+                createExClientHandler(messageSocket, messageInputStream);
+
+            } catch (SocketTimeoutException e) {
+                if(gui != null)
+                    JOptionPane.showMessageDialog(gui.getFrame(),
+                            "Connection to relay server failed.\nIf this continues, go to Advanced Mode and connect to a different relay server.");
+
+                if(aGUI != null) {
+                    JOptionPane.showMessageDialog(aGUI.getFrame(),
+                            "Connection to relay server failed.");
+
+                    aGUI.triggerClosing();
+                }
+
+                e.printStackTrace();
+                return false;
             }
-
-            // Create heartbeat thread that is used to monitor whether or not the client is still connected to the server.
-            createHeartbeatThread();
-
-            // Create thread that routes incoming connections to the local server.
-            createExClientHandler(messageSocket, messageInputStream);
-
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+            return false;
         } catch (IOException e) {
             e.printStackTrace();
+            return false;
         }
+
+        return true;
     }
 
     @Deprecated

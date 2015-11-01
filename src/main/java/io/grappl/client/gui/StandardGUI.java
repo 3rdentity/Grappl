@@ -25,7 +25,7 @@ public class StandardGUI {
     private JFrame jFrame;
     private Grappl grappl;
     private boolean isActuallyHash = false;
-    private ConsoleWindow theConsoleWindow;
+    private ConsoleGUI theConsoleWindow;
     private JLabel connectedClientsLabel;
 
     public StandardGUI() {
@@ -146,7 +146,7 @@ public class StandardGUI {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             if (theConsoleWindow == null) {
-                                theConsoleWindow = new ConsoleWindow(grappl);
+                                theConsoleWindow = new ConsoleGUI(grappl);
                             } else {
                                 theConsoleWindow.getTheFrame().toFront();
                             }
@@ -302,7 +302,7 @@ public class StandardGUI {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         if(theConsoleWindow == null) {
-                            theConsoleWindow = new ConsoleWindow(grappl);
+                            theConsoleWindow = new ConsoleGUI(grappl);
                         } else {
                             theConsoleWindow.getTheFrame().toFront();
                         }
