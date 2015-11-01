@@ -202,7 +202,7 @@ public class AdvancedGUI {
         jButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new ConsoleWindow(focusedGrappl);
+                new ConsoleGUI(focusedGrappl);
             }
         });
         jButton.setBounds(dist, 200, 250, 30);

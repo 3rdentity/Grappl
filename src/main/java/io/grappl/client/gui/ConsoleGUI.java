@@ -10,18 +10,19 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
-public class ConsoleWindow {
+public class ConsoleGUI {
 
     public static JTextArea display;
 
     private Grappl grappl;
     private JFrame theFrame;
 
-    public ConsoleWindow(final Grappl grappl) {
+    public ConsoleGUI(final Grappl grappl) {
         JFrame consoleFrame = new JFrame();
         theFrame = consoleFrame;
         this.grappl = grappl;
         consoleFrame.setResizable(false);
+
         theFrame.addWindowListener(new WindowListener() {
             @Override
             public void windowOpened(WindowEvent e) {
@@ -32,7 +33,8 @@ public class ConsoleWindow {
             public void windowClosing(WindowEvent e) {
                 try {
                     grappl.getGui().destroyConsoleWindow();
-                } catch (Exception ignore) {}
+                } catch (Exception ignore) {
+                }
 
             }
 
@@ -110,6 +112,7 @@ public class ConsoleWindow {
             }
         });
 
+        Application.getClientLog().log("PING");
         consoleFrame.repaint();
     }
 

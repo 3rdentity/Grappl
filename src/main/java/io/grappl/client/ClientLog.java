@@ -1,7 +1,7 @@
 package io.grappl.client;
 
 import io.grappl.GrapplGlobals;
-import io.grappl.client.gui.ConsoleWindow;
+import io.grappl.client.gui.ConsoleGUI;
 
 import javax.swing.*;
 import java.io.*;
@@ -21,12 +21,15 @@ public class ClientLog {
     public void log(String message) {
         String tag = DateFormat.getDateTimeInstance().format(new Date(System.currentTimeMillis()));
         String theS = "[" + tag + "] " + message;
-        System.out.println(theS);
-        loggedMessages.add(theS);
+
+        if(!message.equals("PING")) {
+            System.out.println(theS);
+            loggedMessages.add(theS);
+        }
 
         try {
-            if (ConsoleWindow.display != null) {
-                JTextArea display = ConsoleWindow.display;
+            if (ConsoleGUI.display != null) {
+                JTextArea display = ConsoleGUI.display;
                 display.setText(null);
 
                 List<String> log = this.getLoggedMessages();
@@ -46,8 +49,8 @@ public class ClientLog {
             System.out.println(theS);
             loggedMessages.add(theS);
 
-            if (ConsoleWindow.display != null) {
-                JTextArea display = ConsoleWindow.display;
+            if (ConsoleGUI.display != null) {
+                JTextArea display = ConsoleGUI.display;
                 display.setText(null);
 
                 List<String> log = this.getLoggedMessages();
