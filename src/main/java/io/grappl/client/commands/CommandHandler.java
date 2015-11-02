@@ -1,6 +1,7 @@
 package io.grappl.client.commands;
 
 import io.grappl.GrapplGlobals;
+import io.grappl.State;
 import io.grappl.client.Application;
 import io.grappl.client.api.Grappl;
 import io.grappl.client.commands.impl.*;
@@ -12,6 +13,8 @@ public class CommandHandler {
     public String returnBuffer = "";
 
     private boolean commandThreadStarted = false;
+
+    private State state = new State();
 
     private Map<String, Command> commandMap = new HashMap<String, Command>();
     private PriorityQueue<String> commandsAlphabetized = new PriorityQueue<String>();
