@@ -2,7 +2,11 @@ package io.grappl.client;
 
 import io.grappl.client.commands.CommandHandler;
 import io.grappl.client.log.ClientLog;
+import io.grappl.client.log.ErrorStream;
 import io.grappl.client.log.SilentClientLog;
+
+import java.io.File;
+import java.io.FileOutputStream;
 
 /**
  * Represents a single running instance of the Grappl application.
@@ -16,6 +20,8 @@ public class Application {
     public static void create(String[] args) {
         clientLog = new ClientLog();
         commandHandler = new CommandHandler();
+
+        System.setErr(new ErrorStream(System.out));
     }
 
     public static ClientLog getClientLog() {

@@ -101,9 +101,6 @@ public class Grappl {
                 // Get port that the server will be hosted on remotely
                 final DataInputStream messageInputStream = new DataInputStream(messageSocket.getInputStream());
                 externalPort = messageInputStream.readLine();
-                /* If the message is not received, something went terribly wrong. Need to display an error message here.
-                   Currently can't because readLine() blocks the execution.
-                 */
 
                 Application.getClientLog().log("Hosting on: " + relayServer + ":" + externalPort);
 
@@ -131,7 +128,6 @@ public class Grappl {
                     aGUI.triggerClosing();
                 }
 
-                e.printStackTrace();
                 return false;
             }
         } catch (UnknownHostException e) {

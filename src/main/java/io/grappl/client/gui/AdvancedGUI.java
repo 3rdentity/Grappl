@@ -286,7 +286,11 @@ public class AdvancedGUI {
                 login.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        Authentication authentication = new Authentication();
+
+//                        isLoggedInLabel.setText("Logging in...");
+//                        getFrame().repaint();
+
+                        Authentication authentication = new Authentication(getFrame());
                         login(usernameField, jPasswordField);
 
                         try {
@@ -294,6 +298,8 @@ public class AdvancedGUI {
                                 theGUI.password = (new String(theGUI.password).hashCode() + "").toCharArray();
                             }
 
+//                            login.setText("Logging in...");
+//                            login.repaint();
                             authentication.login(username, theGUI.password);
                             activeAuthentication = authentication;
 
@@ -310,6 +316,8 @@ public class AdvancedGUI {
                                 logIn();
 
                                 GrapplDataFile.saveUsername(authentication.getUsername(), theGUI.password);
+                            } else {
+//                                isLoggedInLabel.setText("Anonymous: Not logged in");
                             }
                         } catch (Exception ere) {
                             ere.printStackTrace();
