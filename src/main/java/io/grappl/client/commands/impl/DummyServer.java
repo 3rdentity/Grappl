@@ -20,7 +20,7 @@ public class DummyServer implements Command {
         try {
             final int port = Integer.parseInt(args[1]);
 
-            new Thread(new Runnable() {
+            Thread dummyServerThread = new Thread(new Runnable() {
                 @Override
                 public void run() {
                     try {
@@ -44,7 +44,8 @@ public class DummyServer implements Command {
                         e.printStackTrace();
                     }
                 }
-            }).start();
+            });
+            dummyServerThread.start();
 
             Application.getClientLog().log("Dummy server started at port " + port);
         } catch (ArrayIndexOutOfBoundsException e) {

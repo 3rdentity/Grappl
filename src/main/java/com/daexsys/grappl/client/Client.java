@@ -17,7 +17,7 @@ public class Client {
         boolean displayGui = true;
 
         // Handle command line arguments
-        if(args.length > 1) {
+        if(args.length > 0) {
             if (args[0].equalsIgnoreCase("-nogui") || args[0].equalsIgnoreCase("nogui")) {
                 displayGui = false;
             }
@@ -34,6 +34,8 @@ public class Client {
                 grapplBuilder.atLocalPort(localPort);
                 Grappl grappl = grapplBuilder.build();
                 grappl.connect("n.grappl.io");
+            } else {
+                Application.getCommandHandler().createConsoleCommandListenThread(null);
             }
         }
 

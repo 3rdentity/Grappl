@@ -90,8 +90,12 @@ public class CommandHandler {
                             String line = scanner.nextLine();
                             String[] args = line.split("\\s+");
 
-                            if (commandMap.containsKey(args[0].toLowerCase())) {
-                                commandMap.get(args[0].toLowerCase()).runCommand(grappl, args);
+                            String commandName = args[0].toLowerCase();
+
+                            if (commandMap.containsKey(commandName)) {
+                                getCommand(commandName).runCommand(grappl, args);
+                            } else {
+                                Application.getClientLog().log("Unknown command '" + commandName + "'");
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
