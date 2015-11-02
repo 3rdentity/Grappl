@@ -2,6 +2,7 @@ package io.grappl.client.gui;
 
 import io.grappl.GrapplGlobals;
 import io.grappl.client.Application;
+import io.grappl.client.Mode;
 import io.grappl.client.api.Grappl;
 import io.grappl.client.api.GrapplBuilder;
 
@@ -65,7 +66,7 @@ public class MultiLauncher {
             e.printStackTrace();
         }
 
-        Application.create(null);
+        Application.create(null, Mode.NORMAL);
         JFrame jFrame = new JFrame("Multipl - (Grappl v. " + GrapplGlobals.VERSION + ")");
         jFrame.setSize(1280, 768);
         jFrame.setLocationRelativeTo(null);

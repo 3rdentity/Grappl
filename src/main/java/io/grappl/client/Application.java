@@ -4,6 +4,7 @@ import io.grappl.client.commands.CommandHandler;
 import io.grappl.client.log.ClientLog;
 import io.grappl.client.log.ErrorStream;
 import io.grappl.client.log.SilentClientLog;
+import sun.applet.AppletListener;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -16,8 +17,18 @@ public class Application {
 
     private static CommandHandler commandHandler;
     private static ClientLog clientLog;
+    private static Mode mode;
 
-    public static void create(String[] args) {
+    public static Mode getMode() {
+        return mode;
+    }
+
+    public static void setMode(Mode mode) {
+        Application.mode = mode;
+    }
+
+    public static void create(String[] args, Mode mode) {
+        Application.mode = mode;
         clientLog = new ClientLog();
         commandHandler = new CommandHandler();
 

@@ -99,7 +99,6 @@ public class CommandHandler {
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
-                            return;
                         }
                     }
                 }
