@@ -17,34 +17,38 @@ public class DummyServer implements Command {
     @Override
     public void runCommand(Grappl grappl, String[] args) {
 
-        final int port = Integer.parseInt(args[1]);
+        try {
+            final int port = Integer.parseInt(args[1]);
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    ServerSocket serverSocket = new ServerSocket(port);
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        ServerSocket serverSocket = new ServerSocket(port);
 
-                    Socket socket = serverSocket.accept();
+                        Socket socket = serverSocket.accept();
 
-                    socket.getOutputStream().write("<h1>'Hello world' -Grappl</h1>".getBytes());
-                    socket.getOutputStream().flush();
-                    socket.getOutputStream().close();
-                    socket.close();
+                        socket.getOutputStream().write("<h1>'Hello world' -Grappl</h1>".getBytes());
+                        socket.getOutputStream().flush();
+                        socket.getOutputStream().close();
+                        socket.close();
 
-                    while(true) {
-                        try {
-                            Thread.sleep(10);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
+                        while (true) {
+                            try {
+                                Thread.sleep(10);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                         }
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
                 }
-            }
-        }).start();
+            }).start();
 
-        Application.getClientLog().log("Dummy server started at port " + port);
+            Application.getClientLog().log("Dummy server started at port " + port);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            Application.getClientLog().log("You need to provide a port number!");
+        }
     }
 }
