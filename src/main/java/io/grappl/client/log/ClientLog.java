@@ -18,6 +18,7 @@ import java.util.List;
 public class ClientLog {
 
     private List<String> loggedMessages = new ArrayList<String>();
+    private List<String> visibleLog = new ArrayList<String>();
 
     public void log(String message) {
         String tag = DateFormat.getDateTimeInstance().format(new Date(System.currentTimeMillis()));
@@ -26,6 +27,7 @@ public class ClientLog {
         if(!message.equals("PING")) {
             System.out.println(theS);
             loggedMessages.add(theS);
+            visibleLog.add(theS);
         }
 
         try {
@@ -33,7 +35,7 @@ public class ClientLog {
                 JTextArea display = ConsoleGUI.logDisplay;
                 display.setText(null);
 
-                List<String> log = this.getLoggedMessages();
+                List<String> log = visibleLog;
                 for (String s : log) {
                     display.append(s + "\n");
                 }
@@ -49,12 +51,13 @@ public class ClientLog {
             String theS = "[" + tag + "] " + message;
             System.out.println(theS);
             loggedMessages.add(theS);
+            visibleLog.add(theS);
 
             if (ConsoleGUI.logDisplay != null) {
                 JTextArea display = ConsoleGUI.logDisplay;
                 display.setText(null);
 
-                List<String> log = this.getLoggedMessages();
+                List<String> log = visibleLog;
                 for (String s : log) {
                     display.append(s + "\n");
                 }
@@ -62,6 +65,10 @@ public class ClientLog {
 
             save();
         }
+    }
+
+    public void clearVisibleLog() {
+        visibleLog.clear();
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")

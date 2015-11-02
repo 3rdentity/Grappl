@@ -14,7 +14,6 @@ public class CommandHandler {
     private boolean commandThreadStarted = false;
 
     private Map<String, Command> commandMap = new HashMap<String, Command>();
-    private List<Command> commands = new ArrayList<Command>();
     private PriorityQueue<String> commandsAlphabetized = new PriorityQueue<String>();
 
     @SuppressWarnings("SpellCheckingInspection")
@@ -23,6 +22,7 @@ public class CommandHandler {
         addCommand("help", new HelpCommand());
         addCommand("version", new VersionCommand());
         addCommand("quit", new QuitCommand());
+        addCommand("clear", new ClearCommand());
 
         addCommand("init", new InitCommand());
         addCommand("disconnect", new DisconnectCommand());
@@ -62,12 +62,14 @@ public class CommandHandler {
             return;
 
         // Split command string into words. args[0] is the commands name, all other are args.
-        String[] args = command.split("\\s+");
+        String[] words = command.split("\\s+");
+        String commandName = words[0].toLowerCase();
 
-        if (commandMap.containsKey(args[0].toLowerCase())) {
-            commandMap.get(args[0].toLowerCase()).runCommand(grappl, args);
-        }
-        else {
+//        String[] args = Arrays.copyOfRange(words, 1, words.length);
+
+        if (commandMap.containsKey(commandName)) {
+            getCommand(commandName).runCommand(grappl, words);
+        } else {
             Application.getClientLog().log("Unknown command '" + command + "'");
         }
     }
@@ -103,6 +105,10 @@ public class CommandHandler {
             commandThread.start();
             commandThreadStarted = true;
         }
+    }
+
+    public Command getCommand(String name) {
+        return commandMap.get(name);
     }
 
     public PriorityQueue<String> getCommandsAlphabetized() {
