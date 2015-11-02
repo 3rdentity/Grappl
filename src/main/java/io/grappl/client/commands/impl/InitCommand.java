@@ -9,9 +9,14 @@ public class InitCommand implements Command {
 
     @Override
     public void runCommand(Grappl grappl, String[] args) {
+        String relay = "n.grappl.io";
+
+        if(args.length == 2) {
+            relay = args[1];
+        }
 
         grappl = new GrapplBuilder().build();
         Application.getClientLog().log("Starting...");
-        grappl.connect(args[1]);
+        grappl.connect(relay);
     }
 }

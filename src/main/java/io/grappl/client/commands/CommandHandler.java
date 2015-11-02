@@ -5,9 +5,7 @@ import io.grappl.client.Application;
 import io.grappl.client.api.Grappl;
 import io.grappl.client.commands.impl.*;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class CommandHandler {
     
@@ -16,31 +14,45 @@ public class CommandHandler {
     private boolean commandThreadStarted = false;
 
     private Map<String, Command> commandMap = new HashMap<String, Command>();
+    private List<Command> commands = new ArrayList<Command>();
+    private PriorityQueue<String> commandsAlphabetized = new PriorityQueue<String>();
 
+    @SuppressWarnings("SpellCheckingInspection")
     public CommandHandler() {
         /* Add default commands */
-        commandMap.put("disconnect", new DisconnectCommand());
-        commandMap.put("savelog", new SaveLogCommand());
-        commandMap.put("relay", new RelayCommand());
-        commandMap.put("version", new VersionCommand());
-        commandMap.put("ipban", new IpBanCommand());
-        commandMap.put("ipunban", new IpUnbanCommand());
-        commandMap.put("help", new HelpCommand());
-        commandMap.put("init", new InitCommand());
-        commandMap.put("whoami", new WhoAmICommand());
-        commandMap.put("listadd", new ListAddCommand());
-        commandMap.put("listremove", new ListRemoveCommand());
-        commandMap.put("changelocal", new ChangeLocalCommand());
-        commandMap.put("changeserver", new ChangeServerCommand());
-        commandMap.put("resetstats", new ResetStatsCommand());
-        commandMap.put("quit", new QuitCommand());
-        commandMap.put("state", new StateCommand());
-        commandMap.put("account", new AccountCommand());
-        commandMap.put("dummy", new DummyServer());
-        commandMap.put("stats", new StatsCommand());
-        commandMap.put("logout", new LogoutCommand());
-        commandMap.put("setstaticport", new SetStaticPortCommand());
-        commandMap.put("setport", new SetStaticPortCommand());
+        addCommand("help", new HelpCommand());
+        addCommand("version", new VersionCommand());
+        addCommand("quit", new QuitCommand());
+
+        addCommand("init", new InitCommand());
+        addCommand("disconnect", new DisconnectCommand());
+        addCommand("logout", new LogoutCommand());
+
+        addCommand("whoami", new WhoAmICommand());
+        addCommand("relay", new RelayCommand());
+        addCommand("stats", new StatsCommand());
+        addCommand("state", new StateCommand());
+
+        addCommand("dummy", new DummyServer());
+
+        addCommand("savelog", new SaveLogCommand());
+
+        addCommand("ipban", new IpBanCommand());
+        addCommand("ipunban", new IpUnbanCommand());
+
+        addCommand("listadd", new ListAddCommand());
+        addCommand("listremove", new ListRemoveCommand());
+        addCommand("changelocal", new ChangeLocalCommand());
+        addCommand("changeserver", new ChangeServerCommand());
+        addCommand("resetstats", new ResetStatsCommand());
+        addCommand("account", new AccountCommand());
+        addCommand("setstaticport", new SetStaticPortCommand());
+        addCommand("setport", new SetStaticPortCommand());
+    }
+
+    private void addCommand(String string, Command command) {
+        commandMap.put(string, command);
+        commandsAlphabetized.add(string);
     }
 
     public void handleCommand(Grappl grappl, String command) {
@@ -56,7 +68,7 @@ public class CommandHandler {
             commandMap.get(args[0].toLowerCase()).runCommand(grappl, args);
         }
         else {
-            Application.getClientLog().log("Unknown command");
+            Application.getClientLog().log("Unknown command '" + command + "'");
         }
     }
 
@@ -93,7 +105,7 @@ public class CommandHandler {
         }
     }
 
-    public Map<String, Command> getCommandMap() {
-        return commandMap;
+    public PriorityQueue<String> getCommandsAlphabetized() {
+        return commandsAlphabetized;
     }
 }

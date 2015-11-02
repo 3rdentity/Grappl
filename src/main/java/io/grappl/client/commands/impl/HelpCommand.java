@@ -11,8 +11,8 @@ public class HelpCommand implements Command{
     public void runCommand(Grappl grappl, String[] args) {
         String printedOutput = "Commands: ";
 
-        for(Map.Entry<String, Command> entries : Application.getCommandHandler().getCommandMap().entrySet()) {
-            printedOutput += entries.getKey() + ", ";
+        for(String entries : Application.getCommandHandler().getCommandsAlphabetized()) {
+            printedOutput += entries + ", ";
         }
 
         Application.getClientLog().log(printedOutput.substring(0, printedOutput.length() - 2));

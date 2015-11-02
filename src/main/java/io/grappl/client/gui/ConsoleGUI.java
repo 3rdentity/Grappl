@@ -5,6 +5,7 @@ import io.grappl.client.Application;
 import io.grappl.client.api.Grappl;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -79,13 +80,14 @@ public class ConsoleGUI {
         logDisplay = new JTextArea(120, 20);
         logDisplay.setLineWrap(true);
         JScrollPane logDisplayScrollPane = new JScrollPane(logDisplay,
-                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
         logDisplayScrollPane.setVisible(true);
         logDisplayScrollPane.setBounds(10, 10, 670, 260);
         consoleFrame.add(logDisplayScrollPane);
         logDisplay.setEditable(false);
+        logDisplay.setFont(new Font("Sans", Font.PLAIN, 12));
 
         final JTextField inputTypingArea = new JTextField();
         inputTypingArea.setBounds(20, 280, 530, 20);
@@ -119,8 +121,14 @@ public class ConsoleGUI {
         consoleFrame.repaint();
     }
 
-    public void enterCommand(String command) {
-        Application.getCommandHandler().handleCommand(grappl, command);
+    public boolean enterCommand(String command) {
+        try {
+            Application.getCommandHandler().handleCommand(grappl, command);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     public JFrame getTheFrame() {
