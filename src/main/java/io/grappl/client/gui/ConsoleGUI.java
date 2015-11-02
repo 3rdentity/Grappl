@@ -12,7 +12,7 @@ import java.awt.event.WindowListener;
 
 public class ConsoleGUI {
 
-    public static JTextArea display;
+    public static JTextArea logDisplay;
 
     private Grappl grappl;
     private JFrame theFrame;
@@ -76,43 +76,46 @@ public class ConsoleGUI {
         consoleFrame.setLocationRelativeTo(null);
         consoleFrame.setVisible(true);
 
-        display = new JTextArea(120, 20);
-        display.setLineWrap(true);
-        JScrollPane jScrollPane = new JScrollPane(display,
+        logDisplay = new JTextArea(120, 20);
+        logDisplay.setLineWrap(true);
+        JScrollPane logDisplayScrollPane = new JScrollPane(logDisplay,
                 JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
                 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
-        jScrollPane.setVisible(true);
-        jScrollPane.setBounds(10, 10, 670, 260);
-        consoleFrame.add(jScrollPane);
-        display.setEditable(false);
-//
-        final JTextField typeArea = new JTextField();
-        typeArea.setBounds(20, 280, 530, 20);
-        consoleFrame.add(typeArea);
-        typeArea.setFocusable(true);
-        typeArea.addActionListener(new ActionListener() {
+        logDisplayScrollPane.setVisible(true);
+        logDisplayScrollPane.setBounds(10, 10, 670, 260);
+        consoleFrame.add(logDisplayScrollPane);
+        logDisplay.setEditable(false);
+
+        final JTextField inputTypingArea = new JTextField();
+        inputTypingArea.setBounds(20, 280, 530, 20);
+        consoleFrame.add(inputTypingArea);
+        inputTypingArea.setFocusable(true);
+        inputTypingArea.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                final String theCommand = typeArea.getText();
+                final String theCommand = inputTypingArea.getText();
                 enterCommand(theCommand);
-                typeArea.setText(null);
+                inputTypingArea.setText(null);
+            }
+        });
+        inputTypingArea.requestFocus();
+
+        JButton enterLineButton = new JButton("Enter");
+        enterLineButton.setBounds(570, 280, 80, 20);
+        consoleFrame.add(enterLineButton);
+        enterLineButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                final String theCommand = inputTypingArea.getText();
+                enterCommand(theCommand);
+                inputTypingArea.setText(null);
             }
         });
 
-        JButton jButton = new JButton("Enter");
-        jButton.setBounds(570, 280, 80, 20);
-        consoleFrame.add(jButton);
-        jButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                final String theCommand = typeArea.getText();
-                enterCommand(theCommand);
-                typeArea.setText(null);
-            }
-        });
-
+        // Secret message to get the console to send text to the window
         Application.getClientLog().log("PING");
+
         consoleFrame.repaint();
     }
 

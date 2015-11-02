@@ -29,8 +29,8 @@ public class ClientLog {
         }
 
         try {
-            if (ConsoleGUI.display != null) {
-                JTextArea display = ConsoleGUI.display;
+            if (ConsoleGUI.logDisplay != null) {
+                JTextArea display = ConsoleGUI.logDisplay;
                 display.setText(null);
 
                 List<String> log = this.getLoggedMessages();
@@ -50,8 +50,8 @@ public class ClientLog {
             System.out.println(theS);
             loggedMessages.add(theS);
 
-            if (ConsoleGUI.display != null) {
-                JTextArea display = ConsoleGUI.display;
+            if (ConsoleGUI.logDisplay != null) {
+                JTextArea display = ConsoleGUI.logDisplay;
                 display.setText(null);
 
                 List<String> log = this.getLoggedMessages();
