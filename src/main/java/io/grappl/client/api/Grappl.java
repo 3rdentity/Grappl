@@ -1,15 +1,13 @@
 package io.grappl.client.api;
 
-import io.grappl.GrapplGlobals;
 import io.grappl.client.Application;
-import io.grappl.client.log.ClientLog;
+import io.grappl.client.log.GrapplLog;
 import io.grappl.client.api.event.UserConnectEvent;
 import io.grappl.client.api.event.UserConnectListener;
 import io.grappl.client.api.event.UserDisconnectEvent;
 import io.grappl.client.api.event.UserDisconnectListener;
 import io.grappl.client.gui.AdvancedGUI;
 import io.grappl.client.gui.StandardGUI;
-import io.grappl.client.other.ExClientConnection;
 
 import javax.swing.*;
 import java.io.DataInputStream;
@@ -65,8 +63,7 @@ public class Grappl {
      * Constructs a new Grappl and sets a generic locationprovider
      */
     public Grappl() {
-
-        Application.getClientLog().log("Creating grappl connection " + uuid);
+        Application.getLog().log("Creating grappl connection " + uuid);
         // Allows the terminal console to have commands act on the newest grappl object
 
         // Start command line command handling thread
@@ -82,12 +79,13 @@ public class Grappl {
     /**
      * Opens a tunnel to a relay server.
      * @param relayServer the relay server to connect to
+     * @return whether or not the connection was succesful
      */
     @SuppressWarnings("SpellCheckingInspection")
     public boolean connect(final String relayServer) {
         this.relayServerIP = relayServer;
 
-        Application.getClientLog().log("Connecting: relayserver=" + relayServer + " localport=" + internalPort);
+        Application.getLog().log("Connecting: relayserver=" + relayServer + " localport=" + internalPort);
 
         try {
             // Create socket listener
@@ -95,19 +93,19 @@ public class Grappl {
 
             try {
                 final int oneSecondDelay = 1000;
-                messageSocket.connect(new InetSocketAddress(relayServer, GrapplGlobals.MESSAGING_PORT), oneSecondDelay);
+                messageSocket.connect(new InetSocketAddress(relayServer, Application.MESSAGING_PORT), oneSecondDelay);
                 sockets.add(messageSocket);
 
                 // Get port that the server will be hosted on remotely
                 final DataInputStream messageInputStream = new DataInputStream(messageSocket.getInputStream());
                 externalPort = messageInputStream.readLine();
 
-                Application.getClientLog().log("Hosting on: " + relayServer + ":" + externalPort);
+                Application.getLog().log("Hosting on: " + relayServer + ":" + externalPort);
 
                 // If a GUI is associated with this Grappl, do GUI things
                 if (gui != null) {
                     gui.initializeGUI(relayServer, externalPort, internalPort);
-                    Application.getClientLog().log("GUI aspects initialized");
+                    Application.getLog().log("GUI aspects initialized");
                 }
 
                 // Create heartbeat thread that is used to monitor whether or not the client is still connected to the server.
@@ -145,7 +143,7 @@ public class Grappl {
     public void restart() {
         if(intentionallyDisconnected) return;
 
-        Application.getClientLog().log("Reconnecting...");
+        Application.getLog().log("Reconnecting...");
 
 //        if(getAuthentication().isLoggedIn()) {
 ////            DataInputStream dataInputStream;
@@ -170,16 +168,16 @@ public class Grappl {
 ////                isLoggedIn = success;
 ////
 ////                if (success) {
-////                    Application.getClientLog().log("Logged in as " + username);
-////                    Application.getClientLog().log("Alpha tester: " + alpha);
-////                    Application.getClientLog().log("Static port: " + port);
+////                    Application.getLog().log("Logged in as " + username);
+////                    Application.getLog().log("Alpha tester: " + alpha);
+////                    Application.getLog().log("Static port: " + port);
 ////
 ////                    // options: nyc. sf. pac. lon. deu.
 ////                    String prefix = dataInputStream.readLine();
 ////
 ////                    String domain = prefix + "." + GrapplGlobals.DOMAIN;
 ////
-////                    Application.getClientLog().log(domain);
+////                    Application.getLog().log(domain);
 ////
 ////                    if(gui != null) {
 ////                        int wX = gui.getFrame().getX();
@@ -205,7 +203,7 @@ public class Grappl {
 ////                        jButton.setBounds(0, 95, 280, 100);
 ////                    }
 ////                } else {
-////                    Application.getClientLog().log("Login failed!");
+////                    Application.getLog().log("Login failed!");
 ////                }
 ////            } catch (Exception e) {
 ////                e.printStackTrace();
@@ -215,14 +213,12 @@ public class Grappl {
         connect(relayServerIP);
     }
 
+    /**
+     * Return the address that this server is publicly
+     * available at.
+     */
     public String getPublicAddress() {
         return getRelayServer() + ":" + getExternalPort();
-
-//        if(getAuthentication().getLocalizedRelayPrefix() != null) {
-//            return getAuthentication().getLocalizedRelayPrefix() + "." + publicAddress;
-//        }
-
-//        return "";
     }
 
     public int getInternalPort() {
@@ -321,7 +317,7 @@ public class Grappl {
                     while(true) {
                         // This goes off when a new client attempts to connect.
                         String userIP = messageInputStream.readLine();
-                        Application.getClientLog().log("A user has connected from ip " + userIP.substring(1, userIP.length()));
+                        Application.getLog().log("A user has connected from ip " + userIP.substring(1, userIP.length()));
 
                         userConnects(new UserConnectEvent(userIP));
 
@@ -333,7 +329,7 @@ public class Grappl {
                 } catch (IOException e) {
                     try {
                         messageSocket.close();
-                        Application.getClientLog().log("Connection with message server has been broken. Unfortunate.");
+                        Application.getLog().log("Connection with message server has been broken. Unfortunate.");
                     } catch (IOException ignore) {}
                 }
             }
@@ -376,7 +372,7 @@ public class Grappl {
             }
         }
 
-        Application.getClientLog().log("Sockets closed");
+        Application.getLog().log("Sockets closed");
     }
 
     /**
@@ -384,7 +380,7 @@ public class Grappl {
      * when the heartbeat thread is interrupted.
      */
     private void isDown() {
-        Application.getClientLog().log("Lost connection to remote");
+        Application.getLog().log("Lost connection to remote");
         closeAllSockets();
 
         Thread reconnectThread = new Thread(new Runnable() {
@@ -392,12 +388,12 @@ public class Grappl {
             public void run() {
                 while (true) {
                     try {
-                        Socket testSocket = new Socket(GrapplGlobals.DOMAIN, GrapplGlobals.HEARTBEAT);
+                        Socket testSocket = new Socket(Application.DOMAIN, Application.HEARTBEAT);
                         testSocket.close();
                         restart();
                         return;
                     } catch (IOException e) {
-                        Application.getClientLog().log("Attempting reconnect");
+                        Application.getLog().log("Attempting reconnect");
                     }
 
                     try {
@@ -424,14 +420,14 @@ public class Grappl {
                 DataOutputStream dataOutputStream = null;
 
                 try {
-                    heartBeat = new Socket(relayServerIP, GrapplGlobals.HEARTBEAT);
+                    heartBeat = new Socket(relayServerIP, Application.HEARTBEAT);
                     sockets.add(heartBeat);
                     dataOutputStream = new DataOutputStream(heartBeat.getOutputStream());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
 
-                Application.getClientLog().log("Connected to heartbeat server");
+                Application.getLog().log("Connected to heartbeat server");
 
                 while(true) {
                     try {
@@ -453,8 +449,8 @@ public class Grappl {
         heartBeatThread.start();
     }
 
-    private ClientLog clientLog = new ClientLog();
-    public ClientLog getLog() {
+    private GrapplLog clientLog = new GrapplLog();
+    public GrapplLog getLog() {
         return clientLog;
     }
 

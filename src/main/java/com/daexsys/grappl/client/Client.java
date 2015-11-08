@@ -1,7 +1,7 @@
 package com.daexsys.grappl.client;
 
 import io.grappl.client.Application;
-import io.grappl.client.Mode;
+import io.grappl.client.ApplicationMode;
 import io.grappl.client.api.Grappl;
 import io.grappl.client.api.GrapplBuilder;
 import io.grappl.client.gui.StandardGUI;
@@ -13,13 +13,13 @@ public class Client {
 
     public static void main(String[] args) {
 
-        Application.create(args, Mode.NORMAL);
+        Application.create(args, ApplicationMode.NORMAL);
 
         boolean displayGui = true;
 
         // Handle command line arguments
         if(args.length > 0) {
-            Application.setMode(Mode.NOGUI);
+            Application.setMode(ApplicationMode.NOGUI);
 
             if (args[0].equalsIgnoreCase("-nogui") || args[0].equalsIgnoreCase("nogui")) {
                 displayGui = false;

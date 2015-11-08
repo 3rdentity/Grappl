@@ -1,6 +1,5 @@
 package io.grappl.client.gui;
 
-import io.grappl.GrapplGlobals;
 import io.grappl.client.Application;
 import io.grappl.client.GrapplDataFile;
 import io.grappl.client.api.Authentication;
@@ -56,7 +55,7 @@ public class AdvancedGUI {
 
         jFrame = new JFrame();
 
-        jFrame.setIconImage(GrapplGlobals.getIcon());
+        jFrame.setIconImage(Application.getIcon());
 
         jFrame.setTitle("Grappl Advanced");
 
@@ -79,7 +78,7 @@ public class AdvancedGUI {
                         "p.grappl.io (Oceania)"
                 }
         );
-        if(GrapplGlobals.debugState) {
+        if(Application.debugState) {
             jComboBox.addItem("localhost (if you're testing)");
         }
 
@@ -180,7 +179,7 @@ public class AdvancedGUI {
             public void actionPerformed(ActionEvent e) {
                 focusedGrappl.disconnect();
                 connectionLabel.setText("Not connected - Tunnel closed");
-                Application.getClientLog().log("Disconnected..");
+                Application.getLog().log("Disconnected..");
                 focusedGrappl = null;
                 close.setEnabled(false);
             }
@@ -237,7 +236,7 @@ public class AdvancedGUI {
                 jFrame.setVisible(true);
                 jFrame.setLayout(null);
 
-                jFrame.setIconImage(GrapplGlobals.getIcon());
+                jFrame.setIconImage(Application.getIcon());
 
                 final JLabel usernameLable = new JLabel("Username");
                 usernameLable.setBounds(5, 2, 250, 20);
@@ -258,17 +257,17 @@ public class AdvancedGUI {
                 jPasswordField.addKeyListener(new KeyListener() {
                     @Override
                     public void keyTyped(KeyEvent e) {
-                        GrapplGlobals.usingSavedHashPass = false;
+                        Application.usingSavedHashPass = false;
                     }
 
                     @Override
                     public void keyPressed(KeyEvent e) {
-                        GrapplGlobals.usingSavedHashPass = false;
+                        Application.usingSavedHashPass = false;
                     }
 
                     @Override
                     public void keyReleased(KeyEvent e) {
-                        GrapplGlobals.usingSavedHashPass = false;
+                        Application.usingSavedHashPass = false;
                     }
                 });
 
@@ -277,7 +276,7 @@ public class AdvancedGUI {
                     jPasswordField.setText(password);
                     isActuallyHash = true;
                 } else {
-                    Application.getClientLog().log("Password is null");
+                    Application.getLog().log("Password is null");
                 }
                 jFrame.add(jPasswordField);
 
@@ -294,7 +293,7 @@ public class AdvancedGUI {
                         login(usernameField, jPasswordField);
 
                         try {
-                            if (!isActuallyHash || !GrapplGlobals.usingSavedHashPass) {
+                            if (!isActuallyHash || !Application.usingSavedHashPass) {
                                 theGUI.password = (new String(theGUI.password).hashCode() + "").toCharArray();
                             }
 
@@ -310,9 +309,9 @@ public class AdvancedGUI {
                                     premiumLabel.setText("Beta tester: true, static port: " + authentication.getStaticPort());
                                 }
 
-                                Application.getClientLog().log("Logged in as " + authentication.getUsername());
-                                Application.getClientLog().log("Beta tester: " + authentication.isPremium());
-                                Application.getClientLog().log("Static port: " + authentication.getStaticPort());
+                                Application.getLog().log("Logged in as " + authentication.getUsername());
+                                Application.getLog().log("Beta tester: " + authentication.isPremium());
+                                Application.getLog().log("Static port: " + authentication.getStaticPort());
                                 logIn();
 
                                 GrapplDataFile.saveUsername(authentication.getUsername(), theGUI.password);

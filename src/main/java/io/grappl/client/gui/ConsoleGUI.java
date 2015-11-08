@@ -1,6 +1,5 @@
 package io.grappl.client.gui;
 
-import io.grappl.GrapplGlobals;
 import io.grappl.client.Application;
 import io.grappl.client.api.Grappl;
 
@@ -67,7 +66,7 @@ public class ConsoleGUI {
         consoleFrame.setTitle("Grappl Console");
 
         try {
-            consoleFrame.setIconImage(GrapplGlobals.getIcon());
+            consoleFrame.setIconImage(Application.getIcon());
         } catch (Exception ee) {
             ee.printStackTrace();
         }
@@ -116,7 +115,7 @@ public class ConsoleGUI {
         });
 
         // Secret message to get the console to send text to the window
-        Application.getClientLog().log("PING");
+        Application.getLog().log("PING");
 
         consoleFrame.repaint();
     }

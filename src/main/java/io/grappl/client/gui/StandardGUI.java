@@ -1,6 +1,5 @@
 package io.grappl.client.gui;
 
-import io.grappl.GrapplGlobals;
 import io.grappl.client.Application;
 import io.grappl.client.GrapplDataFile;
 import io.grappl.client.api.Grappl;
@@ -41,7 +40,7 @@ public class StandardGUI {
             e.printStackTrace();
         }
 
-        jFrame = new JFrame("Grappl " + GrapplGlobals.VERSION);
+        jFrame = new JFrame("Grappl " + Application.VERSION);
         jFrame.setSize(new Dimension(310, 240));
         jFrame.setLocationRelativeTo(null);
         jFrame.setVisible(true);
@@ -64,17 +63,17 @@ public class StandardGUI {
         jPasswordField.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
-                GrapplGlobals.usingSavedHashPass = false;
+                Application.usingSavedHashPass = false;
             }
 
             @Override
             public void keyPressed(KeyEvent e) {
-                GrapplGlobals.usingSavedHashPass = false;
+                Application.usingSavedHashPass = false;
             }
 
             @Override
             public void keyReleased(KeyEvent e) {
-                GrapplGlobals.usingSavedHashPass = false;
+                Application.usingSavedHashPass = false;
             }
         });
         String password = GrapplDataFile.getPassword();
@@ -83,7 +82,7 @@ public class StandardGUI {
             jPasswordField.setText(password);
             isActuallyHash = true;
         } else {
-            Application.getClientLog().log("Password is null");
+            Application.getLog().log("Password is null");
         }
 
         connectedClientsLabel = new JLabel("Waiting for connections");
@@ -131,7 +130,7 @@ public class StandardGUI {
                     int wX = jFrame.getX();
                     int wY = jFrame.getY();
 
-                    jFrame = new JFrame(GrapplGlobals.APP_NAME + " ");
+                    jFrame = new JFrame(Application.APP_NAME + " ");
                     jFrame.setSize(new Dimension(300, 240));
                     jFrame.setLocation(wX, wY);
                     jFrame.setVisible(true);
@@ -139,7 +138,7 @@ public class StandardGUI {
                     jFrame.setResizable(false);
                     jFrame.setSize(new Dimension(290, 230));
                     jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-                    jFrame.setIconImage(GrapplGlobals.getIcon());
+                    jFrame.setIconImage(Application.getIcon());
 
                     JButton consoleButton = new JButton(COMMAND_BUTTON_TEXT);
                     consoleButton.addActionListener(new ActionListener() {
@@ -157,7 +156,7 @@ public class StandardGUI {
 
                     grappl = new GrapplBuilder().login("default", ("1".hashCode() + "").toCharArray(), jFrame).withGUI(theGUI).build();
 
-                    JButton jButton = new JButton("Close " + GrapplGlobals.APP_NAME + " Client");
+                    JButton jButton = new JButton("Close " + Application.APP_NAME + " Client");
                     jButton.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
@@ -169,7 +168,7 @@ public class StandardGUI {
 
                     String ports = JOptionPane.showInputDialog("What port does your server run on?");
                     grappl.setInternalPort(Integer.parseInt(ports));
-                    grappl.connect(grappl.getAuthentication().getLocalizedRelayPrefix() + "." + GrapplGlobals.DOMAIN);
+                    grappl.connect(grappl.getAuthentication().getLocalizedRelayPrefix() + "." + Application.DOMAIN);
                 }
             });
             beAnonymousButton.setBounds(4, 155, 192, 40);
@@ -186,7 +185,7 @@ public class StandardGUI {
             advancedButton.setBounds(200, 155, 90, 40);
             jFrame.add(advancedButton);
 
-            jFrame.setIconImage(GrapplGlobals.getIcon());
+            jFrame.setIconImage(Application.getIcon());
             jFrame.repaint();
         }
     }
@@ -247,7 +246,7 @@ public class StandardGUI {
         char[] password = jPasswordField.getPassword();
 
         try {
-            if(!isActuallyHash || !GrapplGlobals.usingSavedHashPass) {
+            if(!isActuallyHash || !Application.usingSavedHashPass) {
                 password = (new String(password).hashCode() + "").toCharArray();
             }
 
@@ -255,9 +254,9 @@ public class StandardGUI {
             grappl = grapplBuilder.build();
 
             if(grappl.getAuthentication().isLoggedIn()) {
-                Application.getClientLog().log("Logged in as " + grappl.getUsername());
-                Application.getClientLog().log("Beta tester: " + grappl.getAuthentication().isPremium());
-                Application.getClientLog().log("Static port: " + grappl.getExternalPort());
+                Application.getLog().log("Logged in as " + grappl.getUsername());
+                Application.getLog().log("Beta tester: " + grappl.getAuthentication().isPremium());
+                Application.getLog().log("Static port: " + grappl.getExternalPort());
 
                 if(!rememberMeBox.isSelected()) {
                     password = null;
@@ -268,25 +267,25 @@ public class StandardGUI {
                 // options: nyc. sf. pac. lon. deu.
                 String prefix = grappl.getAuthentication().getLocalizedRelayPrefix();
 
-                String domain = prefix + "." + GrapplGlobals.DOMAIN;
+                String domain = prefix + "." + Application.DOMAIN;
 
                 int wX = jFrame.getX();
                 int wY = jFrame.getY();
 
                 jFrame.setVisible(false);
 
-                JFrame newJframe = new JFrame(GrapplGlobals.APP_NAME + " Client ("+ grappl.getUsername() + ")");
+                JFrame newJframe = new JFrame(Application.APP_NAME + " Client ("+ grappl.getUsername() + ")");
                 // 300, 240
                 newJframe.setSize(new Dimension(300, 240));
                 newJframe.setLocation(wX, wY);
                 newJframe.setResizable(false);
                 newJframe.setSize(new Dimension(290, 230));
-                newJframe.setIconImage(GrapplGlobals.getIcon());
+                newJframe.setIconImage(Application.getIcon());
                 newJframe.setVisible(true);
                 newJframe.setLayout(null);
                 newJframe.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-                JButton jButton = new JButton("Close " + GrapplGlobals.APP_NAME + " Client");
+                JButton jButton = new JButton("Close " + Application.APP_NAME + " Client");
                 jButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -328,10 +327,10 @@ public class StandardGUI {
                     JOptionPane.showMessageDialog(getFrame(), "The value you entered is not a number");
                 }
             } else {
-                Application.getClientLog().log("Login failed!");
+                Application.getLog().log("Login failed!");
             }
         } catch (Exception esdfe) {
-            Application.getClientLog().log("Yeah... that shouldn't have happened. Type the darn port next time!");
+            Application.getLog().log("Yeah... that shouldn't have happened. Type the darn port next time!");
         }
     }
 
