@@ -41,11 +41,9 @@ public class HeadlessCompatClient {
 			for (int i = 0; i < args.length; i++) {
 				if (args[i].startsWith("-")) {
 					if (args[i].startsWith("--")) {
-						switch (args[i]) {
-						case "--help":
+						if ("--help".equals(args[i])) {
 							printHelp();
-							break;
-						case "--port":
+						} else if ("--port".equals(args[i])) {
 							if (args.length <= i + 1) {
 								System.err.println("Error parsing argument: "
 										+ args[i] + ", missing parameters!");
@@ -60,8 +58,7 @@ public class HeadlessCompatClient {
 									tryHelp();
 								}
 							}
-							break;
-						case "--server":
+						} else if ("--server".equals(args[i])) {
 							if (args.length <= i + 1) {
 								System.err.println("Error parsing argument: "
 										+ args[i] + ", missing parameters!");
@@ -69,8 +66,7 @@ public class HeadlessCompatClient {
 							} else {
 								server = args[++i];
 							}
-							break;
-						case "--username":
+						} else if ("--username".equals(args[i])) {
 							if (args.length <= i + 1) {
 								System.err.println("Error parsing argument: "
 										+ args[i] + ", missing parameters!");
@@ -78,8 +74,7 @@ public class HeadlessCompatClient {
 							} else {
 								username = args[++i];
 							}
-							break;
-						case "--password":
+						} else if ("--password".equals(args[i])) {
 							if (args.length <= i + 1) {
 								System.err.println("Error parsing argument: "
 										+ args[i] + ", missing parameters!");
@@ -87,8 +82,7 @@ public class HeadlessCompatClient {
 							} else {
 								password = args[++i];
 							}
-							break;
-						case "--output":
+						} else if ("--output".equals(args[i])) {
 							if (args.length <= i + 1) {
 								System.err.println("Error parsing argument: "
 										+ args[i] + ", missing parameters!");
@@ -96,7 +90,7 @@ public class HeadlessCompatClient {
 							} else {
 								outputFile = new File(args[++i]);
 							}
-						default:
+						} else {
 							System.err.println("Unknown argument: " + args[i]);
 							tryHelp();
 						}
