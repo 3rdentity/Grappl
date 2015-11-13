@@ -1,3 +1,7 @@
 .idea/
 .src/main/java/io/grappl/server
 .src/main/java/io/grappl/web
+/target/
+/.settings/
+/.classpath
+/.project
