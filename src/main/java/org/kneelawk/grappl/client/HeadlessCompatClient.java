@@ -1,4 +1,4 @@
-package com.daexsys.grappl.client;
+package org.kneelawk.grappl.client;
 
 import io.grappl.client.Application;
 import io.grappl.client.ApplicationMode;
