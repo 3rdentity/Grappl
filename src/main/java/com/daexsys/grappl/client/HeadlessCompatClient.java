@@ -139,7 +139,7 @@ public class HeadlessCompatClient {
 				}
 			}
 
-			startGrappl(port, server, username, password);
+			startGrappl(port, server, username, password, outputFile);
 		} else {
 			Application.getCommandHandler().createConsoleCommandListenThread(
 					null);
@@ -204,7 +204,7 @@ public class HeadlessCompatClient {
 	}
 
 	public static void startGrappl(int port, String server, String username,
-			String password) {
+			String password, File outputFile) {
 		GrapplBuilder builder = new GrapplBuilder();
 		builder.atLocalPort(port);
 		if (username != null && !"".equals(username) && password != null
