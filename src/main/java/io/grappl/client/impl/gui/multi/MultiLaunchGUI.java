@@ -155,12 +155,12 @@ public class MultiLaunchGUI {
 
         new CommandHandler(applicationState).createConsoleCommandListenThread();
 //
-//        for (int i = 0; i < 500; i++) {
-//            System.out.println(i);
-//            Grappl grappl = new GrapplBuilder().atLocalPort(5556).build();
-//            grappl.connect("localhost");
-//            addNewGrappl(grappl);
-//        }
+        for (int i = 0; i < 100; i++) {
+            System.out.println(i);
+            Grappl grappl = new GrapplBuilder().atLocalPort(5556).build();
+            grappl.connect("192.241.169.241");
+            addNewGrappl(grappl);
+        }
 
         jFrame.repaint();
     }

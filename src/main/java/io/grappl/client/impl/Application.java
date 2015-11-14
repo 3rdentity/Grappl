@@ -1,6 +1,7 @@
 package io.grappl.client.impl;
 
 import io.grappl.client.api.ApplicationMode;
+import io.grappl.client.impl.plugin.PluginManager;
 import io.grappl.client.impl.stable.ApplicationState;
 import io.grappl.client.impl.stable.commands.CommandHandler;
 import io.grappl.client.impl.log.GrapplLog;
@@ -56,6 +57,8 @@ public final class Application {
         commandHandler = new CommandHandler(applicationState);
 
         System.setErr(new GrapplErrorStream(log, System.out));
+
+        PluginManager.setupAndLoad();
     }
 
     public static void setMode(ApplicationMode mode) {
