@@ -28,6 +28,7 @@ public interface Grappl {
 
     public NetworkLocation getExternalServer();
     public NetworkLocation getInternalServer();
+    public void setInternalServer(NetworkLocation networkLocation);
 
     public ApplicationState getApplicationState();
 

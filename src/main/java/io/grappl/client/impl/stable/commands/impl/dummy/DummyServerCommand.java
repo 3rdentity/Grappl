@@ -1,4 +1,4 @@
-package io.grappl.client.impl.stable.commands.impl;
+package io.grappl.client.impl.stable.commands.impl.dummy;
 
 import io.grappl.client.api.Grappl;
 import io.grappl.client.impl.Application;
@@ -13,7 +13,22 @@ import java.net.Socket;
  * Launches a dummy server for testing.
  * Returns large text "'Hello world' -Grappl" in HTML.
  */
-public class DummyServer implements Command {
+public class DummyServerCommand implements Command {
+
+    private ContentSource source;
+
+    public DummyServerCommand() {
+        source = new ContentSource() {
+            @Override
+            public String getContent() {
+                return "<h1>'Hello world' -Grappl</h1>";
+            }
+        };
+    }
+
+    public DummyServerCommand(ContentSource contentSource) {
+        this.source = contentSource;
+    }
 
     @Override
     public void runCommand(final Grappl grappl, String[] args) {
@@ -34,7 +49,7 @@ public class DummyServer implements Command {
                                     try {
                                         Socket socket = serverSocket.accept();
 
-                                        socket.getOutputStream().write("<h1>'Hello world' -Grappl</h1>".getBytes());
+                                        socket.getOutputStream().write(source.getContent().getBytes());
                                         socket.getOutputStream().flush();
                                         socket.getOutputStream().close();
                                         socket.close();

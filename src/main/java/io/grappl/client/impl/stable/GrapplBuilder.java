@@ -12,9 +12,13 @@ import javax.swing.*;
 public class GrapplBuilder {
 
     private Grappl grappl;
+    private NetworkLocation indevNetLoc = new NetworkLocation("", -1);
     private ApplicationState applicationState;
 
-    public GrapplBuilder() { grappl = new TCPGrappl(null); }
+    public GrapplBuilder() {
+        grappl = new TCPGrappl(null);
+        grappl.setInternalServer(indevNetLoc);
+    }
 
     protected GrapplBuilder(ApplicationState applicationState, Protocol grapplProtocol) {
         this.applicationState = applicationState;
@@ -24,6 +28,8 @@ public class GrapplBuilder {
         } else {
             grappl = new UDPGrappl();
         }
+
+        grappl.setInternalServer(indevNetLoc);
     }
 
     public GrapplBuilder withGUI(DefaultGUI gui) {
@@ -36,13 +42,17 @@ public class GrapplBuilder {
         return this;
     }
 
+    public void atNetworkLocation(NetworkLocation networkLocation) {
+        indevNetLoc = networkLocation;
+    }
+
     public GrapplBuilder atLocalAddress(String serverIP) {
-        ((TCPGrappl) grappl).internalAddress = serverIP;
+        indevNetLoc.setAddress(serverIP);
         return this;
     }
 
     public GrapplBuilder atLocalPort(int localPort) {
-        ((TCPGrappl) grappl).internalPort = localPort;
+        indevNetLoc.setPort(localPort);
         return this;
     }
 

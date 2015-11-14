@@ -82,6 +82,11 @@ public class UDPGrappl implements Grappl {
     }
 
     @Override
+    public void setInternalServer(NetworkLocation networkLocation) {
+
+    }
+
+    @Override
     public ApplicationState getApplicationState() {
         return null;
     }

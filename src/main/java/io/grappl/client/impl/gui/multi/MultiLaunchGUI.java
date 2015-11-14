@@ -1,12 +1,17 @@
 package io.grappl.client.impl.gui.multi;
 
 import io.grappl.client.api.Grappl;
+import io.grappl.client.api.LocationProvider;
 import io.grappl.client.api.event.ConsoleMessageListener;
 import io.grappl.client.impl.Application;
 import io.grappl.client.api.ApplicationMode;
 import io.grappl.client.impl.stable.ApplicationState;
 import io.grappl.client.impl.stable.GrapplBuilder;
+import io.grappl.client.impl.stable.NetworkLocation;
+import io.grappl.client.impl.stable.RandomNetworkProvider;
 import io.grappl.client.impl.stable.commands.CommandHandler;
+import io.grappl.client.impl.stable.commands.impl.dummy.ContentSource;
+import io.grappl.client.impl.stable.commands.impl.dummy.DummyServerCommand;
 
 import javax.swing.*;
 import java.awt.*;
@@ -155,15 +160,35 @@ public class MultiLaunchGUI {
 
         new CommandHandler(applicationState).createConsoleCommandListenThread();
 //
-        for (int i = 0; i < 100; i++) {
+        RandomNetworkProvider randomNetworkProvider = new RandomNetworkProvider();
+        randomNetworkProvider.addLocation(new NetworkLocation("us.shotbow.net", 25565));
+        randomNetworkProvider.addLocation(new NetworkLocation("p.nerd.nu", 25565));
+        randomNetworkProvider.addLocation(new NetworkLocation("c.nerd.nu", 25565));
+
+        for (i = 0; i < 100; i++) {
             System.out.println(i);
-            Grappl grappl = new GrapplBuilder().atLocalPort(5556).build();
-            grappl.connect("192.241.169.241");
+            Grappl grappl = new GrapplBuilder().withInternalLocationProvider(randomNetworkProvider).build();
+
+            grappl.connect("localhost");
+
+            if(firstPort == 0) {
+                firstPort = grappl.getExternalServer().getPort();
+            }
             addNewGrappl(grappl);
         }
 
+        new DummyServerCommand(new ContentSource() {
+            @Override
+            public String getContent() {
+                return "<h1>can be found on even #'d ports shader:(" + firstPort + "-" + (firstPort + i) + ")</h1>";
+            }
+        }).runCommand(null, new String[]{"", 5556 + ""});
+
         jFrame.repaint();
     }
+
+    private int i = 0;
+    private int firstPort = 0;
 
     public void enterCommand(String command) {}
 

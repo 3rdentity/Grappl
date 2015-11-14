@@ -1,10 +1,10 @@
 package io.grappl.client.impl.stable.commands;
 
-import io.grappl.client.api.Grappl;
 import io.grappl.client.api.commands.Command;
 import io.grappl.client.impl.stable.ApplicationState;
 import io.grappl.client.impl.Application;
 import io.grappl.client.impl.stable.commands.impl.*;
+import io.grappl.client.impl.stable.commands.impl.dummy.DummyServerCommand;
 
 import java.util.*;
 
@@ -39,7 +39,7 @@ public class CommandHandler {
         addCommand("stats", new StatsCommand());
         addCommand("state", new StateCommand());
 
-        addCommand("dummy", new DummyServer());
+        addCommand("dummy", new DummyServerCommand());
 
         addCommand("savelog", new SaveLogCommand());
 

@@ -418,6 +418,15 @@ public class TCPGrappl implements Grappl {
         return uuid;
     }
 
+    public void setInternalServer(final NetworkLocation networkLocation) {
+        internalServerProvider = new LocationProvider() {
+            @Override
+            public NetworkLocation getLocation() {
+                return networkLocation;
+            }
+        };
+    }
+
     @Override
     public String toString() {
         return
