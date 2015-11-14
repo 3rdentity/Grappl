@@ -1,11 +1,10 @@
 package io.grappl.client.api;
 
-import com.daexsys.grappl.client.Client;
 import io.grappl.client.impl.stable.Authentication;
 import io.grappl.client.impl.stable.NetworkLocation;
 import io.grappl.client.impl.stable.StatMonitor;
-import io.grappl.client.impl.stable.event.UserConnectListener;
-import io.grappl.client.impl.stable.event.UserDisconnectListener;
+import io.grappl.client.api.event.UserConnectListener;
+import io.grappl.client.api.event.UserDisconnectListener;
 import io.grappl.client.impl.gui.StandardGUI;
 
 import java.util.Collection;

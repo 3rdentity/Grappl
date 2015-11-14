@@ -1,4 +1,4 @@
-package io.grappl.client.impl;
+package io.grappl.client.api;
 
 public enum ApplicationMode {
 

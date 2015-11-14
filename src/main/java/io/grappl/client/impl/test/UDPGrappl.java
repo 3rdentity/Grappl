@@ -1,15 +1,17 @@
 package io.grappl.client.impl.test;
 
+import io.grappl.client.api.ClientConnection;
 import io.grappl.client.api.Grappl;
 import io.grappl.client.impl.stable.Authentication;
 import io.grappl.client.impl.stable.NetworkLocation;
 import io.grappl.client.impl.stable.StatMonitor;
-import io.grappl.client.impl.stable.event.UserConnectListener;
-import io.grappl.client.impl.stable.event.UserDisconnectListener;
+import io.grappl.client.api.event.UserConnectListener;
+import io.grappl.client.api.event.UserDisconnectListener;
 import io.grappl.client.impl.gui.StandardGUI;
 
 import java.net.DatagramSocket;
 import java.net.SocketException;
+import java.util.Collection;
 
 /**
  * Experimental UDP grappl implementation
@@ -31,6 +33,11 @@ public class UDPGrappl implements Grappl {
     @Override
     public void addUserDisconnectListener(UserDisconnectListener userDisconnectListener) {
 
+    }
+
+    @Override
+    public Collection<ClientConnection> getConnectedClients() {
+        return null;
     }
 
     @Override

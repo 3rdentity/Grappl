@@ -6,9 +6,9 @@ import io.grappl.client.impl.GrapplDataFile;
 import io.grappl.client.impl.stable.Authentication;
 import io.grappl.client.impl.stable.TCPGrappl;
 import io.grappl.client.impl.stable.event.UserConnectEvent;
-import io.grappl.client.impl.stable.event.UserConnectListener;
+import io.grappl.client.api.event.UserConnectListener;
 import io.grappl.client.impl.stable.event.UserDisconnectEvent;
-import io.grappl.client.impl.stable.event.UserDisconnectListener;
+import io.grappl.client.api.event.UserDisconnectListener;
 
 import javax.swing.*;
 import java.awt.*;
@@ -112,18 +112,20 @@ public class AdvancedGUI {
         update.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                final int MAX_POSSIBLE_PORT_NUMBER = 65535;
+
                 if (focusedGrappl != null) {
                     try {
                         int portValue = Integer.parseInt(jTextField.getText());
 
-                        if (portValue > 65535) {
-                            JOptionPane.showConfirmDialog(jFrame, "Value too high. Port must be equal to or lower than 65535");
+                        if (portValue > MAX_POSSIBLE_PORT_NUMBER) {
+                            JOptionPane.showConfirmDialog(jFrame, "Value too high. Port must be equal to or lower than " + MAX_POSSIBLE_PORT_NUMBER);
                         } else {
                             focusedGrappl.getInternalServer().setPort(Integer.parseInt(jTextField.getText()));
                             portLabel.setText("Local port: " + focusedGrappl.getInternalPort());
                         }
                     } catch (NumberFormatException ignore) {
-                        JOptionPane.showConfirmDialog(jFrame, "Value too high. Port must be equal to or lower than 65535");
+                        JOptionPane.showConfirmDialog(jFrame, "Value too high. Port must be equal to or lower than " + MAX_POSSIBLE_PORT_NUMBER);
                     }
                 }
             }

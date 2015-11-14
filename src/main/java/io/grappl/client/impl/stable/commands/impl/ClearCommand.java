@@ -2,7 +2,7 @@ package io.grappl.client.impl.stable.commands.impl;
 
 import io.grappl.client.api.Grappl;
 import io.grappl.client.impl.Application;
-import io.grappl.client.impl.ApplicationMode;
+import io.grappl.client.api.ApplicationMode;
 import io.grappl.client.api.commands.Command;
 import io.grappl.client.impl.gui.ConsoleGUI;
 

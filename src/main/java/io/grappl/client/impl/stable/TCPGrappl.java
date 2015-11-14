@@ -6,9 +6,9 @@ import io.grappl.client.api.LocationProvider;
 import io.grappl.client.impl.Application;
 import io.grappl.client.impl.log.GrapplLog;
 import io.grappl.client.impl.stable.event.UserConnectEvent;
-import io.grappl.client.impl.stable.event.UserConnectListener;
+import io.grappl.client.api.event.UserConnectListener;
 import io.grappl.client.impl.stable.event.UserDisconnectEvent;
-import io.grappl.client.impl.stable.event.UserDisconnectListener;
+import io.grappl.client.api.event.UserDisconnectListener;
 import io.grappl.client.impl.gui.AdvancedGUI;
 import io.grappl.client.impl.gui.StandardGUI;
 
@@ -97,7 +97,10 @@ public class TCPGrappl implements Grappl {
 
             try {
                 final int oneSecondDelay = 1000;
-                messageSocket.connect(new InetSocketAddress(relayServer, Application.MESSAGING_PORT), oneSecondDelay);
+
+                messageSocket.connect(
+                        new InetSocketAddress(relayServer, Application.MESSAGING_PORT),
+                        oneSecondDelay);
                 sockets.add(messageSocket);
 
                 // Get port that the server will be hosted on remotely
@@ -114,9 +117,8 @@ public class TCPGrappl implements Grappl {
 
                 // Create heartbeat thread that is used to monitor whether or not the client is still connected to the server.
                 createHeartbeatThread();
-
                 // Create thread that routes incoming connections to the local server.
-                createExClientHandler(messageSocket, messageInputStream);
+                createClientHandler(messageSocket, messageInputStream);
 
             } catch (SocketTimeoutException e) {
                 if(gui != null)
@@ -240,6 +242,10 @@ public class TCPGrappl implements Grappl {
 
     @Override
     public NetworkLocation getExternalServer() {
+        if(externalPort == null || relayServerIP == null) {
+            return new NetworkLocation("localhost", 0);
+        }
+
         return new NetworkLocation(relayServerIP, Integer.parseInt(externalPort));
     }
 
@@ -304,8 +310,8 @@ public class TCPGrappl implements Grappl {
         }
     }
 
-    private void createExClientHandler(final Socket messageSocket, final DataInputStream messageInputStream) {
-        final Grappl theGrappl = this;
+    private void createClientHandler(final Socket messageSocket, final DataInputStream messageInputStream) {
+        final TCPGrappl theGrappl = this;
 
         final List<TCPClientConnection> connectedClients = new ArrayList<TCPClientConnection>();
 
@@ -316,7 +322,7 @@ public class TCPGrappl implements Grappl {
             gui.getFrame().repaint();
         }
 
-        Thread exClientHandler = new Thread(new Runnable() {
+        Thread clientHandlerThread = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -327,7 +333,7 @@ public class TCPGrappl implements Grappl {
 
                         userConnects(new UserConnectEvent(userIP));
 
-                        TCPClientConnection exClient = new TCPClientConnection(((TCPGrappl) theGrappl), userIP);
+                        TCPClientConnection exClient = new TCPClientConnection(theGrappl, userIP);
                         exClient.open();
                         clients.put(exClient.getUUID(), exClient);
                         connectedClients.add(exClient);
@@ -340,7 +346,8 @@ public class TCPGrappl implements Grappl {
                 }
             }
         });
-        exClientHandler.start();
+        clientHandlerThread.setName("Grappl Client Handler Thread " + getUUID().toString());
+        clientHandlerThread.start();
 
         Thread clientVerifier = new Thread(new Runnable() {
             @Override
@@ -362,6 +369,7 @@ public class TCPGrappl implements Grappl {
                 }
             }
         });
+        clientVerifier.setName("Grappl Client Verifier Thread " + getUUID().toString());
         clientVerifier.start();
     }
 
@@ -410,7 +418,7 @@ public class TCPGrappl implements Grappl {
                 }
             }
         });
-        reconnectThread.setName("Reconnect Thread");
+        reconnectThread.setName("Grappl Reconnect Thread");
         reconnectThread.start();
     }
 

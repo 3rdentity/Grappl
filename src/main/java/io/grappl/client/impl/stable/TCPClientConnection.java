@@ -18,11 +18,11 @@ public class TCPClientConnection implements ClientConnection {
 
     public static final int BLOCK_SIZE = 4096;
 
+    // The Grappl instance associated with this connection
+    private TCPGrappl tcpGrappl;
+
     // The address of the external client
     private String address;
-
-    // The Grappl instance associated with this connection
-    private TCPGrappl grappl;
 
     // Whether or not the connection is still open
     private boolean open;
@@ -39,7 +39,7 @@ public class TCPClientConnection implements ClientConnection {
     private Socket outward;
 
     public TCPClientConnection(final TCPGrappl grappl, final String address) {
-        this.grappl = grappl;
+        this.tcpGrappl = grappl;
         this.address = address;
 
         dataHandler = new NullHandler();
@@ -53,20 +53,21 @@ public class TCPClientConnection implements ClientConnection {
      */
     public void open() {
         // Increment the connected player counter.
-        getGrappl().getStatMonitor().openConnection();
+        tcpGrappl.getStatMonitor().openConnection();
 
-        final int relayPort = grappl.getExternalServer().getPort() + 1;
+        final int relayPort = tcpGrappl.getExternalServer().getPort() + 1;
 
         // This socket connects to the local server.
         try {
-            NetworkLocation internalServer = grappl.getInternalServer();
+            NetworkLocation internalServer = tcpGrappl.getInternalServer();
 
             inward = new Socket(internalServer.getAddress(), internalServer.getPort());
             inward.setSoTimeout(10000);
-            grappl.getSockets().add(inward);
-            outward = new Socket(grappl.getRelayServer(), relayPort);
+            tcpGrappl.getSockets().add(inward);
+
+            outward = new Socket(tcpGrappl.getRelayServer(), relayPort);
             outward.setSoTimeout(10000);
-            grappl.getSockets().add(outward);
+            tcpGrappl.getSockets().add(outward);
 
             Application.getLog().detailed(uuid + " connection active " + address.substring(1, address.length())
                     + " -> " + internalServer.getAddress() + ":" + internalServer.getPort());
@@ -81,7 +82,7 @@ public class TCPClientConnection implements ClientConnection {
                     try {
                         while ((size = inward.getInputStream().read(buffer)) != -1) {
                             outward.getOutputStream().write(buffer, 0, size);
-                            grappl.getStatMonitor().dataSent(size);
+                            tcpGrappl.getStatMonitor().dataSent(size);
                             dataHandler.handleOutgoing(buffer, size);
                         }
                     } catch (IOException e) {
@@ -117,7 +118,7 @@ public class TCPClientConnection implements ClientConnection {
                     try {
                         while ((size = outward.getInputStream().read(buffer)) != -1) {
                             inward.getOutputStream().write(buffer, 0, size);
-                            grappl.getStatMonitor().dataReceived(size);
+                            tcpGrappl.getStatMonitor().dataReceived(size);
                             dataHandler.handleIncoming(buffer, size);
                         }
                     } catch (IOException e) {
@@ -168,13 +169,13 @@ public class TCPClientConnection implements ClientConnection {
     }
 
     public Grappl getGrappl() {
-        return grappl;
+        return tcpGrappl;
     }
 
     public void acknowledgeDisconnect() {
         if(!open) {
             open = false;
-            grappl.getStatMonitor().closeConnection();
+            tcpGrappl.getStatMonitor().closeConnection();
             Application.getLog().log(address + " has been disconnected");
         }
     }
