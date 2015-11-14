@@ -90,6 +90,7 @@ public class StatMonitor {
                 bytesInTemp = 0;
                 bytesOutTemp = 0;
             } catch (Exception e) {
+            	// This e.printStackTrace() tends to spam the console
                 if (!e.getClass().equals(lastException)) {
                     e.printStackTrace();
                     lastException = e.getClass();

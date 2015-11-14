@@ -16,7 +16,7 @@ import java.util.LinkedList;
 
 /**
  * This class contains the main method for starting grappl with more control in
- * a headless invironment.
+ * a headless environment.
  */
 public class HeadlessCompatClient {
 	public static final int FLAG_PORT = 0;
