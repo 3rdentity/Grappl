@@ -1,10 +1,10 @@
 package com.daexsys.grappl.client;
 
-import io.grappl.client.Application;
-import io.grappl.client.ApplicationMode;
 import io.grappl.client.api.Grappl;
-import io.grappl.client.api.GrapplBuilder;
-import io.grappl.client.gui.StandardGUI;
+import io.grappl.client.impl.Application;
+import io.grappl.client.impl.ApplicationMode;
+import io.grappl.client.impl.api.GrapplBuilder;
+import io.grappl.client.impl.gui.StandardGUI;
 
 /**
  * Class that hosts the main method called when Grappl is started.

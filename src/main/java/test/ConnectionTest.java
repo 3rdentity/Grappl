@@ -1,6 +1,7 @@
 package test;
 
 import io.grappl.client.api.Grappl;
+import io.grappl.client.impl.api.TCPGrappl;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -19,7 +20,7 @@ public class ConnectionTest {
 
         /* Test as anonymous */
         for(String s : relays) {
-            Grappl grappl = new Grappl();
+            Grappl grappl = new TCPGrappl();
             grappl.setInternalPort(-1);
             boolean success = grappl.connect(s);
 
