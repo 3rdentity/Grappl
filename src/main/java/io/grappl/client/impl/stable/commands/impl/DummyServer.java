@@ -24,22 +24,23 @@ public class DummyServer implements Command {
                 @Override
                 public void run() {
                     try {
-                        ServerSocket serverSocket = new ServerSocket(port);
+                        final ServerSocket serverSocket = new ServerSocket(port);
 
-                        Socket socket = serverSocket.accept();
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                while(true) {
+                                    try {
+                                        Socket socket = serverSocket.accept();
 
-                        socket.getOutputStream().write("<h1>'Hello world' -Grappl</h1>".getBytes());
-                        socket.getOutputStream().flush();
-                        socket.getOutputStream().close();
-                        socket.close();
-
-                        while (true) {
-                            try {
-                                Thread.sleep(10);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
+                                        socket.getOutputStream().write("<h1>'Hello world' -Grappl</h1>".getBytes());
+                                        socket.getOutputStream().flush();
+                                        socket.getOutputStream().close();
+                                        socket.close();
+                                    } catch (Exception ignore) {}
+                                }
                             }
-                        }
+                        }).start();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

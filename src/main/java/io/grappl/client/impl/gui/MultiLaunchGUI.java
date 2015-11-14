@@ -144,15 +144,14 @@ public class MultiLaunchGUI {
             @Override
             public void receiveMessage(String message) {
                 display.append(message + "\n");
-
             }
         });
 
-        for (int i = 0; i < 2500; i++) {
+        for (int i = 0; i < 1; i++) {
             System.out.println(i);
             Grappl grappl = new GrapplBuilder().atLocalPort(i).build();
             grappl.setInternalPort(-1);
-            grappl.connect("192.241.169.241");
+            grappl.connect("localhost");
             addNewGrappl(grappl);
         }
 
