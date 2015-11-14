@@ -70,6 +70,8 @@ public class StatMonitor {
     private int bytesOutTemp;
     private int connectionBufferForWebsite;
     private long lastTimeSent = System.currentTimeMillis(); // Used to delay the updating, so it doesn't update the website CONSTANTLY.
+    
+    private Class<? extends Exception> lastException;
 
     public void tryUpdatingRemote() {
         final int STAT_UPDATE_PACKET_NUMBER = 100;
@@ -88,7 +90,11 @@ public class StatMonitor {
                 bytesInTemp = 0;
                 bytesOutTemp = 0;
             } catch (Exception e) {
-                e.printStackTrace();
+            	// This e.printStackTrace() tends to spam the console
+                if (!e.getClass().equals(lastException)) {
+                    e.printStackTrace();
+                    lastException = e.getClass();
+                }
             }
         }
     }
