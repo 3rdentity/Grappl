@@ -25,4 +25,9 @@ public class NetworkLocation {
     public void setPort(int port) {
         this.port = port;
     }
+
+    @Override
+    public String toString() {
+        return address + ":" + port;
+    }
 }

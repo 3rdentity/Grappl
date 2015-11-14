@@ -124,8 +124,7 @@ public class ConsoleGUI {
 
     public boolean enterCommand(String command) {
         try {
-            Application.getCommandHandler().handleCommand(
-                    applicationState.getFocusedGrappl(), command);
+            Application.getCommandHandler().handleCommand(command);
         } catch (Exception e) {
             e.printStackTrace();
             return false;

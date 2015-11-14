@@ -135,8 +135,7 @@ public class HeadlessCompatClient {
 
 			startGrappl(port, server, username, password, outputFile);
 		} else {
-			Application.getCommandHandler().createConsoleCommandListenThread(
-					null);
+			Application.getCommandHandler().createConsoleCommandListenThread();
 		}
 	}
 

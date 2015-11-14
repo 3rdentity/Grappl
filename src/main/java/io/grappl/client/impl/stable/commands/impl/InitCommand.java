@@ -17,6 +17,7 @@ public class InitCommand implements Command {
 
         grappl = new GrapplBuilder().build();
         Application.getLog().log("Starting...");
+        Application.getApplicationState().addGrappl(grappl);
         grappl.connect(relay);
     }
 }

@@ -136,4 +136,11 @@ public class Authentication {
     public DataOutputStream getAuthDataOutputStream() {
         return authDataOutputStream;
     }
+
+    @Override
+    public String toString() {
+        return "Authentication{" +
+                "username='" + username + '\'' +
+                '}';
+    }
 }

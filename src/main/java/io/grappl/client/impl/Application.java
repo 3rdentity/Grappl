@@ -28,7 +28,7 @@ public final class Application {
     public static final int MESSAGING_PORT =   25564;
     public static final int HEARTBEAT =        25570;
     public static final String VERSION = "Beta 1.3";
-    public static final String NO_GRAPPL_MESSAGE = "There is no grappl currently open! Start one with /init";
+    public static final String NO_GRAPPL_MESSAGE = "There is no grappl currently open! Start one with 'init'";
 
     private static List<String> nycOrder =     Arrays.asList("n.grappl.io", "s.grappl.io", "e.grappl.io", "p.grappl.io");
     private static List<String> sFOrder =      Arrays.asList("s.grappl.io", "n.grappl.io", "e.grappl.io", "p.grappl.io");

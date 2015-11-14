@@ -65,7 +65,7 @@ public class TCPClientConnection implements ClientConnection {
             inward.setSoTimeout(10000);
             tcpGrappl.getSockets().add(inward);
 
-            outward = new Socket(tcpGrappl.getRelayServer(), relayPort);
+            outward = new Socket(tcpGrappl.getExternalServer().getAddress(), relayPort);
             outward.setSoTimeout(10000);
             tcpGrappl.getSockets().add(outward);
 

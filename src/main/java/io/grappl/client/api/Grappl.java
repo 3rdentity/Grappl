@@ -1,5 +1,6 @@
 package io.grappl.client.api;
 
+import io.grappl.client.impl.stable.ApplicationState;
 import io.grappl.client.impl.stable.Authentication;
 import io.grappl.client.impl.stable.NetworkLocation;
 import io.grappl.client.impl.stable.StatMonitor;
@@ -27,6 +28,8 @@ public interface Grappl {
 
     public NetworkLocation getExternalServer();
     public NetworkLocation getInternalServer();
+
+    public ApplicationState getApplicationState();
 
     public String getInternalAddress();
     public int getInternalPort();

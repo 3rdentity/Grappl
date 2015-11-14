@@ -38,9 +38,11 @@ public class Client {
                 Grappl grappl = grapplBuilder.build();
                 grappl.connect("n.grappl.io");
             } else {
-                Application.getCommandHandler().createConsoleCommandListenThread(null);
+                Application.getCommandHandler().createConsoleCommandListenThread();
             }
         }
+
+        Application.getCommandHandler().createConsoleCommandListenThread();
 
         // If there should be a gui, create it
         if(displayGui) {

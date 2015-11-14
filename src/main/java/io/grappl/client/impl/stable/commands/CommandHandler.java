@@ -30,6 +30,7 @@ public class CommandHandler {
         addCommand("clear", new ClearCommand());
 
         addCommand("init", new InitCommand());
+        addCommand("login", new LoginCommand());
         addCommand("disconnect", new DisconnectCommand());
         addCommand("logout", new LogoutCommand());
 
@@ -60,7 +61,7 @@ public class CommandHandler {
         commandsAlphabetized.add(string);
     }
 
-    public void handleCommand(Grappl grappl, String command) {
+    public void handleCommand(String command) {
 
         // If no command was actually entered, return.
         if(command.isEmpty())
@@ -73,13 +74,13 @@ public class CommandHandler {
 //        String[] args = Arrays.copyOfRange(words, 1, words.length);
 
         if (commandMap.containsKey(commandName)) {
-            getCommand(commandName).runCommand(grappl, words);
+            getCommand(commandName).runCommand(state.getFocusedGrappl(), words);
         } else {
             Application.getLog().log("Unknown command '" + command + "'");
         }
     }
 
-    public void createConsoleCommandListenThread(final Grappl grappl) {
+    public void createConsoleCommandListenThread() {
 
         if(!commandThreadStarted) {
             Thread commandThread = new Thread(new Runnable() {

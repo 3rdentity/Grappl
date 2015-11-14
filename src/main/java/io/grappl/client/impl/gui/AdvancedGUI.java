@@ -136,7 +136,7 @@ public class AdvancedGUI {
                     applicationState.addGrappl(new TCPGrappl(Application.getApplicationState()));
                     Grappl theGrappl = applicationState.getFocusedGrappl();
 
-                    ((TCPGrappl) applicationState.getFocusedGrappl()).aGUI = advancedGUI;
+                    ((TCPGrappl) applicationState.getFocusedGrappl()).advancedGUI = advancedGUI;
                     applicationState.getFocusedGrappl().useAuthentication(applicationState.getAuthentication());
                     (applicationState.getFocusedGrappl()).setInternalPort(Integer.parseInt(jTextField.getText()));
 

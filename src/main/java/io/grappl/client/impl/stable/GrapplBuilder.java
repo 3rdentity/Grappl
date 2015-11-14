@@ -32,7 +32,7 @@ public class GrapplBuilder {
     }
 
     public GrapplBuilder withAdvancedGUI(AdvancedGUI gui) {
-        ((TCPGrappl) grappl).aGUI = gui;
+        ((TCPGrappl) grappl).advancedGUI = gui;
         return this;
     }
 
@@ -47,7 +47,7 @@ public class GrapplBuilder {
     }
 
     public GrapplBuilder withInternalLocationProvider(LocationProvider locationProvider) {
-        ((TCPGrappl) grappl).locationProvider = locationProvider;
+        ((TCPGrappl) grappl).internalServerProvider = locationProvider;
         return this;
     }
 

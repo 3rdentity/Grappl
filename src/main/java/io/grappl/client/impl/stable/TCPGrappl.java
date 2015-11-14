@@ -27,8 +27,7 @@ import java.util.*;
  */
 public class TCPGrappl implements Grappl {
 
-    /* Data relating to the user who is logged in. */
-    private Authentication authentication;
+    private ApplicationState applicationState;
 
     private GrapplLog clientLog = new GrapplLog();
 
@@ -37,17 +36,16 @@ public class TCPGrappl implements Grappl {
     protected int internalPort;
 
     // External server data
-    protected String relayServerIP;
-    protected String externalPort;
-    protected LocationProvider locationProvider; // LocationProvider object that is used to get internal server location
+    private NetworkLocation externalServer = new NetworkLocation("", -1);
+    protected LocationProvider internalServerProvider; // LocationProvider object that is used to get internal server location
 
     /* Whether or not the connection with broken using disconnect(). Prevents the connection
      * from automatically re-opening, as it would if the connection was broken unintentionally. */
-    private boolean intentionallyDisconnected = false;
+    private boolean wasIntentionallyDisconnected = false;
 
     // The GUI associated with this Grappl. Will be null if the advanced GUI is being used
     protected StandardGUI gui;
-    public AdvancedGUI aGUI;
+    public AdvancedGUI advancedGUI;
 
     // An ExClientConnection is created and stored here for every client that connects through the tunnel.
     // The objects are removed (usually) when the client disconnects, but stray objects have been known to remain.
@@ -62,20 +60,16 @@ public class TCPGrappl implements Grappl {
     private List<Socket> sockets = new ArrayList<Socket>();
 
     private UUID uuid = UUID.randomUUID();
-    private ApplicationState applicationState;
 
     /**
      * Constructs a new Grappl and sets a generic locationprovider
      */
     public TCPGrappl(ApplicationState applicationState) {
         this.applicationState = applicationState;
+
         Application.getLog().log("Creating grappl connection " + uuid);
-        // Allows the terminal console to have commands act on the newest grappl object
 
-        // Start command line command handling thread
-        Application.getCommandHandler().createConsoleCommandListenThread(this);
-
-        locationProvider = new LocationProvider() {
+        internalServerProvider = new LocationProvider() {
             public NetworkLocation getLocation() {
                 return new NetworkLocation(internalAddress, internalPort);
             }
@@ -89,7 +83,7 @@ public class TCPGrappl implements Grappl {
      */
     @SuppressWarnings("SpellCheckingInspection")
     public boolean connect(final String relayServer) {
-        this.relayServerIP = relayServer;
+        externalServer.setAddress(relayServer);
 
         Application.getLog().log("Connecting: relayserver=" + relayServer + " localport=" + internalPort);
 
@@ -107,13 +101,13 @@ public class TCPGrappl implements Grappl {
 
                 // Get port that the server will be hosted on remotely
                 final DataInputStream messageInputStream = new DataInputStream(messageSocket.getInputStream());
-                externalPort = messageInputStream.readLine();
+                externalServer.setPort(Integer.parseInt(messageInputStream.readLine()));
 
-                Application.getLog().log("Hosting on: " + relayServer + ":" + externalPort);
+                Application.getLog().log("Hosting on: " + relayServer + ":" + externalServer.getPort());
 
                 // If a GUI is associated with this Grappl, do GUI things
                 if (gui != null) {
-                    gui.initializeGUI(relayServer, externalPort, internalPort);
+                    gui.initializeGUI(relayServer, externalServer.getPort() + "", internalPort);
                     Application.getLog().log("GUI aspects initialized");
                 }
 
@@ -127,11 +121,11 @@ public class TCPGrappl implements Grappl {
                     JOptionPane.showMessageDialog(gui.getFrame(),
                             "Connection to relay server failed.\nIf this continues, go to Advanced Mode and connect to a different relay server.");
 
-                if(aGUI != null) {
-                    JOptionPane.showMessageDialog(aGUI.getFrame(),
+                if(advancedGUI != null) {
+                    JOptionPane.showMessageDialog(advancedGUI.getFrame(),
                             "Connection to relay server failed.");
 
-                    aGUI.triggerClosing();
+                    advancedGUI.triggerClosing();
                 }
 
                 return false;
@@ -149,7 +143,7 @@ public class TCPGrappl implements Grappl {
 
     @Deprecated
     public void restart() {
-        if(intentionallyDisconnected) return;
+        if(wasIntentionallyDisconnected) return;
 
         Application.getLog().log("Reconnecting...");
 
@@ -218,7 +212,7 @@ public class TCPGrappl implements Grappl {
 ////            }
 //        }
 
-        connect(relayServerIP);
+        connect(externalServer.getAddress());
     }
 
     /**
@@ -226,7 +220,7 @@ public class TCPGrappl implements Grappl {
      * available at.
      */
     public String getPublicAddress() {
-        return getRelayServer() + ":" + getExternalServer().getPort();
+        return getExternalServer().toString();
     }
 
     public int getInternalPort() {
@@ -238,29 +232,21 @@ public class TCPGrappl implements Grappl {
     }
 
     public void disconnect() {
-        intentionallyDisconnected = true;
+        wasIntentionallyDisconnected = true;
         closeAllSockets();
     }
 
     @Override
     public NetworkLocation getExternalServer() {
-        if(externalPort == null || relayServerIP == null) {
-            return new NetworkLocation("localhost", 0);
-        }
-
-        return new NetworkLocation(relayServerIP, Integer.parseInt(externalPort));
+        return externalServer;
     }
 
     public void useAuthentication(Authentication authentication) {
-        this.authentication = authentication;
+        applicationState.useAuthentication(authentication);
     }
 
     public Authentication getAuthentication() {
-        return authentication;
-    }
-
-    public String getRelayServer() {
-        return relayServerIP;
+        return applicationState.getAuthentication();
     }
 
     public StandardGUI getGUI() {
@@ -284,7 +270,7 @@ public class TCPGrappl implements Grappl {
     }
 
     public NetworkLocation getInternalServer() {
-        return locationProvider.getLocation();
+        return internalServerProvider.getLocation();
     }
 
     public void addUserConnectListener(UserConnectListener userConnectListener) {
@@ -436,7 +422,7 @@ public class TCPGrappl implements Grappl {
                 DataOutputStream dataOutputStream = null;
 
                 try {
-                    heartBeat = new Socket(relayServerIP, Application.HEARTBEAT);
+                    heartBeat = new Socket(externalServer.getAddress(), Application.HEARTBEAT);
                     sockets.add(heartBeat);
                     dataOutputStream = new DataOutputStream(heartBeat.getOutputStream());
                 } catch (IOException e) {
@@ -477,9 +463,13 @@ public class TCPGrappl implements Grappl {
     public String toString() {
         return
                 "TCP | " +
-                        getInternalServer().getAddress() + ":" + getInternalServer().getPort()
+                        getInternalServer().toString()
                         + " <-> " +
-                        getRelayServer() + ":" + getExternalServer().getPort() +
+                        getExternalServer().toString() +
                         " ( " + getUUID() + " )";
+    }
+
+    public ApplicationState getApplicationState() {
+        return applicationState;
     }
 }
