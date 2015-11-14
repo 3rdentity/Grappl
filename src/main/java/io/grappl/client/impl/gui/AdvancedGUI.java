@@ -193,15 +193,15 @@ public class AdvancedGUI {
 
         int dist = 290;
 
-        JButton jButton = new JButton("Open console");
-        jButton.addActionListener(new ActionListener() {
+        JButton openConsoleButton = new JButton("Open console");
+        openConsoleButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new ConsoleGUI(applicationState);
             }
         });
-        jButton.setBounds(dist, 200, 250, 30);
-        jFrame.add(jButton);
+        openConsoleButton.setBounds(dist, 200, 250, 30);
+        jFrame.add(openConsoleButton);
 
         jList = new JList<String>(new DefaultListModel<String>());
         JScrollPane jScrollPane = new JScrollPane(jList);

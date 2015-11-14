@@ -1,4 +1,4 @@
-package io.grappl.client.impl.gui;
+package io.grappl.client.impl.gui.multi;
 
 import io.grappl.client.api.Grappl;
 import io.grappl.client.api.event.ConsoleMessageListener;
@@ -6,6 +6,7 @@ import io.grappl.client.impl.Application;
 import io.grappl.client.api.ApplicationMode;
 import io.grappl.client.impl.stable.ApplicationState;
 import io.grappl.client.impl.stable.GrapplBuilder;
+import io.grappl.client.impl.stable.commands.CommandHandler;
 
 import javax.swing.*;
 import java.awt.*;
@@ -77,8 +78,13 @@ public class MultiLaunchGUI {
         jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         grapplJList = new JList<Grappl>(new DefaultListModel<Grappl>());
-        grapplJList.setBounds(30, 80, 400, 600);
+        grapplJList.setBounds(30, 100, 400, 600);
         jFrame.add(grapplJList);
+        JScrollPane scrollPane = new JScrollPane(grapplJList);
+        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPane.setBounds(30, 100, 400, 600);
+//        scrollPane.setVisible(true);
+        jFrame.add(scrollPane);
 
         grapplsOpenCount.setBounds(40, 20, 400, 80);
         jFrame.add(grapplsOpenCount);
@@ -147,13 +153,14 @@ public class MultiLaunchGUI {
             }
         });
 
-        for (int i = 0; i < 1; i++) {
-            System.out.println(i);
-            Grappl grappl = new GrapplBuilder().atLocalPort(i).build();
-            grappl.setInternalPort(-1);
-            grappl.connect("localhost");
-            addNewGrappl(grappl);
-        }
+        new CommandHandler(applicationState).createConsoleCommandListenThread();
+//
+//        for (int i = 0; i < 500; i++) {
+//            System.out.println(i);
+//            Grappl grappl = new GrapplBuilder().atLocalPort(5556).build();
+//            grappl.connect("localhost");
+//            addNewGrappl(grappl);
+//        }
 
         jFrame.repaint();
     }

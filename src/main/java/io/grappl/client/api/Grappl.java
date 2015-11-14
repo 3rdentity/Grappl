@@ -6,7 +6,7 @@ import io.grappl.client.impl.stable.NetworkLocation;
 import io.grappl.client.impl.stable.StatMonitor;
 import io.grappl.client.api.event.UserConnectListener;
 import io.grappl.client.api.event.UserDisconnectListener;
-import io.grappl.client.impl.gui.StandardGUI;
+import io.grappl.client.impl.gui.DefaultGUI;
 
 import java.util.Collection;
 
@@ -38,5 +38,5 @@ public interface Grappl {
 
     public StatMonitor getStatMonitor();
 
-    public StandardGUI getGUI();
+    public DefaultGUI getGUI();
 }

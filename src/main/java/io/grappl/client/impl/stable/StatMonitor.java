@@ -79,28 +79,30 @@ public class StatMonitor {
         final int STAT_UPDATE_PACKET_NUMBER = 100;
         final int TEN_SECONDS = 10000;
 
-        if(getGrappl().getAuthentication() != null) {
-            if (System.currentTimeMillis() > lastTimeSent + TEN_SECONDS) {
-                DataOutputStream dataOutputStream = getGrappl().getAuthentication().getAuthDataOutputStream();
+        try {
+            if (getGrappl().getAuthentication() != null) {
+                if (System.currentTimeMillis() > lastTimeSent + TEN_SECONDS) {
+                    DataOutputStream dataOutputStream = getGrappl().getAuthentication().getAuthDataOutputStream();
 
-                try {
-                    dataOutputStream.writeByte(STAT_UPDATE_PACKET_NUMBER);
-                    dataOutputStream.writeInt(connectionBufferForWebsite);
-                    dataOutputStream.writeInt(bytesInTemp);
-                    dataOutputStream.writeInt(bytesOutTemp);
+                    try {
+                        dataOutputStream.writeByte(STAT_UPDATE_PACKET_NUMBER);
+                        dataOutputStream.writeInt(connectionBufferForWebsite);
+                        dataOutputStream.writeInt(bytesInTemp);
+                        dataOutputStream.writeInt(bytesOutTemp);
 
-                    connectionBufferForWebsite = 0;
-                    bytesInTemp = 0;
-                    bytesOutTemp = 0;
-                } catch (Exception e) {
-                    // This e.printStackTrace() tends to spam the console
-                    if (!e.getClass().equals(lastException)) {
-                        e.printStackTrace();
-                        lastException = e.getClass();
+                        connectionBufferForWebsite = 0;
+                        bytesInTemp = 0;
+                        bytesOutTemp = 0;
+                    } catch (Exception e) {
+                        // This e.printStackTrace() tends to spam the console
+                        if (!e.getClass().equals(lastException)) {
+                            e.printStackTrace();
+                            lastException = e.getClass();
+                        }
                     }
                 }
             }
-        }
+        } catch (Exception ignore) {} // really, if something goes wrong here, nobody needs to hear about it
     }
 
     public int getSentDataKB() {

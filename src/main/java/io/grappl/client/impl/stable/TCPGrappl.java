@@ -11,11 +11,10 @@ import io.grappl.client.api.event.UserConnectListener;
 import io.grappl.client.impl.stable.event.UserDisconnectEvent;
 import io.grappl.client.api.event.UserDisconnectListener;
 import io.grappl.client.impl.gui.AdvancedGUI;
-import io.grappl.client.impl.gui.StandardGUI;
+import io.grappl.client.impl.gui.DefaultGUI;
 
 import javax.swing.*;
 import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.*;
 import java.util.*;
@@ -45,7 +44,7 @@ public class TCPGrappl implements Grappl {
     private boolean wasIntentionallyDisconnected = false;
 
     // The GUI associated with this Grappl. Will be null if the advanced GUI is being used
-    protected StandardGUI gui;
+    protected DefaultGUI gui;
     public AdvancedGUI advancedGUI;
 
     // An ExClientConnection is created and stored here for every client that connects through the tunnel.
@@ -250,7 +249,7 @@ public class TCPGrappl implements Grappl {
         return applicationState.getAuthentication();
     }
 
-    public StandardGUI getGUI() {
+    public DefaultGUI getGUI() {
         return gui;
     }
 

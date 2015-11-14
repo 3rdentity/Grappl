@@ -4,7 +4,7 @@ import io.grappl.client.api.Grappl;
 import io.grappl.client.impl.Application;
 import io.grappl.client.api.ApplicationMode;
 import io.grappl.client.impl.stable.GrapplBuilder;
-import io.grappl.client.impl.gui.StandardGUI;
+import io.grappl.client.impl.gui.DefaultGUI;
 
 /**
  * Class that hosts the main method called when Grappl is started.
@@ -46,7 +46,7 @@ public class Client {
 
         // If there should be a gui, create it
         if(displayGui) {
-            new StandardGUI(Application.getApplicationState());
+            new DefaultGUI(Application.getApplicationState());
         }
     }
 }

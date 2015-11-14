@@ -27,7 +27,7 @@ public class DummyServer implements Command {
                     try {
                         final ServerSocket serverSocket = new ServerSocket(port);
 
-                        new Thread(new Runnable() {
+                        Thread dummyServerWebThread = new Thread(new Runnable() {
                             @Override
                             public void run() {
                                 while(true) {
@@ -41,7 +41,9 @@ public class DummyServer implements Command {
                                     } catch (Exception ignore) {}
                                 }
                             }
-                        }).start();
+                        });
+                        dummyServerWebThread.setName("Grappl dummy server web thread; port: " + port);
+                        dummyServerWebThread.start();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

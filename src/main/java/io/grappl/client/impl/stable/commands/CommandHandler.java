@@ -30,8 +30,8 @@ public class CommandHandler {
         addCommand("clear", new ClearCommand());
 
         addCommand("init", new InitCommand());
-        addCommand("login", new LoginCommand());
         addCommand("disconnect", new DisconnectCommand());
+        addCommand("login", new LoginCommand());
         addCommand("logout", new LogoutCommand());
 
         addCommand("whoami", new WhoAmICommand());
@@ -54,6 +54,8 @@ public class CommandHandler {
         addCommand("account", new AccountCommand());
         addCommand("setstaticport", new SetStaticPortCommand());
         addCommand("setport", new SetStaticPortCommand());
+
+        addCommand("multitest", new MultiTestCommand());
     }
 
     private void addCommand(String string, Command command) {

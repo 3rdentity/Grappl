@@ -8,7 +8,7 @@ import io.grappl.client.impl.stable.NetworkLocation;
 import io.grappl.client.impl.stable.StatMonitor;
 import io.grappl.client.api.event.UserConnectListener;
 import io.grappl.client.api.event.UserDisconnectListener;
-import io.grappl.client.impl.gui.StandardGUI;
+import io.grappl.client.impl.gui.DefaultGUI;
 
 import java.net.DatagramSocket;
 import java.net.SocketException;
@@ -112,7 +112,7 @@ public class UDPGrappl implements Grappl {
     }
 
     @Override
-    public StandardGUI getGUI() {
+    public DefaultGUI getGUI() {
         return null;
     }
 }
