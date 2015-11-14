@@ -3,6 +3,7 @@ package io.grappl.client.impl.gui;
 import io.grappl.client.api.Grappl;
 import io.grappl.client.impl.Application;
 import io.grappl.client.impl.GrapplDataFile;
+import io.grappl.client.impl.stable.ApplicationState;
 import io.grappl.client.impl.stable.GrapplBuilder;
 import io.grappl.client.impl.stable.TCPGrappl;
 
@@ -28,7 +29,11 @@ public class StandardGUI {
     private ConsoleGUI theConsoleWindow;
     private JLabel connectedClientsLabel;
 
-    public StandardGUI() {
+    private ApplicationState applicationState;
+
+    public StandardGUI(final ApplicationState applicationState) {
+        this.applicationState = applicationState;
+
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException e) {
@@ -146,7 +151,7 @@ public class StandardGUI {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             if (theConsoleWindow == null) {
-                                theConsoleWindow = new ConsoleGUI(grappl);
+                                theConsoleWindow = new ConsoleGUI(applicationState);
                             } else {
                                 theConsoleWindow.getTheFrame().toFront();
                             }
@@ -180,7 +185,7 @@ public class StandardGUI {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     jFrame.setVisible(false);
-                    new AdvancedGUI().create();
+                    new AdvancedGUI(applicationState).create();
                 }
             });
             advancedButton.setBounds(200, 155, 90, 40);
@@ -302,7 +307,7 @@ public class StandardGUI {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         if(theConsoleWindow == null) {
-                            theConsoleWindow = new ConsoleGUI(grappl);
+                            theConsoleWindow = new ConsoleGUI(applicationState);
                         } else {
                             theConsoleWindow.getTheFrame().toFront();
                         }

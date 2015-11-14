@@ -12,12 +12,15 @@ import javax.swing.*;
 public class GrapplBuilder {
 
     private Grappl grappl;
+    private ApplicationState applicationState;
 
-    public GrapplBuilder() { grappl = new TCPGrappl(); }
+    public GrapplBuilder() { grappl = new TCPGrappl(null); }
 
-    public GrapplBuilder(Protocol grapplProtocol) {
+    protected GrapplBuilder(ApplicationState applicationState, Protocol grapplProtocol) {
+        this.applicationState = applicationState;
+
         if(grapplProtocol == Protocol.TCP) {
-            grappl = new TCPGrappl();
+            grappl = new TCPGrappl(applicationState);
         } else {
             grappl = new UDPGrappl();
         }
@@ -60,6 +63,10 @@ public class GrapplBuilder {
     }
 
     public Grappl build() {
+        if(applicationState != null) {
+            applicationState.addGrappl(grappl);
+        }
+
         return grappl;
     }
 }

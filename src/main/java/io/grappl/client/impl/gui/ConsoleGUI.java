@@ -2,6 +2,7 @@ package io.grappl.client.impl.gui;
 
 import io.grappl.client.api.Grappl;
 import io.grappl.client.impl.Application;
+import io.grappl.client.impl.stable.ApplicationState;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,13 +15,14 @@ public class ConsoleGUI {
 
     public static JTextArea logDisplay;
 
-    private Grappl grappl;
+    private ApplicationState applicationState;
     private JFrame theFrame;
 
-    public ConsoleGUI(final Grappl grappl) {
+    public ConsoleGUI(final ApplicationState applicationState) {
         JFrame consoleFrame = new JFrame();
         theFrame = consoleFrame;
-        this.grappl = grappl;
+        this.applicationState = applicationState;
+
         consoleFrame.setResizable(false);
 
         theFrame.addWindowListener(new WindowListener() {
@@ -32,7 +34,7 @@ public class ConsoleGUI {
             @Override
             public void windowClosing(WindowEvent e) {
                 try {
-                    grappl.getGUI().destroyConsoleWindow();
+                    applicationState.getFocusedGrappl().getGUI().destroyConsoleWindow();
                 } catch (Exception ignore) {
                 }
 
@@ -122,7 +124,8 @@ public class ConsoleGUI {
 
     public boolean enterCommand(String command) {
         try {
-            Application.getCommandHandler().handleCommand(grappl, command);
+            Application.getCommandHandler().handleCommand(
+                    applicationState.getFocusedGrappl(), command);
         } catch (Exception e) {
             e.printStackTrace();
             return false;

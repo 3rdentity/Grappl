@@ -1,6 +1,7 @@
 package io.grappl.client.impl;
 
 import io.grappl.client.api.ApplicationMode;
+import io.grappl.client.impl.stable.ApplicationState;
 import io.grappl.client.impl.stable.commands.CommandHandler;
 import io.grappl.client.impl.log.GrapplLog;
 import io.grappl.client.impl.log.GrapplErrorStream;
@@ -46,10 +47,13 @@ public final class Application {
     private static ApplicationMode mode;
     private static Image icon;
 
+    private static ApplicationState applicationState;
+
     public static void create(String[] args, ApplicationMode mode) {
         Application.mode = mode;
         log = new GrapplLog();
-        commandHandler = new CommandHandler();
+        applicationState = new ApplicationState();
+        commandHandler = new CommandHandler(applicationState);
 
         System.setErr(new GrapplErrorStream(log, System.out));
     }
@@ -72,7 +76,7 @@ public final class Application {
 
     public static CommandHandler getCommandHandler() {
         if(commandHandler == null) {
-            commandHandler = new CommandHandler();
+            commandHandler = new CommandHandler(applicationState);
         }
 
         return commandHandler;
@@ -90,6 +94,10 @@ public final class Application {
         }
 
         return icon;
+    }
+
+    public static ApplicationState getApplicationState() {
+        return applicationState;
     }
 
     public static List<String> getNewYorkOrder() {

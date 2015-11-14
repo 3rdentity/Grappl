@@ -44,7 +44,7 @@ public class Client {
 
         // If there should be a gui, create it
         if(displayGui) {
-            new StandardGUI();
+            new StandardGUI(Application.getApplicationState());
         }
     }
 }

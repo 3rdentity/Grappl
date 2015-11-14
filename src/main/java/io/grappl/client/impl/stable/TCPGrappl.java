@@ -62,11 +62,13 @@ public class TCPGrappl implements Grappl {
     private List<Socket> sockets = new ArrayList<Socket>();
 
     private UUID uuid = UUID.randomUUID();
+    private ApplicationState applicationState;
 
     /**
      * Constructs a new Grappl and sets a generic locationprovider
      */
-    public TCPGrappl() {
+    public TCPGrappl(ApplicationState applicationState) {
+        this.applicationState = applicationState;
         Application.getLog().log("Creating grappl connection " + uuid);
         // Allows the terminal console to have commands act on the newest grappl object
 

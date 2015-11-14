@@ -2,7 +2,7 @@ package io.grappl.client.impl.stable.commands;
 
 import io.grappl.client.api.Grappl;
 import io.grappl.client.api.commands.Command;
-import io.grappl.client.impl.State;
+import io.grappl.client.impl.stable.ApplicationState;
 import io.grappl.client.impl.Application;
 import io.grappl.client.impl.stable.commands.impl.*;
 
@@ -14,13 +14,15 @@ public class CommandHandler {
 
     private boolean commandThreadStarted = false;
 
-    private State state = new State();
+    private ApplicationState state;
 
     private Map<String, Command> commandMap = new HashMap<String, Command>();
     private PriorityQueue<String> commandsAlphabetized = new PriorityQueue<String>();
 
     @SuppressWarnings("SpellCheckingInspection")
-    public CommandHandler() {
+    public CommandHandler(ApplicationState state) {
+        this.state = state;
+
         /* Add default commands */
         addCommand("help", new HelpCommand());
         addCommand("version", new VersionCommand());
@@ -96,7 +98,7 @@ public class CommandHandler {
                             String commandName = args[0].toLowerCase();
 
                             if (commandMap.containsKey(commandName)) {
-                                getCommand(commandName).runCommand(grappl, args);
+                                getCommand(commandName).runCommand(state.getFocusedGrappl(), args);
                             } else {
                                 Application.getLog().log("Unknown command '" + commandName + "'");
                             }

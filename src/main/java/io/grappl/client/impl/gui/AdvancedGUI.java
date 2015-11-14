@@ -3,6 +3,7 @@ package io.grappl.client.impl.gui;
 import io.grappl.client.api.Grappl;
 import io.grappl.client.impl.Application;
 import io.grappl.client.impl.GrapplDataFile;
+import io.grappl.client.impl.stable.ApplicationState;
 import io.grappl.client.impl.stable.Authentication;
 import io.grappl.client.impl.stable.TCPGrappl;
 import io.grappl.client.impl.stable.event.UserConnectEvent;
@@ -24,42 +25,33 @@ import java.net.URI;
  * after Grappl opens.
  */
 public class AdvancedGUI {
-    private JList<String> jList;
 
+    private JList<String> jList;
     private JLabel isLoggedInLabel;
     private JLabel premiumLabel;
-
     private String username;
     private char[] password;
     private boolean isActuallyHash;
-
-    private Grappl focusedGrappl;
     private JLabel connectionLabel;
     private JLabel portLabel;
-
     private JButton logIn;
     private JButton signUpButton;
     private JButton donateButton;
     private JButton logOut;
     private JFrame jFrame;
-
     private JButton open;
     private JButton close;
 
-    private Authentication activeAuthentication;
+    private ApplicationState applicationState;
 
-    public JFrame getFrame() {
-        return jFrame;
+    public AdvancedGUI(ApplicationState applicationState) {
+        this.applicationState = applicationState;
     }
 
     public void create() {
-
         jFrame = new JFrame();
-
         jFrame.setIconImage(Application.getIcon());
-
         jFrame.setTitle("Grappl Advanced");
-
         jFrame.setVisible(true);
         jFrame.setSize(600, 300);
         jFrame.setLayout(null);
@@ -67,9 +59,9 @@ public class AdvancedGUI {
         jFrame.setResizable(false);
         jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        final JLabel relayLab = new JLabel("Relay server");
-        relayLab.setBounds(20, 20, 100, 20);
-        jFrame.add(relayLab);
+        final JLabel relayLabel = new JLabel("Relay server");
+        relayLabel.setBounds(20, 20, 100, 20);
+        jFrame.add(relayLabel);
 
         final JComboBox<String> jComboBox = new JComboBox<String>(
                 new String[]{
@@ -114,15 +106,15 @@ public class AdvancedGUI {
             public void actionPerformed(ActionEvent e) {
                 final int MAX_POSSIBLE_PORT_NUMBER = 65535;
 
-                if (focusedGrappl != null) {
+                if (applicationState.getFocusedGrappl() != null) {
                     try {
                         int portValue = Integer.parseInt(jTextField.getText());
 
                         if (portValue > MAX_POSSIBLE_PORT_NUMBER) {
                             JOptionPane.showConfirmDialog(jFrame, "Value too high. Port must be equal to or lower than " + MAX_POSSIBLE_PORT_NUMBER);
                         } else {
-                            focusedGrappl.getInternalServer().setPort(Integer.parseInt(jTextField.getText()));
-                            portLabel.setText("Local port: " + focusedGrappl.getInternalPort());
+                            applicationState.getFocusedGrappl().getInternalServer().setPort(Integer.parseInt(jTextField.getText()));
+                            portLabel.setText("Local port: " + applicationState.getFocusedGrappl().getInternalPort());
                         }
                     } catch (NumberFormatException ignore) {
                         JOptionPane.showConfirmDialog(jFrame, "Value too high. Port must be equal to or lower than " + MAX_POSSIBLE_PORT_NUMBER);
@@ -140,34 +132,35 @@ public class AdvancedGUI {
         open.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (applicationState.getFocusedGrappl() == null) {
+                    applicationState.addGrappl(new TCPGrappl(Application.getApplicationState()));
+                    Grappl theGrappl = applicationState.getFocusedGrappl();
 
-                if (focusedGrappl == null) {
-                    focusedGrappl = new TCPGrappl();
-                    ((TCPGrappl) focusedGrappl).aGUI = advancedGUI;
-                    focusedGrappl.useAuthentication(activeAuthentication);
-                    ((TCPGrappl) focusedGrappl).setInternalPort(Integer.parseInt(jTextField.getText()));
+                    ((TCPGrappl) applicationState.getFocusedGrappl()).aGUI = advancedGUI;
+                    applicationState.getFocusedGrappl().useAuthentication(applicationState.getAuthentication());
+                    (applicationState.getFocusedGrappl()).setInternalPort(Integer.parseInt(jTextField.getText()));
 
-                    boolean success = focusedGrappl.connect(((String) jComboBox.getSelectedItem()).split("\\s+")[0]);
+                    boolean success = theGrappl.connect(((String) jComboBox.getSelectedItem()).split("\\s+")[0]);
 
                     if(success) {
-                        focusedGrappl.addUserConnectListener(new UserConnectListener() {
+                        theGrappl.addUserConnectListener(new UserConnectListener() {
                             @Override
                             public void userConnected(UserConnectEvent userConnectEvent) {
                                 ((DefaultListModel<String>) jList.getModel()).addElement(userConnectEvent.getAddress());
                             }
                         });
 
-                        focusedGrappl.addUserDisconnectListener(new UserDisconnectListener() {
+                        theGrappl.addUserDisconnectListener(new UserDisconnectListener() {
                             @Override
                             public void userDisconnected(UserDisconnectEvent userDisconnectEvent) {
                                 ((DefaultListModel<String>) jList.getModel()).addElement(userDisconnectEvent.getAddress());
                             }
                         });
-                        connectionLabel.setText("Public at: " + focusedGrappl.getExternalServer().getAddress() + ":" + focusedGrappl.getExternalServer().getPort());
-                        portLabel.setText("Local port: " + focusedGrappl.getInternalPort());
+                        connectionLabel.setText("Public at: " + theGrappl.getExternalServer().getAddress() + ":" + theGrappl.getExternalServer().getPort());
+                        portLabel.setText("Local port: " + theGrappl.getInternalPort());
                         close.setEnabled(true);
                     } else {
-                        focusedGrappl = null;
+                        applicationState.removeGrappl(applicationState.getFocusedGrappl());
                     }
                 } else {
                     JOptionPane.showMessageDialog(jFrame, "Grappl connection already open! Close it before opening another.");
@@ -180,10 +173,10 @@ public class AdvancedGUI {
         close.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                focusedGrappl.disconnect();
+                applicationState.getFocusedGrappl().disconnect();
                 connectionLabel.setText("Not connected - Tunnel closed");
                 Application.getLog().log("Disconnected..");
-                focusedGrappl = null;
+                applicationState.removeGrappl(applicationState.getFocusedGrappl());
                 close.setEnabled(false);
             }
         });
@@ -204,7 +197,7 @@ public class AdvancedGUI {
         jButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new ConsoleGUI(focusedGrappl);
+                new ConsoleGUI(applicationState);
             }
         });
         jButton.setBounds(dist, 200, 250, 30);
@@ -303,7 +296,7 @@ public class AdvancedGUI {
 //                            login.setText("Logging in...");
 //                            login.repaint();
                             authentication.login(username, theGUI.password);
-                            activeAuthentication = authentication;
+                            applicationState.useAuthentication(authentication);
 
                             if (authentication.isLoggedIn()) {
                                 isLoggedInLabel.setText("Logged in as: " + username);
@@ -397,7 +390,7 @@ public class AdvancedGUI {
     }
 
     public void triggerClosing() {
-        focusedGrappl.disconnect();
+        applicationState.getFocusedGrappl().disconnect();
         open.setEnabled(true);
         close.setEnabled(false);
     }
@@ -405,5 +398,9 @@ public class AdvancedGUI {
     public void login(JTextField usernameField, JPasswordField jPasswordField) {
         username = usernameField.getText().toLowerCase();
         password = jPasswordField.getPassword();
+    }
+
+    public JFrame getFrame() {
+        return jFrame;
     }
 }
