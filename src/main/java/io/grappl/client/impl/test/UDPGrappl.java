@@ -2,7 +2,7 @@ package io.grappl.client.impl.test;
 
 import io.grappl.client.api.ClientConnection;
 import io.grappl.client.api.Grappl;
-import io.grappl.client.impl.stable.ApplicationState;
+import io.grappl.client.impl.ApplicationState;
 import io.grappl.client.impl.stable.Authentication;
 import io.grappl.client.impl.stable.NetworkLocation;
 import io.grappl.client.impl.stable.StatMonitor;

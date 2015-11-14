@@ -1,22 +1,22 @@
 package io.grappl.client.impl.stable.commands.impl;
 
-import io.grappl.client.api.Grappl;
 import io.grappl.client.impl.Application;
+import io.grappl.client.impl.ApplicationState;
 import io.grappl.client.impl.stable.StatMonitor;
 import io.grappl.client.api.commands.Command;
 
 public class StatsCommand implements Command {
 
     @Override
-    public void runCommand(Grappl grappl, String[] args) {
+    public void runCommand(ApplicationState state, String[] args) {
 
         /* If grappl connection isn't open */
-        if(grappl == null) {
+        if(state == null) {
             Application.getLog().log(Application.NO_GRAPPL_MESSAGE);
         }
 
         else {
-            StatMonitor statsManager = grappl.getStatMonitor();
+            StatMonitor statsManager = state.getFocusedGrappl().getStatMonitor();
 
             Application.getLog().log("== CURRENT CONNECTION STATISTICS ====");
             Application.getLog().log(statsManager.getTotalConnections() + " clients connected");

@@ -1,18 +1,18 @@
 package io.grappl.client.impl.stable.commands.impl;
 
-import io.grappl.client.api.Grappl;
 import io.grappl.client.impl.Application;
 import io.grappl.client.api.commands.Command;
+import io.grappl.client.impl.ApplicationState;
 
 public class ChangeLocalCommand implements Command {
     @Override
-    public void runCommand(Grappl grappl, String[] args) {
+    public void runCommand(ApplicationState state, String[] args) {
 
-        if(grappl == null) {
+        if(state == null) {
             Application.getLog().log("Grappl has not been created");
         } else {
-            grappl.setInternalPort(Integer.parseInt(args[1]));
-            Application.getLog().log("Local port is now " + grappl.getInternalPort());
+            state.getFocusedGrappl().setInternalPort(Integer.parseInt(args[1]));
+            Application.getLog().log("Local port is now " + state.getFocusedGrappl().getInternalPort());
         }
     }
 }

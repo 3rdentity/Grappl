@@ -4,6 +4,7 @@ import io.grappl.client.api.ClientConnection;
 import io.grappl.client.api.Grappl;
 import io.grappl.client.api.LocationProvider;
 import io.grappl.client.impl.Application;
+import io.grappl.client.impl.ApplicationState;
 import io.grappl.client.impl.HeartbeatHandler;
 import io.grappl.client.impl.log.GrapplLog;
 import io.grappl.client.impl.stable.event.UserConnectEvent;
@@ -435,6 +436,14 @@ public class TCPGrappl implements Grappl {
                         + " <-> " +
                         getExternalServer().toString() +
                         " ( " + getUUID() + " )";
+    }
+
+    public void setGUI(DefaultGUI gui) {
+        this.gui = gui;
+    }
+
+    public void setInternalServerProvider(LocationProvider internalServerProvider) {
+        this.internalServerProvider = internalServerProvider;
     }
 
     public ApplicationState getApplicationState() {

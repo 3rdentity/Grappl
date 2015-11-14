@@ -1,8 +1,8 @@
 package io.grappl.client.impl.stable.commands.impl;
 
-import io.grappl.client.api.Grappl;
 import io.grappl.client.impl.Application;
 import io.grappl.client.api.commands.Command;
+import io.grappl.client.impl.ApplicationState;
 
 import java.awt.*;
 import java.io.IOException;
@@ -10,7 +10,7 @@ import java.net.URI;
 
 public class AccountCommand implements Command {
     @Override
-    public void runCommand(Grappl grappl, String[] args) {
+    public void runCommand(ApplicationState state, String[] args) {
 
         final String subCommand = args[1];
 
@@ -23,12 +23,12 @@ public class AccountCommand implements Command {
         }
 
         else if(subCommand.equalsIgnoreCase("info")) {
-            Application.getLog().log(grappl.getAuthentication().getUsername());
+            Application.getLog().log(state.getAuthentication().getUsername());
         }
 
         // Need to redo to actually fetch static port related info.
         else if(subCommand.equalsIgnoreCase("staticports")) {
-            Application.getLog().log(grappl.getExternalServer().getPort() + "");
+            Application.getLog().log(state.getFocusedGrappl().getExternalServer().getPort() + "");
         }
     }
 }

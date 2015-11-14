@@ -1,7 +1,7 @@
 package io.grappl.client.impl.stable.commands;
 
 import io.grappl.client.api.commands.Command;
-import io.grappl.client.impl.stable.ApplicationState;
+import io.grappl.client.impl.ApplicationState;
 import io.grappl.client.impl.Application;
 import io.grappl.client.impl.stable.commands.impl.*;
 import io.grappl.client.impl.stable.commands.impl.dummy.DummyServerCommand;
@@ -76,7 +76,7 @@ public class CommandHandler {
 //        String[] args = Arrays.copyOfRange(words, 1, words.length);
 
         if (commandMap.containsKey(commandName)) {
-            getCommand(commandName).runCommand(state.getFocusedGrappl(), words);
+            getCommand(commandName).runCommand(state, words);
         } else {
             Application.getLog().log("Unknown command '" + command + "'");
         }
@@ -101,7 +101,7 @@ public class CommandHandler {
                             String commandName = args[0].toLowerCase();
 
                             if (commandMap.containsKey(commandName)) {
-                                getCommand(commandName).runCommand(state.getFocusedGrappl(), args);
+                                getCommand(commandName).runCommand(state, args);
                             } else {
                                 Application.getLog().log("Unknown command '" + commandName + "'");
                             }

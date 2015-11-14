@@ -1,12 +1,11 @@
 package io.grappl.client.impl.gui.multi;
 
 import io.grappl.client.api.Grappl;
-import io.grappl.client.api.LocationProvider;
 import io.grappl.client.api.event.ConsoleMessageListener;
 import io.grappl.client.impl.Application;
 import io.grappl.client.api.ApplicationMode;
-import io.grappl.client.impl.stable.ApplicationState;
-import io.grappl.client.impl.stable.GrapplBuilder;
+import io.grappl.client.impl.ApplicationState;
+import io.grappl.client.impl.GrapplBuilder;
 import io.grappl.client.impl.stable.NetworkLocation;
 import io.grappl.client.impl.stable.RandomNetworkProvider;
 import io.grappl.client.impl.stable.commands.CommandHandler;
@@ -20,7 +19,7 @@ import java.awt.event.ActionListener;
 
 public class MultiLaunchGUI {
 
-    private ApplicationState applicationState = new ApplicationState();
+    private ApplicationState applicationState = Application.getApplicationState();
     private JList<Grappl> grapplJList;
 
     private JLabel grapplsOpenCount = new JLabel() {
@@ -161,11 +160,11 @@ public class MultiLaunchGUI {
         new CommandHandler(applicationState).createConsoleCommandListenThread();
 //
         RandomNetworkProvider randomNetworkProvider = new RandomNetworkProvider();
-        randomNetworkProvider.addLocation(new NetworkLocation("us.shotbow.net", 25565));
-        randomNetworkProvider.addLocation(new NetworkLocation("p.nerd.nu", 25565));
-        randomNetworkProvider.addLocation(new NetworkLocation("c.nerd.nu", 25565));
+        randomNetworkProvider.addLocation(new NetworkLocation("localhost", 25565));
+//        randomNetworkProvider.addLocation(new NetworkLocation("p.nerd.nu", 25565));
+//        randomNetworkProvider.addLocation(new NetworkLocation("s.nerd.nu", 25565));
 
-        for (i = 0; i < 100; i++) {
+        for (i = 0; i < 10; i++) {
             System.out.println(i);
             Grappl grappl = new GrapplBuilder().withInternalLocationProvider(randomNetworkProvider).build();
 

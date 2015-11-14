@@ -1,6 +1,6 @@
 package io.grappl.client.api;
 
-import io.grappl.client.impl.stable.ApplicationState;
+import io.grappl.client.impl.ApplicationState;
 import io.grappl.client.impl.stable.Authentication;
 import io.grappl.client.impl.stable.NetworkLocation;
 import io.grappl.client.impl.stable.StatMonitor;

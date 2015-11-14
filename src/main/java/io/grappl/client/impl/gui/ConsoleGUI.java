@@ -1,8 +1,7 @@
 package io.grappl.client.impl.gui;
 
-import io.grappl.client.api.Grappl;
 import io.grappl.client.impl.Application;
-import io.grappl.client.impl.stable.ApplicationState;
+import io.grappl.client.impl.ApplicationState;
 
 import javax.swing.*;
 import java.awt.*;

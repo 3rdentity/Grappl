@@ -1,8 +1,9 @@
-package io.grappl.client.impl.stable;
+package io.grappl.client.impl;
 
 import io.grappl.client.api.Grappl;
 import io.grappl.client.api.Protocol;
 import io.grappl.client.api.event.GrapplOpenListener;
+import io.grappl.client.impl.stable.Authentication;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -16,6 +17,8 @@ public class ApplicationState {
 
     private Set<GrapplOpenListener> grapplOpenListeners = new HashSet<GrapplOpenListener>();
 
+    public ApplicationState(){}
+
     public void useAuthentication(Authentication authentication) {
         this.authentication = authentication;
     }
@@ -23,6 +26,7 @@ public class ApplicationState {
     public void addGrappl(Grappl grappl) {
         grapplList.add(grappl);
 
+        System.out.println("s: " + grapplOpenListeners.size());
         for(GrapplOpenListener grapplOpenListener : grapplOpenListeners) {
             grapplOpenListener.grapplOpen(grappl);
         }

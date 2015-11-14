@@ -1,24 +1,25 @@
 package io.grappl.client.impl.stable.commands.impl;
 
-import io.grappl.client.api.Grappl;
 import io.grappl.client.impl.Application;
 import io.grappl.client.api.commands.Command;
+import io.grappl.client.impl.ApplicationState;
 
 import java.io.PrintStream;
 
 public class ListAddCommand implements Command {
     @Override
-    public void runCommand(Grappl grappl, String[] args) {
+    public void runCommand(ApplicationState state, String[] args) {
 
         try {
             Application.getLog().log("Adding to server list");
 
-            grappl.getAuthentication().getAuthDataOutputStream().writeByte(6);
+            state.getAuthentication().getAuthDataOutputStream().writeByte(6);
             String game = args[1];
-            PrintStream printStream = new PrintStream(grappl.getAuthentication().getAuthDataOutputStream());
+            PrintStream printStream = new PrintStream(state.getAuthentication().getAuthDataOutputStream());
 
             Application.getCommandHandler().returnBuffer =
-                    game + " - " + grappl.getExternalServer().getAddress() + ":" + grappl.getExternalServer().getPort();
+                    game + " - " + state.getFocusedGrappl().getExternalServer().getAddress() + ":"
+                            + state.getFocusedGrappl().getExternalServer().getPort();
 
             printStream.println(Application.getCommandHandler().returnBuffer);
         } catch (Exception e) {

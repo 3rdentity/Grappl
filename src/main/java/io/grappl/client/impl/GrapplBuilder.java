@@ -1,10 +1,13 @@
-package io.grappl.client.impl.stable;
+package io.grappl.client.impl;
 
 import io.grappl.client.api.Grappl;
 import io.grappl.client.api.LocationProvider;
 import io.grappl.client.api.Protocol;
 import io.grappl.client.impl.gui.AdvancedGUI;
 import io.grappl.client.impl.gui.DefaultGUI;
+import io.grappl.client.impl.stable.Authentication;
+import io.grappl.client.impl.stable.NetworkLocation;
+import io.grappl.client.impl.stable.TCPGrappl;
 import io.grappl.client.impl.test.UDPGrappl;
 
 import javax.swing.*;
@@ -33,7 +36,7 @@ public class GrapplBuilder {
     }
 
     public GrapplBuilder withGUI(DefaultGUI gui) {
-        ((TCPGrappl) grappl).gui = gui;
+        ((TCPGrappl) grappl).setGUI(gui);
         return this;
     }
 
@@ -57,7 +60,7 @@ public class GrapplBuilder {
     }
 
     public GrapplBuilder withInternalLocationProvider(LocationProvider locationProvider) {
-        ((TCPGrappl) grappl).internalServerProvider = locationProvider;
+        ((TCPGrappl) grappl).setInternalServerProvider(locationProvider);
         return this;
     }
 

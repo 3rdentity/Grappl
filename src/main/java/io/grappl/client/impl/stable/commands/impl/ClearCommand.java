@@ -1,15 +1,15 @@
 package io.grappl.client.impl.stable.commands.impl;
 
-import io.grappl.client.api.Grappl;
 import io.grappl.client.impl.Application;
 import io.grappl.client.api.ApplicationMode;
 import io.grappl.client.api.commands.Command;
+import io.grappl.client.impl.ApplicationState;
 import io.grappl.client.impl.gui.ConsoleGUI;
 
 public class ClearCommand implements Command {
 
     @Override
-    public void runCommand(Grappl grappl, String[] args) {
+    public void runCommand(ApplicationState state, String[] args) {
         // GUI mode
         if(Application.getApplicationMode() == ApplicationMode.NORMAL) {
             Application.getLog().clearVisibleLog();

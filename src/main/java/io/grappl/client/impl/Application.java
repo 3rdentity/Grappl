@@ -2,7 +2,6 @@ package io.grappl.client.impl;
 
 import io.grappl.client.api.ApplicationMode;
 import io.grappl.client.impl.plugin.PluginManager;
-import io.grappl.client.impl.stable.ApplicationState;
 import io.grappl.client.impl.stable.commands.CommandHandler;
 import io.grappl.client.impl.log.GrapplLog;
 import io.grappl.client.impl.log.GrapplErrorStream;
@@ -53,7 +52,7 @@ public final class Application {
     public static void create(String[] args, ApplicationMode mode) {
         Application.mode = mode;
         log = new GrapplLog();
-        applicationState = new ApplicationState();
+        getApplicationState();
         commandHandler = new CommandHandler(applicationState);
 
         System.setErr(new GrapplErrorStream(log, System.out));
@@ -100,6 +99,10 @@ public final class Application {
     }
 
     public static ApplicationState getApplicationState() {
+        if(applicationState == null) {
+            applicationState = new ApplicationState();
+        }
+
         return applicationState;
     }
 

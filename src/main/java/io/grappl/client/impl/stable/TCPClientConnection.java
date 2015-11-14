@@ -7,7 +7,6 @@ import io.grappl.client.impl.test.handler.DataHandler;
 import io.grappl.client.impl.test.handler.NullHandler;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
