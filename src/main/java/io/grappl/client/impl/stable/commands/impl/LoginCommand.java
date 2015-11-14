@@ -6,7 +6,7 @@ import io.grappl.client.impl.Application;
 import io.grappl.client.impl.stable.ApplicationState;
 import io.grappl.client.impl.stable.Authentication;
 
-public class LoginCommand implements Command{
+public class LoginCommand implements Command {
 
     @Override
     public void runCommand(Grappl grappl, String[] args) {

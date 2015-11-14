@@ -1,20 +1,21 @@
 package io.grappl.client.impl.gui;
 
 import io.grappl.client.api.Grappl;
+import io.grappl.client.api.event.ConsoleMessageListener;
 import io.grappl.client.impl.Application;
 import io.grappl.client.api.ApplicationMode;
+import io.grappl.client.impl.stable.ApplicationState;
 import io.grappl.client.impl.stable.GrapplBuilder;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
 
 public class MultiLaunchGUI {
 
+    private ApplicationState applicationState = new ApplicationState();
     private JList<Grappl> grapplJList;
-    private List<Grappl> startedGrappls = new ArrayList<Grappl>();
 
     private JLabel grapplsOpenCount = new JLabel() {
         @Override
@@ -29,27 +30,27 @@ public class MultiLaunchGUI {
 
     public void addNewGrappl(Grappl grappl) {
         ((DefaultListModel<Grappl>) grapplJList.getModel()).addElement(grappl);
-        startedGrappls.add(grappl);
+        applicationState.addGrappl(grappl);
     }
 
     public void removeGrappl(Grappl grappl) {
         ((DefaultListModel<Grappl>) grapplJList.getModel()).removeElement(grappl);
-        startedGrappls.remove(grappl);
+        applicationState.removeGrappl(grappl);
     }
 
     public int numberOfGrappls() {
-        return startedGrappls.size();
+        return Application.getApplicationState().getGrapplCount();
     }
-
-    public Grappl getGrapplByPort(int portNumber) {
-        for(Grappl grappl : startedGrappls) {
-            if(grappl.getInternalPort() == portNumber) {
-                return grappl;
-            }
-        }
-
-        return null;
-    }
+//
+//    public Grappl getGrapplByPort(int portNumber) {
+//        for(Grappl grappl : Application.getApplicationState().getGrapplCount()) {
+//            if(grappl.getInternalPort() == portNumber) {
+//                return grappl;
+//            }
+//        }
+//
+//        return null;
+//    }
 
     public void createWindow() {
 
@@ -66,7 +67,7 @@ public class MultiLaunchGUI {
         }
 
         Application.create(null, ApplicationMode.NORMAL);
-        JFrame jFrame = new JFrame("Multipl - (Grappl v. " + Application.VERSION + ")");
+        JFrame jFrame = new JFrame("Multipl - (Grappl " + Application.VERSION + ")");
         jFrame.setSize(1280, 768);
         jFrame.setLocationRelativeTo(null);
         jFrame.setVisible(true);
@@ -98,18 +99,10 @@ public class MultiLaunchGUI {
         statsNew.setBounds(540, 10, 140, 30);
         jFrame.add(statsNew);
 
-//        addNewGrappl(new Grappl());
-//        addNewGrappl(new GrapplBuilder().atLocalPort(4444).build());
-        for (int i = 0; i < 15; i++) {
-            addNewGrappl(new GrapplBuilder().atLocalPort(i).build());
-
-        }
-//        addNewGrappl(new GrapplBuilder().atLocalPort(44345644).build());
-
         int shiftX = 500;
         int shiftY = 380;
 
-        JTextArea display = new JTextArea(120, 20);
+        final JTextArea display = new JTextArea(120, 20);
         display.setLineWrap(true);
         JScrollPane jScrollPane = new JScrollPane(display,
                 JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
@@ -119,6 +112,7 @@ public class MultiLaunchGUI {
         jScrollPane.setBounds(shiftX + 10, shiftY + 10, 670, 260);
         jFrame.add(jScrollPane);
         display.setEditable(false);
+        display.setFont(new Font("Sans", Font.PLAIN, 12));
 //
         final JTextField typeArea = new JTextField();
         typeArea.setBounds(shiftX + 20, shiftY + 280, 530, 20);
@@ -146,6 +140,23 @@ public class MultiLaunchGUI {
         });
         jFrame.repaint();
 
+        Application.getLog().addConsoleMessageListener(new ConsoleMessageListener() {
+            @Override
+            public void receiveMessage(String message) {
+                display.append(message + "\n");
+
+            }
+        });
+
+        for (int i = 0; i < 2500; i++) {
+            System.out.println(i);
+            Grappl grappl = new GrapplBuilder().atLocalPort(i).build();
+            grappl.setInternalPort(-1);
+            grappl.connect("192.241.169.241");
+            addNewGrappl(grappl);
+        }
+
+        jFrame.repaint();
     }
 
     public void enterCommand(String command) {}

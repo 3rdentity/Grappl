@@ -1,10 +1,10 @@
 package io.grappl.client.impl.stable;
 
-public class ExConnectionStats {
+public class ConnectionStats {
 
     private long timeCreated;
 
-    public ExConnectionStats() {
+    public ConnectionStats() {
         timeCreated = System.currentTimeMillis();
     }
 

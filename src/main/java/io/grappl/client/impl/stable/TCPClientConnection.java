@@ -28,7 +28,7 @@ public class TCPClientConnection implements ClientConnection {
     private boolean open;
 
     // Stats related to this specific connection
-    private ExConnectionStats exConnectionStats;
+    private ConnectionStats exConnectionStats;
 
     // The UUID of this connection
     private UUID uuid;
@@ -43,7 +43,7 @@ public class TCPClientConnection implements ClientConnection {
         this.address = address;
 
         dataHandler = new NullHandler();
-        exConnectionStats = new ExConnectionStats();
+        exConnectionStats = new ConnectionStats();
         uuid = UUID.randomUUID();
     }
 
@@ -184,7 +184,7 @@ public class TCPClientConnection implements ClientConnection {
         return uuid;
     }
 
-    public ExConnectionStats getExConnectionStats() {
+    public ConnectionStats getExConnectionStats() {
         return exConnectionStats;
     }
 }

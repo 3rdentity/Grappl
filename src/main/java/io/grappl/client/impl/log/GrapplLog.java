@@ -1,5 +1,6 @@
 package io.grappl.client.impl.log;
 
+import io.grappl.client.api.event.ConsoleMessageListener;
 import io.grappl.client.impl.Application;
 import io.grappl.client.impl.GrapplDataFile;
 import io.grappl.client.impl.gui.ConsoleGUI;
@@ -7,9 +8,7 @@ import io.grappl.client.impl.gui.ConsoleGUI;
 import javax.swing.*;
 import java.io.*;
 import java.text.DateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Logging class for Grappl.
@@ -19,6 +18,8 @@ public class GrapplLog {
 
     private List<String> loggedMessages = new ArrayList<String>();
     private List<String> visibleLog = new ArrayList<String>();
+
+    private Set<ConsoleMessageListener> consoleMessageListeners = new HashSet<ConsoleMessageListener>();
 
     public void log(String message) {
         String tag = DateFormat.getDateTimeInstance().format(new Date(System.currentTimeMillis()));
@@ -42,7 +43,13 @@ public class GrapplLog {
             }
         } catch (Exception ignore) {}
 
-        save();
+        for(ConsoleMessageListener consoleMessageListener : consoleMessageListeners) {
+            consoleMessageListener.receiveMessage(theS);
+        }
+
+        try {
+            save();
+        } catch (Exception e) {}
     }
 
     public void detailed(String message) {
@@ -102,5 +109,9 @@ public class GrapplLog {
 
     public List<String> getLoggedMessages() {
         return loggedMessages;
+    }
+
+    public void addConsoleMessageListener(ConsoleMessageListener consoleMessageListener) {
+        consoleMessageListeners.add(consoleMessageListener);
     }
 }

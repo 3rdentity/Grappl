@@ -23,7 +23,6 @@ public class ApplicationState {
         if(grapplList.size() > 0) {
             return grapplList.get(0);
         }
-
         return null;
     }
 

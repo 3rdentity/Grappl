@@ -4,6 +4,7 @@ import io.grappl.client.api.ClientConnection;
 import io.grappl.client.api.Grappl;
 import io.grappl.client.api.LocationProvider;
 import io.grappl.client.impl.Application;
+import io.grappl.client.impl.HeartbeatHandler;
 import io.grappl.client.impl.log.GrapplLog;
 import io.grappl.client.impl.stable.event.UserConnectEvent;
 import io.grappl.client.api.event.UserConnectListener;
@@ -27,7 +28,7 @@ import java.util.*;
  */
 public class TCPGrappl implements Grappl {
 
-    private ApplicationState applicationState;
+    private ApplicationState applicationState = Application.getApplicationState();
 
     private GrapplLog clientLog = new GrapplLog();
 
@@ -111,8 +112,8 @@ public class TCPGrappl implements Grappl {
                     Application.getLog().log("GUI aspects initialized");
                 }
 
-                // Create heartbeat thread that is used to monitor whether or not the client is still connected to the server.
-                createHeartbeatThread();
+                HeartbeatHandler.tryToMakeHeartbeatTo(externalServer.getAddress());
+
                 // Create thread that routes incoming connections to the local server.
                 createClientHandler(messageSocket, messageInputStream);
 
@@ -408,47 +409,6 @@ public class TCPGrappl implements Grappl {
         });
         reconnectThread.setName("Grappl Reconnect Thread");
         reconnectThread.start();
-    }
-
-    /**
-     * Creates a heartbeat thread to the relay server this client is connect to
-     */
-    private void createHeartbeatThread() {
-        Thread heartBeatThread = new Thread(new Runnable() {
-            @SuppressWarnings("ConstantConditions")
-            @Override
-            public void run() {
-                Socket heartBeat;
-                DataOutputStream dataOutputStream = null;
-
-                try {
-                    heartBeat = new Socket(externalServer.getAddress(), Application.HEARTBEAT);
-                    sockets.add(heartBeat);
-                    dataOutputStream = new DataOutputStream(heartBeat.getOutputStream());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                Application.getLog().log("Connected to heartbeat server");
-
-                while(true) {
-                    try {
-                        dataOutputStream.writeInt(0);
-                    } catch (IOException e) {
-                        isDown();
-                        return;
-                    }
-
-                    try {
-                        Thread.sleep(500);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
-        heartBeatThread.setName("Grappl Heartbeat Thread");
-        heartBeatThread.start();
     }
 
     public GrapplLog getLog() {
