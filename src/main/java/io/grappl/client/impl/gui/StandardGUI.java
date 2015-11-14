@@ -3,8 +3,8 @@ package io.grappl.client.impl.gui;
 import io.grappl.client.api.Grappl;
 import io.grappl.client.impl.Application;
 import io.grappl.client.impl.GrapplDataFile;
-import io.grappl.client.impl.api.GrapplBuilder;
-import io.grappl.client.impl.api.TCPGrappl;
+import io.grappl.client.impl.stable.GrapplBuilder;
+import io.grappl.client.impl.stable.TCPGrappl;
 
 import javax.swing.*;
 import java.awt.*;
@@ -257,7 +257,7 @@ public class StandardGUI {
             if(grappl.getAuthentication().isLoggedIn()) {
                 Application.getLog().log("Logged in as " + grappl.getAuthentication().getUsername());
                 Application.getLog().log("Beta tester: " + grappl.getAuthentication().isPremium());
-                Application.getLog().log("Static port: " + grappl.getExternalPort());
+                Application.getLog().log("Static port: " + grappl.getExternalServer().getPort());
 
                 if(!rememberMeBox.isSelected()) {
                     password = null;

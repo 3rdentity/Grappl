@@ -3,12 +3,12 @@ package io.grappl.client.impl.gui;
 import io.grappl.client.api.Grappl;
 import io.grappl.client.impl.Application;
 import io.grappl.client.impl.GrapplDataFile;
-import io.grappl.client.impl.api.Authentication;
-import io.grappl.client.impl.api.TCPGrappl;
-import io.grappl.client.impl.api.event.UserConnectEvent;
-import io.grappl.client.impl.api.event.UserConnectListener;
-import io.grappl.client.impl.api.event.UserDisconnectEvent;
-import io.grappl.client.impl.api.event.UserDisconnectListener;
+import io.grappl.client.impl.stable.Authentication;
+import io.grappl.client.impl.stable.TCPGrappl;
+import io.grappl.client.impl.stable.event.UserConnectEvent;
+import io.grappl.client.impl.stable.event.UserConnectListener;
+import io.grappl.client.impl.stable.event.UserDisconnectEvent;
+import io.grappl.client.impl.stable.event.UserDisconnectListener;
 
 import javax.swing.*;
 import java.awt.*;
@@ -161,7 +161,7 @@ public class AdvancedGUI {
                                 ((DefaultListModel<String>) jList.getModel()).addElement(userDisconnectEvent.getAddress());
                             }
                         });
-                        connectionLabel.setText("Public at: " + focusedGrappl.getRelayServer() + ":" + focusedGrappl.getExternalPort());
+                        connectionLabel.setText("Public at: " + focusedGrappl.getExternalServer().getAddress() + ":" + focusedGrappl.getExternalServer().getPort());
                         portLabel.setText("Local port: " + focusedGrappl.getInternalPort());
                         close.setEnabled(true);
                     } else {

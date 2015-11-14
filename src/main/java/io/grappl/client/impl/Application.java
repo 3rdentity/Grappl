@@ -1,6 +1,6 @@
 package io.grappl.client.impl;
 
-import io.grappl.client.impl.api.commands.CommandHandler;
+import io.grappl.client.impl.stable.commands.CommandHandler;
 import io.grappl.client.impl.log.GrapplLog;
 import io.grappl.client.impl.log.GrapplErrorStream;
 import io.grappl.client.impl.log.SilentGrapplLog;

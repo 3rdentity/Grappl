@@ -1,17 +1,15 @@
 package io.grappl.client.impl.test;
 
 import io.grappl.client.api.Grappl;
-import io.grappl.client.impl.api.Authentication;
-import io.grappl.client.impl.api.NetworkLocation;
-import io.grappl.client.impl.api.StatMonitor;
-import io.grappl.client.impl.api.event.UserConnectListener;
-import io.grappl.client.impl.api.event.UserDisconnectListener;
+import io.grappl.client.impl.stable.Authentication;
+import io.grappl.client.impl.stable.NetworkLocation;
+import io.grappl.client.impl.stable.StatMonitor;
+import io.grappl.client.impl.stable.event.UserConnectListener;
+import io.grappl.client.impl.stable.event.UserDisconnectListener;
 import io.grappl.client.impl.gui.StandardGUI;
 
 import java.net.DatagramSocket;
-import java.net.Socket;
 import java.net.SocketException;
-import java.util.Collection;
 
 /**
  * Experimental UDP grappl implementation
@@ -66,13 +64,8 @@ public class UDPGrappl implements Grappl {
     }
 
     @Override
-    public String getRelayServer() {
+    public NetworkLocation getExternalServer() {
         return null;
-    }
-
-    @Override
-    public int getExternalPort() {
-        return 0;
     }
 
     @Override

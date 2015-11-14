@@ -1,7 +1,7 @@
 package test;
 
 import io.grappl.client.api.Grappl;
-import io.grappl.client.impl.api.TCPGrappl;
+import io.grappl.client.impl.stable.TCPGrappl;
 
 import java.util.HashSet;
 import java.util.Set;

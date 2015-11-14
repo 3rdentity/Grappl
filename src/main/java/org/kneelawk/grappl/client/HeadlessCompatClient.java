@@ -3,7 +3,7 @@ package org.kneelawk.grappl.client;
 import io.grappl.client.api.Grappl;
 import io.grappl.client.impl.Application;
 import io.grappl.client.impl.ApplicationMode;
-import io.grappl.client.impl.api.GrapplBuilder;
+import io.grappl.client.impl.stable.GrapplBuilder;
 
 import java.io.File;
 import java.io.IOException;
@@ -210,7 +210,7 @@ public class HeadlessCompatClient {
 		if (outputFile != null) {
 			try {
 				PrintWriter w = new PrintWriter(outputFile);
-				w.print(grappl.getExternalPort());
+				w.print(grappl.getExternalServer().getPort());
 				w.flush();
 				w.close();
 			} catch (IOException e) {

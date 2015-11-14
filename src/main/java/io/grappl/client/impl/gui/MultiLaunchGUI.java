@@ -3,7 +3,7 @@ package io.grappl.client.impl.gui;
 import io.grappl.client.api.Grappl;
 import io.grappl.client.impl.Application;
 import io.grappl.client.impl.ApplicationMode;
-import io.grappl.client.impl.api.GrapplBuilder;
+import io.grappl.client.impl.stable.GrapplBuilder;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

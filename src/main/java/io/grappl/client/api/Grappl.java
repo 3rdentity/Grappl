@@ -1,13 +1,13 @@
 package io.grappl.client.api;
 
-import io.grappl.client.impl.api.Authentication;
-import io.grappl.client.impl.api.NetworkLocation;
-import io.grappl.client.impl.api.StatMonitor;
-import io.grappl.client.impl.api.event.UserConnectListener;
-import io.grappl.client.impl.api.event.UserDisconnectListener;
+import com.daexsys.grappl.client.Client;
+import io.grappl.client.impl.stable.Authentication;
+import io.grappl.client.impl.stable.NetworkLocation;
+import io.grappl.client.impl.stable.StatMonitor;
+import io.grappl.client.impl.stable.event.UserConnectListener;
+import io.grappl.client.impl.stable.event.UserDisconnectListener;
 import io.grappl.client.impl.gui.StandardGUI;
 
-import java.net.Socket;
 import java.util.Collection;
 
 /**
@@ -18,16 +18,17 @@ public interface Grappl {
     public void addUserConnectListener(UserConnectListener userConnectListener);
     public void addUserDisconnectListener(UserDisconnectListener userDisconnectListener);
 
+    public Collection<ClientConnection> getConnectedClients();
+
     public void useAuthentication(Authentication authentication);
     public Authentication getAuthentication();
 
     public boolean connect(String relay);
     public void disconnect();
 
-    public String getRelayServer();
-    public int getExternalPort();
-
+    public NetworkLocation getExternalServer();
     public NetworkLocation getInternalServer();
+
     public String getInternalAddress();
     public int getInternalPort();
     public void setInternalAddress(String address);

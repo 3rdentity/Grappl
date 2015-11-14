@@ -1,7 +1,7 @@
 package io.grappl.client.impl;
 
 import io.grappl.client.api.Grappl;
-import io.grappl.client.impl.api.Authentication;
+import io.grappl.client.impl.stable.Authentication;
 
 import java.util.ArrayList;
 import java.util.List;
