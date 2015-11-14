@@ -152,7 +152,7 @@ public class HeadlessCompatClient {
 		System.out.println();
 		System.out.println("--- Options ---");
 		System.out
-				.println("\t-p\t--port <PORT>\tSet the port that grappl will re-route to to PORT.");
+				.println("\t-p\t--port <PORT>\t\tSet the port that grappl will re-route to to PORT.");
 		System.out
 				.println("\t-s\t--server <SERVER>\tSet the server grappl will re-route from to SERVER.");
 		System.out
@@ -160,7 +160,7 @@ public class HeadlessCompatClient {
 		System.out
 				.println("\t-P\t--password <PASSWORD>\tSet the password to PASSWORD for authentication.");
 		System.out
-				.println("\t-o\t--output <OUTPUT>\tWrite the grappl server port to OUTPUT file.");
+				.println("\t-o\t--output <OUTPUT>\tWrite the external grappl server port to OUTPUT file.");
 		System.exit(0);
 	}
 
