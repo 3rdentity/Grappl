@@ -25,7 +25,7 @@ public class TCPClientConnection implements ClientConnection {
     private String address;
 
     // Whether or not the connection is still open
-    private boolean open;
+    private boolean open = true;
 
     // Stats related to this specific connection
     private ConnectionStats exConnectionStats;
@@ -173,7 +173,7 @@ public class TCPClientConnection implements ClientConnection {
     }
 
     public void acknowledgeDisconnect() {
-        if(!open) {
+        if(open) {
             open = false;
             tcpGrappl.getStatMonitor().closeConnection();
             Application.getLog().log(address + " has been disconnected");
