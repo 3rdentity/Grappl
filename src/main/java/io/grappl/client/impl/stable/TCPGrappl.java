@@ -319,9 +319,9 @@ public class TCPGrappl implements Grappl {
                         String userIP = messageInputStream.readLine();
                         Application.getLog().log("A user has connected from ip " + userIP.substring(1, userIP.length()));
 
-                        userConnects(new UserConnectEvent(userIP));
-
                         TCPClientConnection exClient = new TCPClientConnection(theGrappl, userIP);
+                        userConnects(new UserConnectEvent(userIP, exClient));
+
                         exClient.open();
                         clients.put(exClient.getUUID(), exClient);
                         connectedClients.add(exClient);

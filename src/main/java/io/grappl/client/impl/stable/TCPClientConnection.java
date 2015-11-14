@@ -7,7 +7,11 @@ import io.grappl.client.impl.test.handler.DataHandler;
 import io.grappl.client.impl.test.handler.NullHandler;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -38,6 +42,9 @@ public class TCPClientConnection implements ClientConnection {
     private Socket inward;
     private Socket outward;
 
+    private List<OutputStream> inwardStreams = new ArrayList<OutputStream>();
+    private List<OutputStream> outwardStreams = new ArrayList<OutputStream>();
+
     public TCPClientConnection(final TCPGrappl grappl, final String address) {
         this.tcpGrappl = grappl;
         this.address = address;
@@ -63,10 +70,12 @@ public class TCPClientConnection implements ClientConnection {
 
             inward = new Socket(internalServer.getAddress(), internalServer.getPort());
             inward.setSoTimeout(10000);
+            inwardStreams.add(inward.getOutputStream());
             tcpGrappl.getSockets().add(inward);
 
             outward = new Socket(tcpGrappl.getExternalServer().getAddress(), relayPort);
             outward.setSoTimeout(10000);
+            outwardStreams.add(outward.getOutputStream());
             tcpGrappl.getSockets().add(outward);
 
             Application.getLog().detailed(uuid + " connection active " + address.substring(1, address.length())
@@ -81,7 +90,10 @@ public class TCPClientConnection implements ClientConnection {
 
                     try {
                         while ((size = inward.getInputStream().read(buffer)) != -1) {
-                            outward.getOutputStream().write(buffer, 0, size);
+                            for(OutputStream outputStream : outwardStreams) {
+                                outputStream.write(buffer, 0, size);
+                            }
+
                             tcpGrappl.getStatMonitor().dataSent(size);
                             dataHandler.handleOutgoing(buffer, size);
                         }
@@ -117,7 +129,10 @@ public class TCPClientConnection implements ClientConnection {
 
                     try {
                         while ((size = outward.getInputStream().read(buffer)) != -1) {
-                            inward.getOutputStream().write(buffer, 0, size);
+                            for(OutputStream outputStream : inwardStreams) {
+                                outputStream.write(buffer, 0, size);
+                            }
+
                             tcpGrappl.getStatMonitor().dataReceived(size);
                             dataHandler.handleIncoming(buffer, size);
                         }
@@ -172,12 +187,27 @@ public class TCPClientConnection implements ClientConnection {
         return tcpGrappl;
     }
 
+    /**
+     * Optional data handler that can be set by a plugin to do cool things with a specific protocol.
+     */
+    public void setDataHandler(DataHandler dataHandler) {
+        this.dataHandler = dataHandler;
+    }
+
     public void acknowledgeDisconnect() {
         if(open) {
             open = false;
             tcpGrappl.getStatMonitor().closeConnection();
             Application.getLog().log(address + " has been disconnected");
         }
+    }
+
+    public void addInwardStream(OutputStream outputStream) {
+        inwardStreams.add(outputStream);
+    }
+
+    public void addOutwardStream(OutputStream outputStream) {
+        outwardStreams.add(outputStream);
     }
 
     public UUID getUUID() {
