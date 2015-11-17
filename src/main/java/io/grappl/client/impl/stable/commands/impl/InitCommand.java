@@ -9,7 +9,7 @@ public class InitCommand implements Command {
 
     @Override
     public void runCommand(ApplicationState state, String[] args) {
-        String relay = "n.grappl.io";
+        String relay = "localhost";
 
         if(args.length == 2) {
             relay = args[1];

@@ -65,7 +65,7 @@ public class TCPClientConnection implements ClientConnection {
 
         // This socket connects to the local server.
         try {
-            NetworkLocation internalServer = tcpGrappl.getInternalServer();
+            final NetworkLocation internalServer = tcpGrappl.getInternalServer();
 
             inward = new Socket(internalServer.getAddress(), internalServer.getPort());
             inward.setSoTimeout(10000);
@@ -89,12 +89,15 @@ public class TCPClientConnection implements ClientConnection {
 
                     try {
                         while ((size = inward.getInputStream().read(buffer)) != -1) {
-                            for(OutputStream outputStream : outwardStreams) {
-                                outputStream.write(buffer, 0, size);
+                            size = (int) dataHandler.handleOutgoing(buffer, size, outwardStreams);
+
+                            if(Application.doAutoForward) {
+                                for (OutputStream outputStream : outwardStreams) {
+                                    outputStream.write(buffer, 0, size);
+                                }
                             }
 
                             tcpGrappl.getStatMonitor().dataSent(size);
-                            dataHandler.handleOutgoing(buffer, size);
                         }
                     } catch (IOException e) {
                         try {
@@ -128,12 +131,15 @@ public class TCPClientConnection implements ClientConnection {
 
                     try {
                         while ((size = outward.getInputStream().read(buffer)) != -1) {
-                            for(OutputStream outputStream : inwardStreams) {
-                                outputStream.write(buffer, 0, size);
+                            size = (int) dataHandler.handleIncoming(buffer, size, inwardStreams);
+
+                            if(Application.doAutoForward) {
+                                for (OutputStream outputStream : inwardStreams) {
+                                    outputStream.write(buffer, 0, size);
+                                }
                             }
 
                             tcpGrappl.getStatMonitor().dataReceived(size);
-                            dataHandler.handleIncoming(buffer, size);
                         }
                     } catch (IOException e) {
                         try {
@@ -215,5 +221,13 @@ public class TCPClientConnection implements ClientConnection {
 
     public ConnectionStats getExConnectionStats() {
         return exConnectionStats;
+    }
+
+    public Socket getInward() {
+        return inward;
+    }
+
+    public Socket getOutward() {
+        return outward;
     }
 }

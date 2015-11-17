@@ -7,6 +7,8 @@ import io.grappl.client.api.commands.Command;
 
 public class StatsCommand implements Command {
 
+    public static int avoided = 0;
+
     @Override
     public void runCommand(ApplicationState state, String[] args) {
 
@@ -22,6 +24,7 @@ public class StatsCommand implements Command {
             Application.getLog().log(statsManager.getTotalConnections() + " clients connected");
             Application.getLog().log(statsManager.getReceivedData() + " bytes received");
             Application.getLog().log(statsManager.getSentData() + " bytes sent");
+            Application.getLog().log(avoided + " bytes avoided");
             Application.getLog().log("=====================================");
         }
     }

@@ -7,6 +7,7 @@ import io.grappl.client.impl.ApplicationState;
 public class DisconnectCommand implements Command {
 
     public void runCommand(ApplicationState state, String[] args) {
+
         if(state == null) {
             Application.getLog().log("Not connected, cannot disconnect");
         } else {

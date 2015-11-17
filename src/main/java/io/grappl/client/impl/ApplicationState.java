@@ -15,6 +15,8 @@ public class ApplicationState {
     private Authentication authentication;
     private List<Grappl> grapplList = new ArrayList<Grappl>();
 
+    private String commandBufferVar;
+
     private Set<GrapplOpenListener> grapplOpenListeners = new HashSet<GrapplOpenListener>();
 
     public ApplicationState(){}
@@ -61,5 +63,13 @@ public class ApplicationState {
 
     public void addGrapplOpenListener(GrapplOpenListener grapplOpenListener) {
         grapplOpenListeners.add(grapplOpenListener);
+    }
+
+    public void setCommandBufferVar(String commandBufferVar) {
+        this.commandBufferVar = commandBufferVar;
+    }
+
+    public String getCommandBufferVar() {
+        return commandBufferVar;
     }
 }

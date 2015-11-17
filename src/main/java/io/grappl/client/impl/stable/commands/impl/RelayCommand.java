@@ -5,6 +5,7 @@ import io.grappl.client.api.commands.Command;
 import io.grappl.client.impl.ApplicationState;
 
 public class RelayCommand implements Command {
+
     @Override
     public void runCommand(ApplicationState state, String[] args) {
         if(state == null) {

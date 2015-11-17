@@ -42,6 +42,8 @@ public final class Application {
     public static boolean usingSavedHashPass = true;
     public static boolean debugState = true;
 
+    public static boolean doAutoForward = true;
+
     private static CommandHandler commandHandler;
     private static GrapplLog log;
     private static ApplicationMode mode;

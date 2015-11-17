@@ -161,10 +161,8 @@ public class MultiLaunchGUI {
 //
         RandomNetworkProvider randomNetworkProvider = new RandomNetworkProvider();
         randomNetworkProvider.addLocation(new NetworkLocation("localhost", 25565));
-//        randomNetworkProvider.addLocation(new NetworkLocation("p.nerd.nu", 25565));
-//        randomNetworkProvider.addLocation(new NetworkLocation("s.nerd.nu", 25565));
 
-        for (i = 0; i < 10; i++) {
+        for (i = 0; i < 4; i++) {
             System.out.println(i);
             Grappl grappl = new GrapplBuilder().withInternalLocationProvider(randomNetworkProvider).build();
 
@@ -175,13 +173,6 @@ public class MultiLaunchGUI {
             }
             addNewGrappl(grappl);
         }
-
-        new DummyServerCommand(new ContentSource() {
-            @Override
-            public String getContent() {
-                return "<h1>can be found on even #'d ports shader:(" + firstPort + "-" + (firstPort + i) + ")</h1>";
-            }
-        }).runCommand(null, new String[]{"", 5556 + ""});
 
         jFrame.repaint();
     }

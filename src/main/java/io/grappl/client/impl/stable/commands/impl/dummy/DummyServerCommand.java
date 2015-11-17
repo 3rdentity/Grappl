@@ -34,6 +34,7 @@ public class DummyServerCommand implements Command {
 
         try {
             final int port = Integer.parseInt(args[1]);
+            state.setCommandBufferVar(args[1]);
 
             Thread dummyServerThread = new Thread(new Runnable() {
                 @Override

@@ -9,6 +9,7 @@ public class LoginCommand implements Command {
 
     @Override
     public void runCommand(ApplicationState state, String[] args) {
+
         ApplicationState applicationState = Application.getApplicationState();
 
         final String username = args[1];
