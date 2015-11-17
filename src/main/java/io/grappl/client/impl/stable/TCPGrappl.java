@@ -243,11 +243,11 @@ public class TCPGrappl implements Grappl {
     }
 
     public void useAuthentication(Authentication authentication) {
-        applicationState.useAuthentication(authentication);
+        Application.getApplicationState().useAuthentication(authentication);
     }
 
     public Authentication getAuthentication() {
-        return applicationState.getAuthentication();
+        return Application.getApplicationState().getAuthentication();
     }
 
     public DefaultGUI getGUI() {
