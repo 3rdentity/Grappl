@@ -99,7 +99,6 @@ public class TCPGrappl implements Grappl {
                 // If a GUI is associated with this Grappl, do GUI things
                 if (gui != null) {
                     gui.initializeGUI(relayServer, externalServer.getPort() + "", getInternalPort());
-                    Application.getLog().log("GUI aspects initialized");
                 }
 
                 HeartbeatHandler.tryToMakeHeartbeatTo(externalServer.getAddress());
