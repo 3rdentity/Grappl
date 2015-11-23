@@ -1,4 +1,4 @@
-package io.grappl.client.impl.stable.user;
+package io.grappl.client.impl.test.user;
 
 public class DataStats {
 
