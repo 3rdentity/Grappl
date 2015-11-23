@@ -3,7 +3,9 @@ package org.kneelawk.grappl.client;
 import io.grappl.client.api.Grappl;
 import io.grappl.client.impl.Application;
 import io.grappl.client.api.ApplicationMode;
-import io.grappl.client.impl.GrapplBuilder;
+import io.grappl.client.impl.error.AuthenticationFailureException;
+import io.grappl.client.impl.stable.GrapplBuilder;
+import io.grappl.client.impl.error.RelayServerNotFoundException;
 
 import java.io.File;
 import java.io.IOException;
@@ -202,11 +204,19 @@ public class HeadlessCompatClient {
 		builder.atLocalPort(port);
 		if (username != null && !"".equals(username) && password != null
 				&& !"".equals(password)) {
-			builder.login(username, password.toCharArray(), null);
-		}
+            try {
+                builder.login(username, password.toCharArray(), null);
+            } catch (AuthenticationFailureException e) {
+                e.printStackTrace();
+            }
+        }
 		Grappl grappl = builder.build();
-		grappl.connect(server);
-		if (outputFile != null) {
+        try {
+            grappl.connect(server);
+        } catch (RelayServerNotFoundException e) {
+            e.printStackTrace();
+        }
+        if (outputFile != null) {
 			try {
 				PrintWriter w = new PrintWriter(outputFile);
 				w.print(grappl.getExternalServer().getPort());
