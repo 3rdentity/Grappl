@@ -8,6 +8,8 @@ import java.io.*;
  * Can get away with being full of static methods since there is only one data file!
  * The class also carries no state (other than user.dat :P).
  */
+// TODO: Overhaul. This. So. Much.
+// TODO: A weird structureless format? Really. Obvsly stable. Oh, and don't forget that this doesn't even work 100% properly on OSX and linux.
 public class GrapplDataFile {
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
@@ -22,7 +24,7 @@ public class GrapplDataFile {
             return dataInputStream.readLine();
         } catch (Exception ignore) {}
 
-        return "";
+        return "ErrorPerson";
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
