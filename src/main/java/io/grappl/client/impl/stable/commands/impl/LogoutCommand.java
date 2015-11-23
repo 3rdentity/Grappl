@@ -9,8 +9,8 @@ public class LogoutCommand implements Command {
     @Override
     public void runCommand(ApplicationState state, String[] args) {
 
-        if(state == null) {
-            Application.getLog().log(Application.NO_GRAPPL_MESSAGE);
+        if(state.getAuthentication() == null) {
+            Application.getLog().log(Application.NOT_LOGGED_IN_MESSAGE);
         } else {
             state.getAuthentication().logout();
             Application.getLog().log("Logged out. Bye, " + state.getAuthentication().getUsername() + "!");

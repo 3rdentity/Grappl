@@ -19,7 +19,8 @@ public class GrapplCommand implements Command {
             final String subCommand = args[1];
 
             if (subCommand.equalsIgnoreCase("connect")) {
-                String relay = "localhost";
+                // Default relay is the NYC one.
+                String relay = "n.grappl.io";
 
                 if (args.length == 3) {
                     relay = args[2];
