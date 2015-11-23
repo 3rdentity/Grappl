@@ -50,7 +50,7 @@ public class StatMonitor {
         tryUpdatingRemote();
     }
 
-    public void openConnection() {
+    public void incrementConnectionCount() {
         connectionsOpen++;
         totalConnections++;
         connectionBufferForWebsite++;

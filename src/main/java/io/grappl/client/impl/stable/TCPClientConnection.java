@@ -19,6 +19,7 @@ import java.util.UUID;
  */
 public class TCPClientConnection implements ClientConnection {
 
+    private final static int ONE_SECOND_DELAY = 1000;
     public static final int BLOCK_SIZE = 4096;
 
     // The Grappl instance associated with this connection
@@ -31,25 +32,25 @@ public class TCPClientConnection implements ClientConnection {
     private boolean open = true;
 
     // Stats related to this specific connection
-    private ConnectionStats exConnectionStats;
+    private ConnectionStats connectionStats;
 
     // The UUID of this connection
     private UUID uuid;
 
     private DataHandler dataHandler;
 
-    private Socket inward;
-    private Socket outward;
-
     private List<OutputStream> inwardStreams = new ArrayList<OutputStream>();
     private List<OutputStream> outwardStreams = new ArrayList<OutputStream>();
+
+    private Socket inward;
+    private Socket outward;
 
     protected TCPClientConnection(final TCPGrappl grappl, final String address) {
         this.tcpGrappl = grappl;
         this.address = address;
 
         dataHandler = new GenericHandler();
-        exConnectionStats = new ConnectionStats();
+        connectionStats = new ConnectionStats();
         uuid = UUID.randomUUID();
     }
 
@@ -59,21 +60,22 @@ public class TCPClientConnection implements ClientConnection {
      */
     public void open() {
         // Increment the connected player counter.
-        tcpGrappl.getStatMonitor().openConnection();
+        tcpGrappl.getStatMonitor().incrementConnectionCount();
 
         final int relayPort = tcpGrappl.getExternalServer().getPort() + 1;
 
-        // This socket connects to the local server.
         try {
             final NetworkLocation internalServer = tcpGrappl.getInternalServer();
 
+            // This socket connects to the internal server.
             inward = new Socket(internalServer.getAddress(), internalServer.getPort());
-            inward.setSoTimeout(10000);
+            inward.setSoTimeout(10 * ONE_SECOND_DELAY);
             inwardStreams.add(inward.getOutputStream());
             tcpGrappl.getSockets().add(inward);
 
+            // This socket connects to the external traffic server.
             outward = new Socket(tcpGrappl.getExternalServer().getAddress(), relayPort);
-            outward.setSoTimeout(10000);
+            outward.setSoTimeout(10 * ONE_SECOND_DELAY);
             outwardStreams.add(outward.getOutputStream());
             tcpGrappl.getSockets().add(outward);
 
@@ -162,22 +164,6 @@ public class TCPClientConnection implements ClientConnection {
         }
     }
 
-    public boolean isOpen() {
-        return open;
-    }
-
-    public boolean ping() {
-        return true;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public Grappl getGrappl() {
-        return tcpGrappl;
-    }
-
     /**
      * Optional data handler that can be set by a plugin to do cool things with a specific protocol.
      */
@@ -189,8 +175,22 @@ public class TCPClientConnection implements ClientConnection {
         if(open) {
             open = false;
             tcpGrappl.getStatMonitor().closeConnection();
-            Application.getLog().log(address + " has been disconnected");
+            Application.getLog().log(address + " has been disconnected from " + tcpGrappl.getUUID());
         }
+    }
+
+    @Override
+    public String getAddress() {
+        return address;
+    }
+
+    @Override
+    public Grappl getGrappl() {
+        return tcpGrappl;
+    }
+
+    public UUID getUUID() {
+        return uuid;
     }
 
     public void addInwardStream(OutputStream outputStream) {
@@ -201,12 +201,8 @@ public class TCPClientConnection implements ClientConnection {
         outwardStreams.add(outputStream);
     }
 
-    public UUID getUUID() {
-        return uuid;
-    }
-
-    public ConnectionStats getExConnectionStats() {
-        return exConnectionStats;
+    public ConnectionStats getConnectionStats() {
+        return connectionStats;
     }
 
     public Socket getInward() {
@@ -215,5 +211,15 @@ public class TCPClientConnection implements ClientConnection {
 
     public Socket getOutward() {
         return outward;
+    }
+
+    // TODO: Is there a difference between this an ping? Is there a point?
+    public boolean isOpen() {
+        return open;
+    }
+
+    // TODO: Give this some meat or scrap the idea entirely!
+    public boolean ping() {
+        return true;
     }
 }
