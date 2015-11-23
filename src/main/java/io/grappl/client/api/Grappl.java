@@ -10,6 +10,7 @@ import io.grappl.client.api.event.UserDisconnectListener;
 import io.grappl.client.impl.gui.DefaultGUI;
 
 import java.util.Collection;
+import java.util.UUID;
 
 /**
  * Abstract interface that represents a Grappl tunnel. Can be TCP or UDP.
@@ -34,5 +35,6 @@ public interface Grappl {
 
     public StatMonitor getStatMonitor();
 
+    public UUID getUUID();
     public DefaultGUI getGUI();
 }

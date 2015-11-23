@@ -80,6 +80,7 @@ public class StatMonitor {
         final int TEN_SECONDS = 10000;
 
         try {
+            // TODO: This is causing issue and occasionally vomits garbage to core. Fix.
             if (getGrappl().getAuthentication() != null) {
                 if (System.currentTimeMillis() > lastTimeSent + TEN_SECONDS) {
                     DataOutputStream dataOutputStream = getGrappl().getAuthentication().getAuthDataOutputStream();

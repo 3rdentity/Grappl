@@ -21,10 +21,8 @@ import java.net.*;
 import java.util.*;
 
 /**
- * Represents a Grappl connection.
- *
- * Contains data related to login: {username, password, etc}
- * as well as the state of the connection, such as the port, relay server, etc.
+ * Represents a single Grappl connection (local computer to relay) that
+ * is designed to handle incoming TCP connection to the internal server.
  */
 public class TCPGrappl implements Grappl {
 
@@ -42,6 +40,8 @@ public class TCPGrappl implements Grappl {
     protected LocationProvider internalServerProvider;
     private NetworkLocation externalServer = new NetworkLocation("", -1);
 
+    private StatMonitor statMonitor = new StatMonitor(this);
+
     /* Whether or not the connection with broken using disconnect(). Prevents the connection
      * from automatically re-opening, as it would if the connection was broken unintentionally. */
     private boolean wasIntentionallyDisconnected = false;
@@ -53,13 +53,12 @@ public class TCPGrappl implements Grappl {
     // An ExClientConnection is created and stored here for every client that connects through the tunnel.
     // The objects are removed (usually) when the client disconnects, but stray objects have been known to remain.
     @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
-    private Map<UUID, TCPClientConnection> clients = new HashMap<UUID, TCPClientConnection>();
+    private Map<UUID, TCPClientConnection> clientsByUUID = new HashMap<UUID, TCPClientConnection>();
 
     // Event listeners that listen for user connection/disconnections.
+    // TODO: Overhaul the way we're handling events?
     private List<UserConnectListener> userConnectListeners = new ArrayList<UserConnectListener>();
     private List<UserDisconnectListener> userDisconnectListeners = new ArrayList<UserDisconnectListener>();
-
-    private StatMonitor statMonitor = new StatMonitor(this);
 
     /**
      * Constructs a new Grappl and sets a generic LocationProvider.
@@ -178,7 +177,7 @@ public class TCPGrappl implements Grappl {
     }
 
     /**
-     * Creates the thread that listens for incoming external clients.
+     * Creates the thread that listens for incoming external clientsByUUID.
      * @param relayMsgSocket the socket that is used to receive messages from the relay server
      * @param relayMsgInputStream the pre-created input stream associated with the socket
      */
@@ -190,7 +189,7 @@ public class TCPGrappl implements Grappl {
         final List<TCPClientConnection> connectedClients = new ArrayList<TCPClientConnection>();
 
         if(gui != null) {
-            getGUI().getConnectedClientsLabel().setText("Connected clients: " + getStatMonitor().getOpenConnections());
+            getGUI().getConnectedClientsLabel().setText("Connected clientsByUUID: " + getStatMonitor().getOpenConnections());
             getGUI().getConnectedClientsLabel().setBounds(5, 45, 450, 20);
             gui.getFrame().add(getGUI().getConnectedClientsLabel());
             gui.getFrame().repaint();
@@ -202,6 +201,7 @@ public class TCPGrappl implements Grappl {
                 try {
                     while(true) {
                         // Receive IP of connected client from relay.
+                        // TODO: Express as bytes, maybe?
                         String userIP = relayMsgInputStream.readLine();
 
                         Application.getLog().log("A user has connected from ip "
@@ -214,7 +214,7 @@ public class TCPGrappl implements Grappl {
 
                         clientConnection.open();
 
-                        clients.put(clientConnection.getUUID(), clientConnection);
+                        clientsByUUID.put(clientConnection.getUUID(), clientConnection);
                         connectedClients.add(clientConnection);
                     }
                 } catch (IOException e) {
@@ -240,18 +240,6 @@ public class TCPGrappl implements Grappl {
         userDisconnectListeners.add(userDisconnectListener);
     }
 
-    public void userConnect(UserConnectEvent userConnectEvent) {
-        for(UserConnectListener userConnectListener : userConnectListeners) {
-            userConnectListener.userConnected(userConnectEvent);
-        }
-    }
-
-    public void useDisconnect(UserDisconnectEvent userDisconnectEvent) {
-        for (UserDisconnectListener userDisconnectListener : userDisconnectListeners) {
-            userDisconnectListener.userDisconnected(userDisconnectEvent);
-        }
-    }
-
     @Override
     public NetworkLocation getInternalServer() {
         return internalServerProvider.getLocation();
@@ -267,80 +255,70 @@ public class TCPGrappl implements Grappl {
         return statMonitor;
     }
 
-    /**
-     * This method is called when the connection is lost. Happens
-     * when the heartbeat thread is interrupted.
-     */
-    private void isDown() {
-        Application.getLog().log("Lost connection to remote");
-        closeAllSockets();
-
-        Thread reconnectThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    try {
-                        Socket testSocket = new Socket(Application.DOMAIN, Application.HEARTBEAT);
-                        testSocket.close();
-                        restart();
-                        return;
-                    } catch (IOException e) {
-                        Application.getLog().log("Attempting reconnect");
-                    }
-
-                    try {
-                        Thread.sleep(500);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
-        reconnectThread.setName("Grappl Reconnect Thread");
-        reconnectThread.start();
-    }
-
-    public GrapplLog getLog() {
-        return Application.getLog();
-    }
-
+    @Override
     public UUID getUUID() {
         return uuid;
     }
 
-    public void setGUI(DefaultGUI gui) {
-        this.gui = gui;
-    }
-
-    public void setInternalServerProvider(LocationProvider internalServerProvider) {
-        this.internalServerProvider = internalServerProvider;
-    }
-
+    @Override
     public ApplicationState getApplicationState() {
         return applicationState;
     }
 
-    public Authentication getAuthentication() {
-        return Application.getApplicationState().getAuthentication();
+    public void userConnect(UserConnectEvent userConnectEvent) {
+        for(UserConnectListener userConnectListener : userConnectListeners) {
+            userConnectListener.userConnected(userConnectEvent);
+        }
     }
 
+    public void useDisconnect(UserDisconnectEvent userDisconnectEvent) {
+        for (UserDisconnectListener userDisconnectListener : userDisconnectListeners) {
+            userDisconnectListener.userDisconnected(userDisconnectEvent);
+        }
+    }
+
+    // TODO: Allows TCPClientConnection objects to add their sockets here. Not sure if it should be designed this way, though.
+    protected List<Socket> getSockets() {
+        return sockets;
+    }
+
+    // TODO: Figure out whether a global log, or a local log, is preferable.
+    public GrapplLog getLog() {
+        return Application.getLog();
+    }
+
+    // TODO: NO. The GUI has nothing to do with this object!
+    public void setGUI(DefaultGUI gui) {
+        this.gui = gui;
+    }
+
+    // TODO: My point stands.
     public DefaultGUI getGUI() {
         return gui;
     }
 
-    public List<Socket> getSockets() {
-        return sockets;
+    // TODO: This either needs to be part of the Grappl interface, or removed.
+    public void setInternalServerProvider(LocationProvider internalServerProvider) {
+        this.internalServerProvider = internalServerProvider;
     }
 
+    // TODO: We seriously don't need this. We seriously don't. Pls make go away
     public int getInternalPort() {
         return getInternalServer().getPort();
     }
 
+    //TODO: A local method.. to change global state. Intuitive. Fix this somehow?
     @Override
     public void useAuthentication(Authentication authentication) {
         Application.getApplicationState().useAuthentication(authentication);
     }
 
+    // TODO: Again
+    public Authentication getAuthentication() {
+        return Application.getApplicationState().getAuthentication();
+    }
+
+    // TODO: INTUITIVE. FIX
     @Override
     public Collection<ClientConnection> getConnectedClients() {
         return null;
