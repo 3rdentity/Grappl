@@ -1,1 +1,0 @@
-The http code here is a client-side API for debugging and handling HTTP requests.
