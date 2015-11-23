@@ -40,6 +40,7 @@ public class CommandHandler {
         addCommand(new GrapplCommand(), "grappl");
 
         addCommand(new DummyServerCommand(), "dummy");
+        addCommand(new DirectoryCommand(), "directory");
 
         addCommand(new MultiTestCommand(), "multitest");
     }

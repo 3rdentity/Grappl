@@ -22,9 +22,6 @@ public class HelpCommand implements Command {
         } else {
             String printedOutput = "Commands (" + Application.getCommandHandler().getCommandsAlphabetized().size() + " total): \n";
 
-    //        Application.getLog().log(printedOutput);
-    //        printedOutput = "";
-
             for(String entries : Application.getCommandHandler().getCommandsAlphabetized()) {
                 printedOutput += entries + ", ";
             }

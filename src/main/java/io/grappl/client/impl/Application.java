@@ -57,9 +57,22 @@ public final class Application {
 
     private static ApplicationState applicationState;
 
+    public static void main(String[] args) {
+        launch("1.0", new String[] {});
+    }
+
+    public static void launch(String version, String[] args) {
+        log = new GrapplLog();
+
+        log.log("Launcher version: " + version);
+        create(args, ApplicationMode.NOGUI);
+    }
+
     public static void create(String[] args, ApplicationMode mode) {
         Application.mode = mode;
-        log = new GrapplLog();
+
+        if(log == null)
+            log = new GrapplLog();
 
         log.log("Started: Grappl " + VERSION + " {Brand=" + BRAND + ", Mode=" + mode + "}");
         log.log("If you encounter issues, please report them to @grapplstatus, or @Cactose.");
@@ -72,10 +85,9 @@ public final class Application {
 
         System.setErr(new GrapplErrorStream(log, System.out));
 
-        log.log("Preparing to load plugins");
+        log.log("Preparing to load plugins-");
         PluginManager.setupAndLoad();
-
-        log.log("Initialization complete");
+//        log.log("Initialization complete");
         log.log("====================");
     }
 

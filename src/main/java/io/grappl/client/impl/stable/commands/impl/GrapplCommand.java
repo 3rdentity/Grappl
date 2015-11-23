@@ -19,15 +19,15 @@ public class GrapplCommand implements Command {
         if(subCommand.equalsIgnoreCase("init")) {
             String relay = "localhost";
 
-            if(args.length == 2) {
-                relay = args[1];
+            if(args.length == 3) {
+                relay = args[2];
             }
 
             state.addGrappl(new GrapplBuilder().build());
 
-            Application.getLog().log("Starting...");
             try {
                 state.getFocusedGrappl().connect(relay);
+                Application.getLog().log("Connected to relay server");
             } catch (RelayServerNotFoundException e) {
                 e.printStackTrace();
             }

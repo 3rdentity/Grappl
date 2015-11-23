@@ -11,8 +11,7 @@ public class ClearCommand implements Command {
     @Override
     public void runCommand(ApplicationState state, String[] args) {
         // GUI mode
-        if(Application.getApplicationMode() == ApplicationMode.GUI) {
-            // TODO: fix NPE here
+        if(Application.getApplicationMode() == ApplicationMode.GUI && ConsoleGUI.logDisplay != null) {
             Application.getLog().clearVisibleLog();
             ConsoleGUI.logDisplay.setText("");
             Application.getLog().log("Cleared.");

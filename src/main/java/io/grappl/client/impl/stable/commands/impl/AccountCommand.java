@@ -16,23 +16,25 @@ public class AccountCommand implements Command {
     @Override
     public void runCommand(ApplicationState state, String[] args) {
 
-        final String subCommand = args[1];
+        if(args.length > 1) {
+            final String subCommand = args[1];
 
-        if(subCommand.equalsIgnoreCase("donate")) {
-            try {
-                Desktop.getDesktop().browse(URI.create("http://grappl.io/donate"));
-            } catch (IOException e1) {
-                e1.printStackTrace();
+            if (subCommand.equalsIgnoreCase("donate")) {
+                try {
+                    Desktop.getDesktop().browse(URI.create("http://grappl.io/donate"));
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            } else if (subCommand.equalsIgnoreCase("info")) {
+                Application.getLog().log(state.getAuthentication().getUsername());
             }
-        }
 
-        else if(subCommand.equalsIgnoreCase("info")) {
-            Application.getLog().log(state.getAuthentication().getUsername());
-        }
-
-        // Need to redo to actually fetch static port related info.
-        else if(subCommand.equalsIgnoreCase("staticports")) {
-            Application.getLog().log(state.getFocusedGrappl().getExternalServer().getPort() + "");
+            // Need to redo to actually fetch static port related info.
+            else if (subCommand.equalsIgnoreCase("staticports")) {
+                Application.getLog().log(state.getFocusedGrappl().getExternalServer().getPort() + "");
+            }
+        } else {
+            Application.getLog().log("Subcommand required. Options: {donate, info, staticports}");
         }
     }
 
