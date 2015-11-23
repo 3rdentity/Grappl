@@ -9,12 +9,10 @@ import io.grappl.client.impl.stable.commands.impl.dummy.DummyServerCommand;
 import java.util.*;
 
 public class CommandHandler {
-    
-    public String returnBuffer = "";
-
-    private boolean commandThreadStarted = false;
 
     private ApplicationState state;
+
+    private boolean commandThreadStarted = false;
 
     private Map<String, Command> commandMap = new HashMap<String, Command>();
     private PriorityQueue<String> commandsAlphabetized = new PriorityQueue<String>();

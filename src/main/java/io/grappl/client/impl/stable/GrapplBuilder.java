@@ -22,7 +22,7 @@ public class GrapplBuilder {
         grappl = new TCPGrappl(null);
     }
 
-    protected GrapplBuilder(ApplicationState applicationState, Protocol grapplProtocol) {
+    public GrapplBuilder(ApplicationState applicationState, Protocol grapplProtocol) {
         this.applicationState = applicationState;
 
         if(grapplProtocol == Protocol.TCP) {

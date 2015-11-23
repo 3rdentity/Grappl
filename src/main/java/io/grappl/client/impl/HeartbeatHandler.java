@@ -54,5 +54,6 @@ public class HeartbeatHandler {
         heartBeatThread.start();
     }
 
+    // TODO: Make this do something! Argh
     public static void isDown(String relayServer) {}
 }

@@ -23,11 +23,15 @@ import java.util.List;
  */
 public final class Application {
 
+    // TODO: Perhaps have a way to configure a third-party auth server. Or somehow get it to not automatically connect to one on launch (via args?).
     public static final String DOMAIN = "grappl.io";
-    public static final int AUTHENTICATION = 25571;
+
+    // TODO: Maybe come up with... better port numbers? But that will be something done in 2.0.
+    public static final int AUTHENTICATION =   25571;
     public static final int MESSAGING_PORT =   25564;
     public static final int HEARTBEAT =        25570;
-    public static final String VERSION = "Beta 1.3.7";
+
+    public static final String VERSION = "Beta 1.3.8";
     public static final String NO_GRAPPL_MESSAGE = "There is no grappl currently open! Start one with 'init'";
 
     private static List<String> nycOrder =     Arrays.asList("n.grappl.io", "s.grappl.io", "e.grappl.io", "p.grappl.io");
@@ -41,8 +45,6 @@ public final class Application {
     public static boolean doDetailedLogging = true;
     public static boolean usingSavedHashPass = true;
     public static boolean debugState = true;
-
-    public static boolean doAutoForward = true;
 
     private static CommandHandler commandHandler;
     private static GrapplLog log;
@@ -107,6 +109,8 @@ public final class Application {
 
         return applicationState;
     }
+
+    // TODO: Please do something with these.
 
     public static List<String> getNewYorkOrder() {
         return nycOrder;

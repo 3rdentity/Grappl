@@ -4,16 +4,16 @@ import io.grappl.client.api.ClientConnection;
 
 public class UserConnectEvent {
 
-    private ClientConnection tcpClientConnection;
+    private ClientConnection clientConnection;
     private String address;
 
-    public UserConnectEvent(String address, ClientConnection tcpClientConnection) {
+    public UserConnectEvent(String address, ClientConnection clientConnection) {
         this.address = address;
-        this.tcpClientConnection = tcpClientConnection;
+        this.clientConnection = clientConnection;
     }
 
     public ClientConnection getClientConnection() {
-        return tcpClientConnection;
+        return clientConnection;
     }
 
     public String getAddress() {
