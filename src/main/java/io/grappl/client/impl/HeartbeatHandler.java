@@ -46,7 +46,7 @@ public class HeartbeatHandler {
                     e.printStackTrace();
                 }
 
-                Application.getLog().log("Connected to heartbeat server");
+                Application.getLog().log("Connected to heartbeat server @ " + relayServer);
 
                 while (true) {
                     try {
@@ -64,7 +64,7 @@ public class HeartbeatHandler {
                 }
             }
         });
-        heartBeatThread.setName("Grappl Heartbeat Thread");
+        heartBeatThread.setName("Grappl Heartbeat Thread " + relayServer);
         heartBeatThread.start();
     }
 

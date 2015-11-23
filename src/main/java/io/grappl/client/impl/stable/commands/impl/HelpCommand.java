@@ -8,6 +8,7 @@ public class HelpCommand implements Command {
 
     @Override
     public void runCommand(ApplicationState state, String[] args) {
+
         if(args.length > 1) {
             final String specifiedCommand = args[1];
 

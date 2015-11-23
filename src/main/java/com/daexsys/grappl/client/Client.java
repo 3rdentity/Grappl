@@ -14,6 +14,8 @@ public class Client {
 
     public static void main(String[] args) {
 
+        args = new String[]{ "-nogui"};
+
         Application.create(args, ApplicationMode.GUI);
 
         boolean displayGui = true;

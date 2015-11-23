@@ -16,6 +16,7 @@ public class ApplicationState {
     private Authentication authentication;
     private List<Grappl> grapplList = new ArrayList<Grappl>();
 
+    private int focusedIndex = 0;
     private String commandBufferVar;
 
     private Set<GrapplOpenListener> grapplOpenListeners = new HashSet<GrapplOpenListener>();
@@ -36,10 +37,18 @@ public class ApplicationState {
 
     public Grappl getFocusedGrappl() {
         if(grapplList.size() > 0) {
-            return grapplList.get(0);
+            return grapplList.get(focusedIndex);
         }
 
         return null;
+    }
+
+    public int getFocusedIndex() {
+        return focusedIndex;
+    }
+
+    public void setFocusedIndex(int index) {
+        this.focusedIndex = index;
     }
 
     public void removeGrappl(Grappl grappl) {

@@ -36,7 +36,7 @@ public final class Application {
     // If you are distributing your own version, be kind and change this please.
     public static final String BRAND = "DaexsysVanilla";
 
-    public static final String NO_GRAPPL_MESSAGE = "There is no grappl currently open! Start one with 'init'";
+    public static final String NO_GRAPPL_MESSAGE = "There is no grappl currently open! Start one with 'grappl connect'";
 
     private static List<String> nycOrder =     Arrays.asList("n.grappl.io", "s.grappl.io", "e.grappl.io", "p.grappl.io");
     private static List<String> sFOrder =      Arrays.asList("s.grappl.io", "n.grappl.io", "e.grappl.io", "p.grappl.io");

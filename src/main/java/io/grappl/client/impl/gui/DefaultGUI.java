@@ -191,10 +191,24 @@ public class DefaultGUI {
                         }
                     });
                     jFrame.add(jButton);
-                    jButton.setBounds(2, 105, 280, 90);
+                    jButton.setBounds(2, 105, 280, 45);
+
+                    JButton donateButton = new JButton("Donate");
+                    donateButton.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            try {
+                                Desktop.getDesktop().browse(URI.create("http://grappl.io/donate"));
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
+                            }
+                        }
+                    });
+                    donateButton.setBounds(2, 155, 280, 40);
+                    jFrame.add(donateButton);
 
                     String ports = JOptionPane.showInputDialog("What port does your server run on?");
-                    ((TCPGrappl) grappl).getInternalServer().setPort(Integer.parseInt(ports));
+                    (grappl).getInternalServer().setPort(Integer.parseInt(ports));
 
                     try {
                         grappl.connect(grappl.getAuthentication().getLocalizedRelayPrefix() + "." + Application.DOMAIN);
