@@ -56,6 +56,10 @@ public class DefaultGUI {
         jFrame.setLayout(null);
         jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
+        final JPasswordField jPasswordField = new JPasswordField("");
+        final JCheckBox rememberMeBox = new JCheckBox();
+        final DefaultGUI theGUI = this;
+
         final JLabel usernameLable = new JLabel("Username");
         usernameLable.setBounds(5, 2, 250, 20);
         jFrame.add(usernameLable);
@@ -63,12 +67,24 @@ public class DefaultGUI {
         usernameField.setBounds(5, 22, 250, 20);
         usernameField.setText(GrapplDataFile.getUsername());
         jFrame.add(usernameField);
+        usernameField.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                login(usernameField, jPasswordField, theGUI, rememberMeBox);
+            }
+        });
 
         final JLabel passwordLabel = new JLabel("Password");
         passwordLabel.setBounds(5, 42, 250, 20);
         jFrame.add(passwordLabel);
-        final JPasswordField jPasswordField = new JPasswordField("");
         jPasswordField.setBounds(5, 62, 250, 20);
+        jPasswordField.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                login(usernameField, jPasswordField, theGUI, rememberMeBox);
+            }
+        });
+
         jPasswordField.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
@@ -96,14 +112,11 @@ public class DefaultGUI {
 
         connectedClientsLabel = new JLabel("Waiting for connections");
 
-        final JCheckBox rememberMeBox = new JCheckBox();
         rememberMeBox.setBounds(10, 87, 20, 20);
         jFrame.add(rememberMeBox);
         final JLabel rememberMeLabel = new JLabel("Remember me");
         rememberMeLabel.setBounds(35, 87, 250, 20);
         jFrame.add(rememberMeLabel);
-
-        final DefaultGUI theGUI = this;
         if(isActuallyHash) {
             rememberMeBox.setSelected(true);
         } {
