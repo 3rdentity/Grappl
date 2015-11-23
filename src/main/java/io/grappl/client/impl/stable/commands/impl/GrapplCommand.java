@@ -25,10 +25,11 @@ public class GrapplCommand implements Command {
                     relay = args[2];
                 }
 
-                state.addGrappl(new GrapplBuilder(state, Protocol.TCP).build());
+                Grappl grappl = new GrapplBuilder(state, Protocol.TCP).build();
+                state.addGrappl(grappl);
 
                 try {
-                    state.getFocusedGrappl().connect(relay);
+                    grappl.connect(relay);
                     Application.getLog().log("Connected to relay server @ " + relay);
                 } catch (RelayServerNotFoundException e) {
                     e.printStackTrace();
