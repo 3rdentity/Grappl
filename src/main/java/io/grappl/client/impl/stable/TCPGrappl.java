@@ -28,14 +28,19 @@ import java.util.*;
  */
 public class TCPGrappl implements Grappl {
 
+    private final static int ONE_SECOND_DELAY = 1000;
+
+    private UUID uuid;
+
     private ApplicationState applicationState = Application.getApplicationState();
+
+    /* Stores all the sockets associated with this Grappl instance.
+       Primarily used to kill a connection entirely by closing them all.
+     */
     private List<Socket> sockets = new ArrayList<Socket>();
 
-    private GrapplLog clientLog = new GrapplLog();
-
-    // External server data
+    protected LocationProvider internalServerProvider;
     private NetworkLocation externalServer = new NetworkLocation("", -1);
-    protected LocationProvider internalServerProvider; // LocationProvider object that is used to get internal server location
 
     /* Whether or not the connection with broken using disconnect(). Prevents the connection
      * from automatically re-opening, as it would if the connection was broken unintentionally. */
@@ -50,20 +55,21 @@ public class TCPGrappl implements Grappl {
     @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     private Map<UUID, TCPClientConnection> clients = new HashMap<UUID, TCPClientConnection>();
 
-    // Event listeners that listen for user connection/disconnection
+    // Event listeners that listen for user connection/disconnections.
     private List<UserConnectListener> userConnectListeners = new ArrayList<UserConnectListener>();
     private List<UserDisconnectListener> userDisconnectListeners = new ArrayList<UserDisconnectListener>();
 
     private StatMonitor statMonitor = new StatMonitor(this);
-    private UUID uuid = UUID.randomUUID();
 
     /**
-     * Constructs a new Grappl and sets a generic locationprovider
+     * Constructs a new Grappl and sets a generic LocationProvider.
      */
     public TCPGrappl(ApplicationState applicationState) {
         this.applicationState = applicationState;
+        this.uuid = UUID.randomUUID();
 
-        Application.getLog().log("Creating grappl connection " + uuid);
+        Application.getLog()
+                .log("Creating grappl connection " + getUUID());
     }
 
     /**
@@ -75,41 +81,45 @@ public class TCPGrappl implements Grappl {
     public boolean connect(final String relayServer) throws RelayServerNotFoundException {
         externalServer.setAddress(relayServer);
 
-        Application.getLog().log("Connecting: relayserver=" + relayServer + " localport=" + getInternalPort());
-
         try {
-            // Create socket listener
-            final Socket messageSocket = new Socket();
+            /* This socket will receive messages from the relay server
+            when it is time to open a new tunnel for a client.
+             */
+            final Socket relayMessageSocket = new Socket();
 
             try {
-                final int oneSecondDelay = 1000;
-
-                messageSocket.connect(
+                // Connect message socket to the relay server
+                relayMessageSocket.connect(
                         new InetSocketAddress(relayServer, Application.MESSAGING_PORT),
-                        oneSecondDelay);
-                sockets.add(messageSocket);
+                        ONE_SECOND_DELAY);
+                sockets.add(relayMessageSocket);
 
-                // Get port that server will be hosted on externally
-                DataInputStream messageInputStream = new DataInputStream(messageSocket.getInputStream());
-                externalServer.setPort(Integer.parseInt(messageInputStream.readLine()));
+                Application.getLog().log(
+                        "Connection opened: relayserver=" + externalServer.getAddress()
+                        + " localport=" + getInternalServer().getPort());
 
-                Application.getLog().log("Hosting on: " + relayServer + ":" + externalServer.getPort());
+                // Receive port that the server will be hosted on externally.
+                // TODO: Protocol overhaul. Should just send an int.
+                DataInputStream relayMsgInputStream = new DataInputStream(relayMessageSocket.getInputStream());
+                externalServer.setPort(Integer.parseInt(relayMsgInputStream.readLine()));
 
-                // TODO: GrapplOpenEvent, move this to GUI plugin
+                Application.getLog().log("Hosting on: " + getExternalServer());
+
                 // If a GUI is associated with this Grappl, do GUI things
-                if (gui != null) {
+                // TODO: GrapplOpenEvent, move this to GUI plugin
+                if (gui != null)
                     gui.initializeGUI(relayServer, externalServer.getPort() + "", getInternalPort());
-                }
 
                 HeartbeatHandler.tryToMakeHeartbeatTo(externalServer.getAddress());
 
                 // Create thread that routes incoming connections to the local server.
-                createClientHandler(messageSocket, messageInputStream);
+                createClientHandler(relayMessageSocket, relayMsgInputStream);
 
             } catch (SocketTimeoutException e) {
                 if(gui != null)
                     JOptionPane.showMessageDialog(gui.getFrame(),
-                            "Connection to relay server failed.\nIf this continues, go to Advanced Mode and connect to a different relay server.");
+                            "Connection to relay server failed.\n" +
+                                    "If this continues, go to Advanced Mode and connect to a different relay server.");
 
                 if(advancedGUI != null) {
                     JOptionPane.showMessageDialog(advancedGUI.getFrame(),
@@ -130,9 +140,17 @@ public class TCPGrappl implements Grappl {
         return true;
     }
 
+    @Override
+    public void disconnect() {
+        wasIntentionallyDisconnected = true;
+        closeAllSockets();
+    }
+
     @Deprecated
     public void restart() {
-        if(wasIntentionallyDisconnected) return;
+        // We only want it to restart if the connection was accidentally broken.
+        if(wasIntentionallyDisconnected)
+            return;
 
         Application.getLog().log("Reconnecting...");
 
@@ -144,62 +162,30 @@ public class TCPGrappl implements Grappl {
     }
 
     /**
-     * Return the address that this server is publicly
-     * available at.
+     * Should cause a complete disconnection from Grappl's servers.
+     * disconnect() should be used instead, otherwise it may just try to reconnect.
      */
-    public String getPublicAddress() {
-        return getExternalServer().toString();
-    }
-
-    public int getInternalPort() {
-        return getInternalServer().getPort();
-    }
-
-    public void disconnect() {
-        wasIntentionallyDisconnected = true;
-        closeAllSockets();
-    }
-
-    @Override
-    public NetworkLocation getExternalServer() {
-        return externalServer;
-    }
-
-    public void useAuthentication(Authentication authentication) {
-        Application.getApplicationState().useAuthentication(authentication);
-    }
-
-    public NetworkLocation getInternalServer() {
-        return internalServerProvider.getLocation();
-    }
-
-    public void addUserConnectListener(UserConnectListener userConnectListener) {
-        userConnectListeners.add(userConnectListener);
-    }
-
-    public void userConnects(UserConnectEvent userConnectEvent) {
-        for(UserConnectListener userConnectListener : userConnectListeners) {
-            userConnectListener.userConnected(userConnectEvent);
+    private void closeAllSockets() {
+        for (Socket socket : sockets) {
+            try {
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+
+        Application.getLog().log("All sockets closed for " + getUUID());
     }
 
-    public void addUserDisconnectListener(UserDisconnectListener userDisconnectListener) {
-        userDisconnectListeners.add(userDisconnectListener);
-    }
-
-    @Override
-    public Collection<ClientConnection> getConnectedClients() {
-        return null;
-    }
-
-    public void userDisconnects(UserDisconnectEvent userDisconnectEvent) {
-        for (UserDisconnectListener userDisconnectListener : userDisconnectListeners) {
-            userDisconnectListener.userDisconnected(userDisconnectEvent);
-        }
-    }
-
-    private void createClientHandler(final Socket messageSocket, final DataInputStream messageInputStream) {
-        final TCPGrappl theGrappl = this;
+    /**
+     * Creates the thread that listens for incoming external clients.
+     * @param relayMsgSocket the socket that is used to receive messages from the relay server
+     * @param relayMsgInputStream the pre-created input stream associated with the socket
+     */
+    private void createClientHandler(final Socket relayMsgSocket,
+                                     final DataInputStream relayMsgInputStream) {
+        // Literally this. Used because code inside Runnables can't access this instance using 'this'.
+        final TCPGrappl thisGrappl = this;
 
         final List<TCPClientConnection> connectedClients = new ArrayList<TCPClientConnection>();
 
@@ -215,66 +201,70 @@ public class TCPGrappl implements Grappl {
             public void run() {
                 try {
                     while(true) {
-                        // This goes off when a new client attempts to connect.
-                        String userIP = messageInputStream.readLine();
-                        Application.getLog().log("A user has connected from ip " + userIP.substring(1, userIP.length()));
+                        // Receive IP of connected client from relay.
+                        String userIP = relayMsgInputStream.readLine();
 
-                        TCPClientConnection exClient = new TCPClientConnection(theGrappl, userIP);
-                        userConnects(new UserConnectEvent(userIP, exClient));
+                        Application.getLog().log("A user has connected from ip "
+                                + userIP.substring(1, userIP.length()));
 
-                        exClient.open();
-                        clients.put(exClient.getUUID(), exClient);
-                        connectedClients.add(exClient);
+                        TCPClientConnection clientConnection
+                                = new TCPClientConnection(thisGrappl, userIP);
+
+                        userConnect(new UserConnectEvent(userIP, clientConnection));
+
+                        clientConnection.open();
+
+                        clients.put(clientConnection.getUUID(), clientConnection);
+                        connectedClients.add(clientConnection);
                     }
                 } catch (IOException e) {
                     try {
-                        messageSocket.close();
-                        Application.getLog().log("Connection with message server has been broken. Unfortunate.");
+                        relayMsgSocket.close();
+                        Application.getLog().log(
+                                "Connection with relay server has been broken. Unfortunate.");
                     } catch (IOException ignore) {}
                 }
             }
         });
         clientHandlerThread.setName("Grappl Client Handler Thread " + getUUID().toString());
         clientHandlerThread.start();
-
-        Thread clientVerifier = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    while(true) {
-                        for (int i = 0; i < connectedClients.size(); i++) {
-                            TCPClientConnection exClient = connectedClients.get(i);
-
-                            if(!exClient.ping()) {
-                                connectedClients.remove(exClient);
-                            }
-                        }
-
-                        Thread.sleep(1000);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        clientVerifier.setName("Grappl Client Verifier Thread " + getUUID().toString());
-        clientVerifier.start();
     }
 
-    /**
-     * Should cause a complete disconnection from Grappl's servers.
-     * disconnect() should be used instead, otherwise it may just try to reconnect.
-     */
-    private void closeAllSockets() {
-        for (int i = 0; i < sockets.size(); i++) {
-            try {
-                sockets.get(i).close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+    @Override
+    public void addUserConnectListener(UserConnectListener userConnectListener) {
+        userConnectListeners.add(userConnectListener);
+    }
 
-        Application.getLog().log("Sockets closed");
+    @Override
+    public void addUserDisconnectListener(UserDisconnectListener userDisconnectListener) {
+        userDisconnectListeners.add(userDisconnectListener);
+    }
+
+    public void userConnect(UserConnectEvent userConnectEvent) {
+        for(UserConnectListener userConnectListener : userConnectListeners) {
+            userConnectListener.userConnected(userConnectEvent);
+        }
+    }
+
+    public void useDisconnect(UserDisconnectEvent userDisconnectEvent) {
+        for (UserDisconnectListener userDisconnectListener : userDisconnectListeners) {
+            userDisconnectListener.userDisconnected(userDisconnectEvent);
+        }
+    }
+
+    @Override
+    public NetworkLocation getInternalServer() {
+        return internalServerProvider.getLocation();
+    }
+
+    @Override
+    public NetworkLocation getExternalServer() {
+        return externalServer;
+    }
+
+    @Override
+    public StatMonitor getStatMonitor() {
+        return statMonitor;
     }
 
     /**
@@ -311,7 +301,7 @@ public class TCPGrappl implements Grappl {
     }
 
     public GrapplLog getLog() {
-        return clientLog;
+        return Application.getLog();
     }
 
     public UUID getUUID() {
@@ -338,12 +328,22 @@ public class TCPGrappl implements Grappl {
         return gui;
     }
 
-    public StatMonitor getStatMonitor() {
-        return statMonitor;
-    }
-
     public List<Socket> getSockets() {
         return sockets;
+    }
+
+    public int getInternalPort() {
+        return getInternalServer().getPort();
+    }
+
+    @Override
+    public void useAuthentication(Authentication authentication) {
+        Application.getApplicationState().useAuthentication(authentication);
+    }
+
+    @Override
+    public Collection<ClientConnection> getConnectedClients() {
+        return null;
     }
 
     @Override

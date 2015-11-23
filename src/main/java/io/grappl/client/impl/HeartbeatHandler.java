@@ -8,12 +8,12 @@ import java.util.Set;
 
 public class HeartbeatHandler {
 
-    private static Set<String> existingHearbeatsThread = new HashSet<String>();
+    private static Set<String> existingHeartbeatThreads = new HashSet<String>();
 
     public static void tryToMakeHeartbeatTo(String relayServer) {
-        if(!existingHearbeatsThread.contains(relayServer)) {
+        if(!existingHeartbeatThreads.contains(relayServer)) {
             createHeartBeatThread(relayServer);
-            existingHearbeatsThread.add(relayServer);
+            existingHeartbeatThreads.add(relayServer);
         }
     }
 
