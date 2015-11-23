@@ -12,6 +12,12 @@ import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.util.UUID;
 
+/**
+ * This class represents a authentication/communication session with
+ * the core Grappl server.
+ *
+ * It stores data related to login, and auth state.
+ */
 public class Authentication {
 
     private String username;
@@ -21,6 +27,7 @@ public class Authentication {
     private String localizedRelayPrefix;
     private int staticPort;
 
+    // TODO: Please find a way around this. Please. But at least it's optional...
     private JFrame optionalFrame;
     private Socket authSocket;
     private DataInputStream authDataInputStream;

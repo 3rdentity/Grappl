@@ -4,6 +4,7 @@ import io.grappl.client.api.Grappl;
 import io.grappl.client.api.Protocol;
 import io.grappl.client.api.event.GrapplOpenListener;
 import io.grappl.client.impl.stable.Authentication;
+import io.grappl.client.impl.stable.GrapplBuilder;
 
 import java.util.ArrayList;
 import java.util.HashSet;

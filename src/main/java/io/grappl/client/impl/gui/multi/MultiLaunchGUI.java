@@ -5,14 +5,10 @@ import io.grappl.client.api.event.ConsoleMessageListener;
 import io.grappl.client.impl.Application;
 import io.grappl.client.api.ApplicationMode;
 import io.grappl.client.impl.ApplicationState;
-import io.grappl.client.impl.GrapplBuilder;
-import io.grappl.client.impl.stable.Authentication;
+import io.grappl.client.impl.stable.GrapplBuilder;
 import io.grappl.client.impl.stable.NetworkLocation;
-import io.grappl.client.impl.stable.RandomNetworkProvider;
+import io.grappl.client.impl.stable.RandomLocationProvider;
 import io.grappl.client.impl.stable.RelayServerNotFoundException;
-import io.grappl.client.impl.stable.commands.CommandHandler;
-import io.grappl.client.impl.stable.commands.impl.dummy.ContentSource;
-import io.grappl.client.impl.stable.commands.impl.dummy.DummyServerCommand;
 
 import javax.swing.*;
 import java.awt.*;
@@ -161,7 +157,7 @@ public class MultiLaunchGUI {
 
         Application.getCommandHandler().createConsoleCommandListenThread();
 //
-        RandomNetworkProvider randomNetworkProvider = new RandomNetworkProvider();
+        RandomLocationProvider randomNetworkProvider = new RandomLocationProvider();
         randomNetworkProvider.addLocation(new NetworkLocation("localhost", 25565));
 
         for (i = 0; i < 4; i++) {

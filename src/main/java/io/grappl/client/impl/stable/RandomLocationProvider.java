@@ -6,7 +6,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class RandomNetworkProvider implements LocationProvider {
+/**
+ * Instead of being a LocationProvider that always returns one location, or
+ * fetches a location deterministically, this one just picks from a pool randomly
+ * every time you use it.
+ *
+ * You never know where you're going to end up!
+ */
+public class RandomLocationProvider implements LocationProvider {
 
     private List<NetworkLocation> locations = new ArrayList<NetworkLocation>();
 

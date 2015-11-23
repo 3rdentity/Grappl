@@ -1,12 +1,12 @@
-package io.grappl.client.impl;
+package io.grappl.client.impl.stable;
 
 import io.grappl.client.api.Grappl;
 import io.grappl.client.api.LocationProvider;
 import io.grappl.client.api.Protocol;
+import io.grappl.client.impl.Application;
+import io.grappl.client.impl.ApplicationState;
 import io.grappl.client.impl.gui.AdvancedGUI;
 import io.grappl.client.impl.gui.DefaultGUI;
-import io.grappl.client.impl.stable.Authentication;
-import io.grappl.client.impl.stable.NetworkLocation;
 import io.grappl.client.impl.stable.tcp.TCPGrappl;
 import io.grappl.client.impl.test.UDPGrappl;
 

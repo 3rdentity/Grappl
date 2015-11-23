@@ -14,6 +14,7 @@ public class NetworkLocation {
         if(address.equals("")) {
             return "localhost";
         }
+
         return address;
     }
 

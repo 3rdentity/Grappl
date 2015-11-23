@@ -5,7 +5,7 @@ import io.grappl.client.api.Protocol;
 import io.grappl.client.impl.Application;
 import io.grappl.client.impl.GrapplDataFile;
 import io.grappl.client.impl.ApplicationState;
-import io.grappl.client.impl.GrapplBuilder;
+import io.grappl.client.impl.stable.GrapplBuilder;
 import io.grappl.client.impl.stable.RelayServerNotFoundException;
 import io.grappl.client.impl.stable.tcp.TCPGrappl;
 
