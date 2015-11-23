@@ -48,6 +48,7 @@ public class TCPGrappl implements Grappl {
     private boolean wasIntentionallyDisconnected = false;
 
     // The GUI associated with this Grappl. Will be null if the advanced GUI is being used
+    // TODO: Put these somewhere else. GUI state shouldn't be stored in this class.
     protected DefaultGUI gui;
     public AdvancedGUI advancedGUI;
 
@@ -147,7 +148,8 @@ public class TCPGrappl implements Grappl {
     }
 
     @Deprecated
-    public void restart() {
+    // TODO: Recreate the reconnection feature. This will then have a use.
+    private void restart() {
         // We only want it to restart if the connection was accidentally broken.
         if(wasIntentionallyDisconnected)
             return;
@@ -187,10 +189,15 @@ public class TCPGrappl implements Grappl {
         // Literally this. Used because code inside Runnables can't access this instance using 'this'.
         final TCPGrappl thisGrappl = this;
 
+        // TODO: Find a use for this or get rid of it.
         final List<TCPClientConnection> connectedClients = new ArrayList<TCPClientConnection>();
 
+        // Update GUI.
+        // TODO: Replace this with event-based system. This shouldn't be here.
         if(getGUI() != null) {
-            getGUI().getConnectedClientsLabel().setText("Connected clientsByUUID: " + getStatMonitor().getOpenConnections());
+            getGUI().getConnectedClientsLabel().setText("Connected clients: "
+                    + getStatMonitor().getOpenConnections());
+
             getGUI().getConnectedClientsLabel().setBounds(5, 45, 450, 20);
             getGUI().getFrame().add(getGUI().getConnectedClientsLabel());
             getGUI().getFrame().repaint();
