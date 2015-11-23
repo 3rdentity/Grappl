@@ -29,7 +29,6 @@ public class ApplicationState {
     public void addGrappl(Grappl grappl) {
         grapplList.add(grappl);
 
-        System.out.println("s: " + grapplOpenListeners.size());
         for(GrapplOpenListener grapplOpenListener : grapplOpenListeners) {
             grapplOpenListener.grapplOpen(grappl);
         }
