@@ -17,7 +17,7 @@ public class RandomLocationProvider implements LocationProvider {
 
     private List<NetworkLocation> locations = new ArrayList<NetworkLocation>();
 
-    public Random random = new Random();
+    private Random random = new Random();
 
     public void addLocation(NetworkLocation networkLocation) {
         locations.add(networkLocation);
