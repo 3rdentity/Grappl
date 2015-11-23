@@ -12,7 +12,7 @@ public class LogoutCommand implements Command {
             Application.getLog().log(Application.NO_GRAPPL_MESSAGE);
         } else {
             state.getAuthentication().logout();
-            Application.getLog().log("Logged out");
+            Application.getLog().log("Logged out. Bye, " + state.getAuthentication().getUsername() + "!");
         }
     }
 }

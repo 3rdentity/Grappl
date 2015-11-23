@@ -149,6 +149,10 @@ public class Authentication {
         return authDataOutputStream;
     }
 
+    public static char[] formatPassword(String password) {
+        return (password.hashCode() + "").toCharArray();
+    }
+
     @Override
     public String toString() {
         return "Authentication{" +

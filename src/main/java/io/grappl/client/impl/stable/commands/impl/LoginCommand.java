@@ -19,7 +19,7 @@ public class LoginCommand implements Command {
         Authentication authentication = new Authentication();
 
         try {
-            authentication.login(username, (password.hashCode() + "").toCharArray());
+            authentication.login(username, Authentication.formatPassword(password));
         } catch (AuthenticationFailureException e) {
             Application.getLog().log(e.getMessage());
         }
