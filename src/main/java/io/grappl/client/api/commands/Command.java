@@ -5,4 +5,6 @@ import io.grappl.client.impl.ApplicationState;
 public interface Command {
 
     public void runCommand(ApplicationState state, String[] args);
+
+    public String getDescription();
 }

@@ -71,4 +71,9 @@ public class DummyServerCommand implements Command {
             Application.getLog().log("You need to provide a port number!");
         }
     }
+
+    @Override
+    public String getDescription() {
+        return "Spawns a dummy web server for testing if Grappl works";
+    }
 }

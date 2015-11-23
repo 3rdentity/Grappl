@@ -5,6 +5,7 @@ import io.grappl.client.api.commands.Command;
 import io.grappl.client.impl.ApplicationState;
 
 public class SetStaticPortCommand implements Command {
+
     @Override
     public void runCommand(ApplicationState state, String[] args) {
         if (state.getAuthentication().isLoggedIn()) {
@@ -22,5 +23,10 @@ public class SetStaticPortCommand implements Command {
         } else {
             Application.getLog().log("You are not logged in.");
         }
+    }
+
+    @Override
+    public String getDescription() {
+        return "Sets the user's premium static port.";
     }
 }

@@ -12,4 +12,9 @@ public class SaveLogCommand implements Command {
         Application.getLog().save();
         Application.getLog().log("Log saved");
     }
+
+    @Override
+    public String getDescription() {
+        return "Saves the current console text-log to the filesystem.";
+    }
 }

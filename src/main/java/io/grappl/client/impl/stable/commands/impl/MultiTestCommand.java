@@ -11,4 +11,9 @@ public class MultiTestCommand implements Command {
         MultiLaunchGUI multiLaunchGUI = new MultiLaunchGUI();
         multiLaunchGUI.createWindow();
     }
+
+    @Override
+    public String getDescription() {
+        return "Launches a test instance of the multiple-Grappl-GUI. Alpha as it gets.";
+    }
 }

@@ -18,7 +18,7 @@ People connecting don't have to download anything to connect to Grappl'd servers
 All you have to do to run it is run the .jar, choose whether you want to be logged in or anonymous, specify what port your server
 is bound to, and your server will be open for anyone to connect. No messing around with port forwarding.
 
-It works by transferring data through relay servers on grappl.io.
+It works by transferring data through relay servers (by default, ones on grappl.io).
 
 The project is in beta. This repository contains all the newest client code.
 

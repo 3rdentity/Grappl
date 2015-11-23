@@ -11,7 +11,8 @@ public class ClearCommand implements Command {
     @Override
     public void runCommand(ApplicationState state, String[] args) {
         // GUI mode
-        if(Application.getApplicationMode() == ApplicationMode.NORMAL) {
+        if(Application.getApplicationMode() == ApplicationMode.GUI) {
+            // TODO: fix NPE here
             Application.getLog().clearVisibleLog();
             ConsoleGUI.logDisplay.setText("");
             Application.getLog().log("Cleared.");
@@ -22,5 +23,10 @@ public class ClearCommand implements Command {
             Application.getLog().log("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
             Application.getLog().log("Can't really clear, so here's a space.");
         }
+    }
+
+    @Override
+    public String getDescription() {
+        return "Clears the console (to the best of it's ability)";
     }
 }

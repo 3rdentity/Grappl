@@ -7,6 +7,7 @@ import io.grappl.client.impl.ApplicationState;
 import java.io.PrintStream;
 
 public class IpUnbanCommand implements Command {
+
     @Override
     public void runCommand(ApplicationState state, String[] args) {
 
@@ -25,5 +26,10 @@ public class IpUnbanCommand implements Command {
         } else {
             Application.getLog().log("You must be logged in to unban IPs.");
         }
+    }
+
+    @Override
+    public String getDescription() {
+        return "Unban an IP from connecting to a user's servers at the account level";
     }
 }

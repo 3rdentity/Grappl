@@ -97,6 +97,7 @@ public class ConsoleGUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 final String theCommand = inputTypingArea.getText();
+                Application.getLog().log("> " + theCommand);
                 enterCommand(theCommand);
                 inputTypingArea.setText(null);
             }
@@ -110,6 +111,7 @@ public class ConsoleGUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 final String theCommand = inputTypingArea.getText();
+                Application.getLog().log("> " + theCommand);
                 enterCommand(theCommand);
                 inputTypingArea.setText(null);
             }

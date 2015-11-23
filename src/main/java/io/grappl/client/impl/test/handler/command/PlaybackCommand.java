@@ -7,4 +7,9 @@ public class PlaybackCommand implements Command {
     @Override
     public void runCommand(ApplicationState state, String[] args) {
     }
+
+    @Override
+    public String getDescription() {
+        return null;
+    }
 }

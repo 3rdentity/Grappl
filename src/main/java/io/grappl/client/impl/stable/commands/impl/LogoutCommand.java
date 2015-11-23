@@ -5,6 +5,7 @@ import io.grappl.client.api.commands.Command;
 import io.grappl.client.impl.ApplicationState;
 
 public class LogoutCommand implements Command {
+
     @Override
     public void runCommand(ApplicationState state, String[] args) {
 
@@ -14,5 +15,10 @@ public class LogoutCommand implements Command {
             state.getAuthentication().logout();
             Application.getLog().log("Logged out. Bye, " + state.getAuthentication().getUsername() + "!");
         }
+    }
+
+    @Override
+    public String getDescription() {
+        return "Logs a user out of their account";
     }
 }

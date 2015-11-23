@@ -69,7 +69,7 @@ public class MultiLaunchGUI {
             e.printStackTrace();
         }
 
-        Application.create(null, ApplicationMode.NORMAL);
+        Application.create(null, ApplicationMode.GUI);
         JFrame jFrame = new JFrame("Multipl - (Grappl " + Application.VERSION + ")");
         jFrame.setSize(1280, 768);
         jFrame.setLocationRelativeTo(null);

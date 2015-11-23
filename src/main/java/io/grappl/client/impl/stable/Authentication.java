@@ -30,6 +30,7 @@ public class Authentication {
 
     // TODO: Please find a way around this. Please. But at least it's optional...
     private JFrame optionalFrame;
+
     private Socket authSocket;
     private DataInputStream authDataInputStream;
     private DataOutputStream authDataOutputStream;

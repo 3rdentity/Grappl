@@ -102,6 +102,6 @@ public class PluginLoader {
             e.printStackTrace();
         }
 
-        Application.getLog().log(pluginsLoaded + " plugins loaded");
+        Application.getLog().log(pluginsLoaded + " plugin(s) loaded");
     }
 }

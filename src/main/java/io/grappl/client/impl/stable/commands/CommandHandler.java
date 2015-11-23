@@ -22,44 +22,34 @@ public class CommandHandler {
         this.state = state;
 
         /* Add default commands */
-        addCommand("help", new HelpCommand());
-        addCommand("version", new VersionCommand());
-        addCommand("quit", new QuitCommand());
-        addCommand("clear", new ClearCommand());
+        addCommand(new HelpCommand(), "help");
+        addCommand(new VersionCommand(), "version");
+        addCommand(new ClearCommand(), "clear");
+        addCommand(new SaveLogCommand(), "savelog");
+        addCommand(new QuitCommand(), "quit");
 
-        addCommand("init", new InitCommand());
-        addCommand("disconnect", new DisconnectCommand());
-        addCommand("register", new RegisterCommand());
-        addCommand("login", new LoginCommand());
-        addCommand("logout", new LogoutCommand());
+        /* Account related */
+        addCommand(new AccountCommand(), "account");
+        addCommand(new RegisterCommand(), "register");
+        addCommand(new LoginCommand(), "login");
+        addCommand(new LogoutCommand(), "logout");
+        addCommand(new WhoAmICommand(), "whoami");
+        // TODO: put as subcommand to account, maybe?
+        addCommand(new SetStaticPortCommand(), "setstaticport", "setport");
 
-        addCommand("whoami", new WhoAmICommand());
-        addCommand("relay", new RelayCommand());
-        addCommand("stats", new StatsCommand());
-        addCommand("state", new StateCommand());
+        addCommand(new GrapplCommand(), "grappl");
 
-        addCommand("dummy", new DummyServerCommand());
+        addCommand(new DummyServerCommand(), "dummy");
 
-        addCommand("savelog", new SaveLogCommand());
-
-        addCommand("ipban", new IpBanCommand());
-        addCommand("ipunban", new IpUnbanCommand());
-
-        addCommand("listadd", new ListAddCommand());
-        addCommand("listremove", new ListRemoveCommand());
-        addCommand("changelocal", new ChangeLocalCommand());
-        addCommand("changeserver", new ChangeServerCommand());
-        addCommand("resetstats", new ResetStatsCommand());
-        addCommand("account", new AccountCommand());
-        addCommand("setstaticport", new SetStaticPortCommand());
-        addCommand("setport", new SetStaticPortCommand());
-
-        addCommand("multitest", new MultiTestCommand());
+        addCommand(new MultiTestCommand(), "multitest");
     }
 
-    public void addCommand(String string, Command command) {
-        commandMap.put(string, command);
-        commandsAlphabetized.add(string);
+    public void addCommand(Command command, String... names) {
+
+        for(String name : names) {
+            commandMap.put(name, command);
+            commandsAlphabetized.add(name);
+        }
     }
 
     public void handleCommand(String command) {
@@ -87,7 +77,7 @@ public class CommandHandler {
                 @Override
                 public void run() {
 
-                    Application.getLog().log(Application.APP_NAME + " Command Line");
+                    Application.getLog().log(Application.APP_NAME + " Command Line (type a command, or type 'help' or 'help [command]' for ideas!)");
 
                     Scanner scanner = new Scanner(System.in);
 
@@ -114,6 +104,10 @@ public class CommandHandler {
             commandThread.start();
             commandThreadStarted = true;
         }
+    }
+
+    public boolean hasCommand(String name) {
+        return commandMap.containsKey(name);
     }
 
     public Command getCommand(String name) {

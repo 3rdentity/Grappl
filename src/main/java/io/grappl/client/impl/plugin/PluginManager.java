@@ -9,7 +9,7 @@ public class PluginManager {
 
     public static void main(String[] args) {
 
-        Application.create(null, ApplicationMode.NORMAL);
+        Application.create(null, ApplicationMode.GUI);
         setupAndLoad();
     }
 

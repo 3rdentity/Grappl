@@ -7,6 +7,7 @@ import io.grappl.client.impl.ApplicationState;
 import java.io.PrintStream;
 
 public class ListAddCommand implements Command {
+
     @Override
     public void runCommand(ApplicationState state, String[] args) {
 
@@ -25,5 +26,10 @@ public class ListAddCommand implements Command {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public String getDescription() {
+        return "Adds a server to the global server list";
     }
 }

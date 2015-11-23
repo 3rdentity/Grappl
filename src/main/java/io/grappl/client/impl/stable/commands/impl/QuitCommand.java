@@ -17,4 +17,9 @@ public class QuitCommand implements Command {
         Application.getLog().log("Stopping");
         System.exit(0);
     }
+
+    @Override
+    public String getDescription() {
+        return "Closes the application.";
+    }
 }

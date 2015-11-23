@@ -35,4 +35,9 @@ public class AccountCommand implements Command {
             Application.getLog().log(state.getFocusedGrappl().getExternalServer().getPort() + "");
         }
     }
+
+    @Override
+    public String getDescription() {
+        return "Find out account info and control account variables";
+    }
 }

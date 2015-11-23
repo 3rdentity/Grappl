@@ -31,4 +31,9 @@ public class LoginCommand implements Command {
             Application.getLog().log("Use command 'register' to make an account (launches web browser).");
         }
     }
+
+    @Override
+    public String getDescription() {
+        return "Allows a user to log in to their account";
+    }
 }

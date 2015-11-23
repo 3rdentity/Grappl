@@ -7,6 +7,7 @@ import io.grappl.client.impl.ApplicationState;
 import java.io.PrintStream;
 
 public class ListRemoveCommand implements Command {
+
     @Override
     public void runCommand(ApplicationState state, String[] args) {
 
@@ -18,5 +19,10 @@ public class ListRemoveCommand implements Command {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public String getDescription() {
+        return "Removes a server from the global server list";
     }
 }

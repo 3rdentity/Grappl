@@ -7,6 +7,7 @@ import io.grappl.client.impl.ApplicationState;
 import java.io.PrintStream;
 
 public class IpBanCommand implements Command {
+
     @Override
     public void runCommand(ApplicationState state, String[] args) {
         if (state != null) {
@@ -28,5 +29,10 @@ public class IpBanCommand implements Command {
         } else {
             Application.getLog().log(Application.NO_GRAPPL_MESSAGE);
         }
+    }
+
+    @Override
+    public String getDescription() {
+        return "Ban an IP from connecting to a user's servers at the account level";
     }
 }

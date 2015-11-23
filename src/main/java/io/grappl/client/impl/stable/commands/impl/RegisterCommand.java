@@ -17,4 +17,9 @@ public class RegisterCommand implements Command {
             e1.printStackTrace();
         }
     }
+
+    @Override
+    public String getDescription() {
+        return "Brings a user to the web register page.";
+    }
 }

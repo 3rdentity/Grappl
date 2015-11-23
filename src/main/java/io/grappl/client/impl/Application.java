@@ -32,6 +32,10 @@ public final class Application {
     public static final int HEARTBEAT =        25570;
 
     public static final String VERSION = "Beta 1.3.8";
+
+    // If you are distributing your own version, be kind and change this please.
+    public static final String BRAND = "DaexsysVanilla";
+
     public static final String NO_GRAPPL_MESSAGE = "There is no grappl currently open! Start one with 'init'";
 
     private static List<String> nycOrder =     Arrays.asList("n.grappl.io", "s.grappl.io", "e.grappl.io", "p.grappl.io");
@@ -56,12 +60,23 @@ public final class Application {
     public static void create(String[] args, ApplicationMode mode) {
         Application.mode = mode;
         log = new GrapplLog();
+
+        log.log("Started: Grappl " + VERSION + " {Brand=" + BRAND + ", Mode=" + mode + "}");
+        log.log("If you encounter issues, please report them to @grapplstatus, or @Cactose.");
+        log.log("Preferably with a copy of this console! Thx <3");
+
+        log.log("====================");
+
         getApplicationState();
         commandHandler = new CommandHandler(applicationState);
 
         System.setErr(new GrapplErrorStream(log, System.out));
 
+        log.log("Preparing to load plugins");
         PluginManager.setupAndLoad();
+
+        log.log("Initialization complete");
+        log.log("====================");
     }
 
     public static void setMode(ApplicationMode mode) {

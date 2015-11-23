@@ -14,7 +14,7 @@ public class Client {
 
     public static void main(String[] args) {
 
-        Application.create(args, ApplicationMode.NORMAL);
+        Application.create(args, ApplicationMode.GUI);
 
         boolean displayGui = true;
 
