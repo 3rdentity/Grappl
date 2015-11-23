@@ -271,6 +271,12 @@ public class TCPGrappl implements Grappl {
     }
 
     @Override
+    @Deprecated
+    public String getPublicAddress() {
+        return getExternalServer().toString();
+    }
+
+    @Override
     public ApplicationState getApplicationState() {
         return applicationState;
     }

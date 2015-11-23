@@ -98,6 +98,11 @@ public class UDPGrappl implements Grappl {
         return null;
     }
 
+    @Override
+    public String getPublicAddress() {
+        return null;
+    }
+
     public DefaultGUI getGUI() {
         return null;
     }

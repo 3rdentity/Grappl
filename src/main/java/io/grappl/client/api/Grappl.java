@@ -37,6 +37,9 @@ public interface Grappl {
 
     public UUID getUUID();
 
+    @Deprecated
+    public String getPublicAddress();
+
     // TODO: Get rid of this in the future if possible
     public DefaultGUI getGUI();
 
