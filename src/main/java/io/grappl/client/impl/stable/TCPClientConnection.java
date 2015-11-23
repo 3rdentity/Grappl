@@ -44,7 +44,7 @@ public class TCPClientConnection implements ClientConnection {
     private List<OutputStream> inwardStreams = new ArrayList<OutputStream>();
     private List<OutputStream> outwardStreams = new ArrayList<OutputStream>();
 
-    public TCPClientConnection(final TCPGrappl grappl, final String address) {
+    protected TCPClientConnection(final TCPGrappl grappl, final String address) {
         this.tcpGrappl = grappl;
         this.address = address;
 
