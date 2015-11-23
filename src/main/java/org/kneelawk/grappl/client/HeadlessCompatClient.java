@@ -3,7 +3,7 @@ package org.kneelawk.grappl.client;
 import io.grappl.client.api.Grappl;
 import io.grappl.client.impl.Application;
 import io.grappl.client.api.ApplicationMode;
-import io.grappl.client.impl.error.AuthenticationFailureException;
+import io.grappl.client.impl.error.AuthenticationException;
 import io.grappl.client.impl.stable.GrapplBuilder;
 import io.grappl.client.impl.error.RelayServerNotFoundException;
 
@@ -206,7 +206,7 @@ public class HeadlessCompatClient {
 				&& !"".equals(password)) {
             try {
                 builder.login(username, password.toCharArray(), null);
-            } catch (AuthenticationFailureException e) {
+            } catch (AuthenticationException e) {
                 e.printStackTrace();
             }
         }
