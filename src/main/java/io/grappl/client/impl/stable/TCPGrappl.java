@@ -3,6 +3,7 @@ package io.grappl.client.impl.stable;
 import io.grappl.client.api.ClientConnection;
 import io.grappl.client.api.Grappl;
 import io.grappl.client.api.LocationProvider;
+import io.grappl.client.api.Protocol;
 import io.grappl.client.impl.Application;
 import io.grappl.client.impl.ApplicationState;
 import io.grappl.client.impl.HeartbeatHandler;
@@ -188,11 +189,11 @@ public class TCPGrappl implements Grappl {
 
         final List<TCPClientConnection> connectedClients = new ArrayList<TCPClientConnection>();
 
-        if(gui != null) {
+        if(getGUI() != null) {
             getGUI().getConnectedClientsLabel().setText("Connected clientsByUUID: " + getStatMonitor().getOpenConnections());
             getGUI().getConnectedClientsLabel().setBounds(5, 45, 450, 20);
-            gui.getFrame().add(getGUI().getConnectedClientsLabel());
-            gui.getFrame().repaint();
+            getGUI().getFrame().add(getGUI().getConnectedClientsLabel());
+            getGUI().getFrame().repaint();
         }
 
         Thread clientHandlerThread = new Thread(new Runnable() {
@@ -265,13 +266,18 @@ public class TCPGrappl implements Grappl {
         return applicationState;
     }
 
+    @Override
+    public Protocol getProtocol() {
+        return Protocol.TCP;
+    }
+
     public void userConnect(UserConnectEvent userConnectEvent) {
         for(UserConnectListener userConnectListener : userConnectListeners) {
             userConnectListener.userConnected(userConnectEvent);
         }
     }
 
-    public void useDisconnect(UserDisconnectEvent userDisconnectEvent) {
+    public void userDisconnects(UserDisconnectEvent userDisconnectEvent) {
         for (UserDisconnectListener userDisconnectListener : userDisconnectListeners) {
             userDisconnectListener.userDisconnected(userDisconnectEvent);
         }
@@ -327,7 +333,7 @@ public class TCPGrappl implements Grappl {
     @Override
     public String toString() {
         return
-                "TCP | " +
+                getProtocol() + " | " +
                         getInternalServer().toString()
                         + " <-> " +
                         getExternalServer().toString() +

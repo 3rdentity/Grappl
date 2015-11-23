@@ -37,4 +37,6 @@ public interface Grappl {
 
     public UUID getUUID();
     public DefaultGUI getGUI();
+
+    public Protocol getProtocol();
 }

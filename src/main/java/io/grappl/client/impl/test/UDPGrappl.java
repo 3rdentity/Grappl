@@ -2,6 +2,7 @@ package io.grappl.client.impl.test;
 
 import io.grappl.client.api.ClientConnection;
 import io.grappl.client.api.Grappl;
+import io.grappl.client.api.Protocol;
 import io.grappl.client.impl.ApplicationState;
 import io.grappl.client.impl.stable.Authentication;
 import io.grappl.client.impl.stable.NetworkLocation;
@@ -13,6 +14,7 @@ import io.grappl.client.impl.gui.DefaultGUI;
 import java.net.DatagramSocket;
 import java.net.SocketException;
 import java.util.Collection;
+import java.util.UUID;
 
 /**
  * Experimental UDP grappl implementation
@@ -92,7 +94,17 @@ public class UDPGrappl implements Grappl {
     }
 
     @Override
+    public UUID getUUID() {
+        return null;
+    }
+
+    @Override
     public DefaultGUI getGUI() {
+        return null;
+    }
+
+    @Override
+    public Protocol getProtocol() {
         return null;
     }
 }
