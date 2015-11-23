@@ -1,8 +1,11 @@
-package io.grappl.client.impl.stable;
+package io.grappl.client.impl.stable.tcp;
 
 import io.grappl.client.api.ClientConnection;
 import io.grappl.client.api.Grappl;
 import io.grappl.client.impl.Application;
+import io.grappl.client.impl.stable.ConnectionStats;
+import io.grappl.client.impl.stable.NetworkLocation;
+import io.grappl.client.impl.stable.tcp.TCPGrappl;
 import io.grappl.client.impl.test.handler.DataHandler;
 import io.grappl.client.impl.test.handler.GenericHandler;
 

@@ -7,7 +7,7 @@ import io.grappl.client.impl.GrapplDataFile;
 import io.grappl.client.impl.ApplicationState;
 import io.grappl.client.impl.GrapplBuilder;
 import io.grappl.client.impl.stable.RelayServerNotFoundException;
-import io.grappl.client.impl.stable.TCPGrappl;
+import io.grappl.client.impl.stable.tcp.TCPGrappl;
 
 import javax.swing.*;
 import java.awt.*;

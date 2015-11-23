@@ -7,7 +7,7 @@ import io.grappl.client.impl.gui.AdvancedGUI;
 import io.grappl.client.impl.gui.DefaultGUI;
 import io.grappl.client.impl.stable.Authentication;
 import io.grappl.client.impl.stable.NetworkLocation;
-import io.grappl.client.impl.stable.TCPGrappl;
+import io.grappl.client.impl.stable.tcp.TCPGrappl;
 import io.grappl.client.impl.test.UDPGrappl;
 
 import javax.swing.*;

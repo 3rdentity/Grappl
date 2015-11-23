@@ -8,7 +8,7 @@ import io.grappl.client.impl.ApplicationState;
 import io.grappl.client.impl.stable.Authentication;
 import io.grappl.client.impl.stable.NetworkLocation;
 import io.grappl.client.impl.stable.RelayServerNotFoundException;
-import io.grappl.client.impl.stable.TCPGrappl;
+import io.grappl.client.impl.stable.tcp.TCPGrappl;
 import io.grappl.client.impl.stable.event.UserConnectEvent;
 import io.grappl.client.api.event.UserConnectListener;
 import io.grappl.client.impl.stable.event.UserDisconnectEvent;

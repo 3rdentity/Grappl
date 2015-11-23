@@ -1,4 +1,4 @@
-package io.grappl.client.impl.stable;
+package io.grappl.client.impl.stable.tcp;
 
 import io.grappl.client.api.ClientConnection;
 import io.grappl.client.api.Grappl;
@@ -8,6 +8,7 @@ import io.grappl.client.impl.Application;
 import io.grappl.client.impl.ApplicationState;
 import io.grappl.client.impl.HeartbeatHandler;
 import io.grappl.client.impl.log.GrapplLog;
+import io.grappl.client.impl.stable.*;
 import io.grappl.client.impl.stable.event.UserConnectEvent;
 import io.grappl.client.api.event.UserConnectListener;
 import io.grappl.client.impl.stable.event.UserDisconnectEvent;
