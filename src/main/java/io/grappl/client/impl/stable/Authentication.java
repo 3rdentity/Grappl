@@ -1,7 +1,7 @@
 package io.grappl.client.impl.stable;
 
 import io.grappl.client.impl.Application;
-import io.grappl.client.impl.error.AuthenticationFailureException;
+import io.grappl.client.impl.error.AuthenticationException;
 
 import javax.swing.*;
 import java.io.DataInputStream;
@@ -45,7 +45,7 @@ public class Authentication {
     }
 
     public Authentication(JFrame jFrame) {
-        Application.getLog().log("AAuth connection created " + getConnectionUUID());
+        Application.getLog().log("Auth connection created " + getConnectionUUID());
         this.optionalFrame = jFrame;
     }
 
@@ -57,7 +57,7 @@ public class Authentication {
         }
     }
 
-    public void login(String username, char[] password) throws AuthenticationFailureException {
+    public void login(String username, char[] password) throws AuthenticationException {
         this.username = username;
 
         try {
@@ -96,13 +96,13 @@ public class Authentication {
                 if(optionalFrame != null)
                     JOptionPane.showMessageDialog(optionalFrame, "Login failed, incorrect username or password");
 
-                throw new AuthenticationFailureException("Wrong credentials for: " + username + " (or account does not exist)");
+                throw new AuthenticationException("Wrong credentials for: " + username + " (or account does not exist)");
             }
         } catch (IOException e) {
             if(optionalFrame != null)
                 JOptionPane.showMessageDialog(optionalFrame, "Broken connection, authentication failed");
 
-            throw new AuthenticationFailureException("Login failed");
+            throw new AuthenticationException("Login failed");
         }
     }
 

@@ -67,13 +67,14 @@ public class AdvancedGUI {
         jFrame.add(relayLabel);
 
         final JComboBox<String> jComboBox = new JComboBox<String>(
-                new String[]{
+                new String[] {
                         "n.grappl.io (East Coast NA)",
                         "s.grappl.io (West Coast NA)",
                         "e.grappl.io (Europe)",
                         "p.grappl.io (Oceania)"
                 }
         );
+
         if(Application.debugState) {
             jComboBox.addItem("localhost (if you're testing)");
         }
@@ -149,7 +150,9 @@ public class AdvancedGUI {
                         }
                     });
 
-                            (applicationState.getFocusedGrappl()).getInternalServer().setPort(Integer.parseInt(jTextField.getText()));
+                    if(!jTextField.getText().equals("")) { // If field isn't empty
+                        applicationState.getFocusedGrappl().getInternalServer().setPort(Integer.parseInt(jTextField.getText()));
+                    }
 
                     boolean success;
                     try {
@@ -192,7 +195,7 @@ public class AdvancedGUI {
             public void actionPerformed(ActionEvent e) {
                 applicationState.getFocusedGrappl().disconnect();
                 connectionLabel.setText("Not connected - Tunnel closed");
-                Application.getLog().log("Disconnected..");
+                Application.getLog().log("Disconnected from relay");
                 applicationState.removeGrappl(applicationState.getFocusedGrappl());
                 close.setEnabled(false);
             }

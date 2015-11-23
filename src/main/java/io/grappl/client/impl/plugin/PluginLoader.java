@@ -63,7 +63,6 @@ public class PluginLoader {
 //        System.out.println(new File(directory).getAbsoluteFile());
         try {
             for (File file : files) {
-                Application.getLog().log("Plugin found: " + file.getName());
                 try {
                     String[] pluginName = file.getName().split("\\.");
 
@@ -102,5 +101,7 @@ public class PluginLoader {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        Application.getLog().log(pluginsLoaded + " plugins loaded");
     }
 }

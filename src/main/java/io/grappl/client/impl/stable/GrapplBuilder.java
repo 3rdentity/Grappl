@@ -5,7 +5,7 @@ import io.grappl.client.api.LocationProvider;
 import io.grappl.client.api.Protocol;
 import io.grappl.client.impl.Application;
 import io.grappl.client.impl.ApplicationState;
-import io.grappl.client.impl.error.AuthenticationFailureException;
+import io.grappl.client.impl.error.AuthenticationException;
 import io.grappl.client.impl.gui.AdvancedGUI;
 import io.grappl.client.impl.gui.DefaultGUI;
 import io.grappl.client.impl.stable.tcp.TCPGrappl;
@@ -65,7 +65,7 @@ public class GrapplBuilder {
     /**
      * JFrame is optional
      */
-    public GrapplBuilder login(String username, char[] password, JFrame jFrame) throws AuthenticationFailureException {
+    public GrapplBuilder login(String username, char[] password, JFrame jFrame) throws AuthenticationException {
         Authentication authentication = new Authentication(jFrame);
         authentication.login(username, password);
         grappl.useAuthentication(authentication);

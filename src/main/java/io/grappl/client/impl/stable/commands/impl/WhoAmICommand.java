@@ -9,8 +9,8 @@ public class WhoAmICommand implements Command {
     @Override
     public void runCommand(ApplicationState state, String[] args) {
 
-        if(state == null) {
-            Application.getLog().log("A twinkle in the void tells you this command only works once you've started a Grappl.");
+        if(state == null || state.getAuthentication() == null) {
+            Application.getLog().log("A twinkle in the void tells you this command only works once you've started a Grappl. (init)");
         } else {
             if (state.getAuthentication().isLoggedIn()) {
                 Application.getLog().log("You are logged in as: " + state.getAuthentication().getUsername());

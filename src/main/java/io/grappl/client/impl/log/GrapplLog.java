@@ -23,12 +23,12 @@ public class GrapplLog {
 
     public void log(String message) {
         String tag = DateFormat.getDateTimeInstance().format(new Date(System.currentTimeMillis()));
-        String theS = "[" + tag + "] " + message;
+        String taggedMessage = "[" + tag + "] " + message;
 
         if(!message.equals("PING")) {
-            System.out.println(theS);
-            loggedMessages.add(theS);
-            visibleLog.add(theS);
+            System.out.println(taggedMessage);
+            loggedMessages.add(taggedMessage);
+            visibleLog.add(taggedMessage);
         }
 
         try {
@@ -44,7 +44,7 @@ public class GrapplLog {
         } catch (Exception ignore) {}
 
         for(ConsoleMessageListener consoleMessageListener : consoleMessageListeners) {
-            consoleMessageListener.receiveMessage(theS);
+            consoleMessageListener.receiveMessage(taggedMessage);
         }
 
         try {

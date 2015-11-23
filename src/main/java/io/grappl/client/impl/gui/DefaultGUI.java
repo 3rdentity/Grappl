@@ -5,7 +5,7 @@ import io.grappl.client.api.Protocol;
 import io.grappl.client.impl.Application;
 import io.grappl.client.impl.GrapplDataFile;
 import io.grappl.client.impl.ApplicationState;
-import io.grappl.client.impl.error.AuthenticationFailureException;
+import io.grappl.client.impl.error.AuthenticationException;
 import io.grappl.client.impl.stable.GrapplBuilder;
 import io.grappl.client.impl.error.RelayServerNotFoundException;
 import io.grappl.client.impl.stable.tcp.TCPGrappl;
@@ -166,7 +166,7 @@ public class DefaultGUI {
                     try {
                         grappl = new GrapplBuilder().login("default", ("1".hashCode() + "").toCharArray(), jFrame)
                                 .withGUI(theGUI).build();
-                    } catch (AuthenticationFailureException ignore) {
+                    } catch (AuthenticationException ignore) {
                         // TODO: Handle this.
                     }
 

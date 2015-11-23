@@ -44,7 +44,7 @@ public final class Application {
 
     public static boolean doDetailedLogging = true;
     public static boolean usingSavedHashPass = true;
-    public static boolean debugState = true;
+    public static boolean debugState = true; // For testing using IDE. This is usually enabled in production, too, though.
 
     private static CommandHandler commandHandler;
     private static GrapplLog log;
