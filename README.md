@@ -46,6 +46,6 @@ The Grappl client code is released under LGPL v2.1.
 
 ## Development
 
-Grappl is primarily developed by Matt Hebert.
+Grappl is primarily developed by Cactose.
 
-His twitter is here: https://twitter.com/Cactose
+Their twitter is here: https://twitter.com/Cactose
