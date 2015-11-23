@@ -49,7 +49,9 @@ public class GrapplLog {
 
         try {
             save();
-        } catch (Exception e) {}
+        } catch (Exception e) {
+            Application.getLog().log("Error saving log to disk. Bizarre.");
+        }
     }
 
     public void detailed(String message) {

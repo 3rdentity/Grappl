@@ -4,19 +4,19 @@ import io.grappl.client.api.ClientConnection;
 
 public class UserDisconnectEvent {
 
-    private String address;
     private ClientConnection clientConnection;
+    private String address;
 
     public UserDisconnectEvent(String address, ClientConnection clientConnection) {
         this.address = address;
         this.clientConnection = clientConnection;
     }
 
-    public String getAddress() {
-        return address;
-    }
-
     public ClientConnection getClientConnection() {
         return clientConnection;
+    }
+
+    public String getAddress() {
+        return address;
     }
 }

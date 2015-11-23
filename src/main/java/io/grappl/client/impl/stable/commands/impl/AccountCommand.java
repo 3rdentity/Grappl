@@ -8,7 +8,11 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
 
+@SuppressWarnings("SpellCheckingInspection")
 public class AccountCommand implements Command {
+
+    // TODO: Get rid of this perhaps
+
     @Override
     public void runCommand(ApplicationState state, String[] args) {
 

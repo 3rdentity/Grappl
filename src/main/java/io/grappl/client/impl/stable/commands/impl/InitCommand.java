@@ -4,7 +4,7 @@ import io.grappl.client.impl.Application;
 import io.grappl.client.impl.ApplicationState;
 import io.grappl.client.impl.stable.GrapplBuilder;
 import io.grappl.client.api.commands.Command;
-import io.grappl.client.impl.stable.RelayServerNotFoundException;
+import io.grappl.client.impl.error.RelayServerNotFoundException;
 
 public class InitCommand implements Command {
 

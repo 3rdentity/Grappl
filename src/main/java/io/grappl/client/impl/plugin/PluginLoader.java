@@ -1,9 +1,7 @@
 package io.grappl.client.impl.plugin;
 
-import com.sun.jmx.remote.internal.ClientListenerInfo;
 import io.grappl.client.impl.Application;
 import io.grappl.client.impl.GrapplDataFile;
-import io.grappl.client.impl.log.GrapplLog;
 
 import java.io.DataInputStream;
 import java.io.File;
@@ -101,6 +99,8 @@ public class PluginLoader {
                     e.printStackTrace();
                 }
             }
-        } catch (Exception e) {}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -7,6 +7,7 @@ import io.grappl.client.api.Protocol;
 import io.grappl.client.impl.Application;
 import io.grappl.client.impl.ApplicationState;
 import io.grappl.client.impl.HeartbeatHandler;
+import io.grappl.client.impl.error.RelayServerNotFoundException;
 import io.grappl.client.impl.log.GrapplLog;
 import io.grappl.client.impl.stable.*;
 import io.grappl.client.impl.stable.event.UserConnectEvent;
@@ -133,7 +134,7 @@ public class TCPGrappl implements Grappl {
                 return false;
             }
         } catch (UnknownHostException e) {
-            throw new RelayServerNotFoundException();
+            throw new RelayServerNotFoundException(relayServer + " does not appear to exist");
         } catch (IOException e) {
             e.printStackTrace();
             return false;

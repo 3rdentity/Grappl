@@ -8,7 +8,7 @@ import io.grappl.client.impl.ApplicationState;
 import io.grappl.client.impl.stable.GrapplBuilder;
 import io.grappl.client.impl.stable.NetworkLocation;
 import io.grappl.client.impl.stable.RandomLocationProvider;
-import io.grappl.client.impl.stable.RelayServerNotFoundException;
+import io.grappl.client.impl.error.RelayServerNotFoundException;
 
 import javax.swing.*;
 import java.awt.*;
@@ -169,7 +169,7 @@ public class MultiLaunchGUI {
             try {
                 grappl.connect("localhost");
             } catch (RelayServerNotFoundException e) {
-                System.out.println("??");
+                Application.getLog().log("??");
                 e.printStackTrace();
             }
 

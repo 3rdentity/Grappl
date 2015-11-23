@@ -98,7 +98,6 @@ public class UDPGrappl implements Grappl {
         return null;
     }
 
-    @Override
     public DefaultGUI getGUI() {
         return null;
     }

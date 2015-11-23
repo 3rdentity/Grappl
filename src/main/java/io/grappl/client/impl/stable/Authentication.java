@@ -1,6 +1,7 @@
 package io.grappl.client.impl.stable;
 
 import io.grappl.client.impl.Application;
+import io.grappl.client.impl.error.AuthenticationFailureException;
 
 import javax.swing.*;
 import java.io.DataInputStream;
@@ -40,11 +41,11 @@ public class Authentication {
     }
 
     public Authentication() {
-        Application.getLog().log("AUTHENTICATION CONNECTION CREATED " + getConnectionUUID());
+        Application.getLog().log("Auth connection created " + getConnectionUUID());
     }
 
     public Authentication(JFrame jFrame) {
-        Application.getLog().log("AUTHENTICATION CONNECTION CREATED " + getConnectionUUID());
+        Application.getLog().log("AAuth connection created " + getConnectionUUID());
         this.optionalFrame = jFrame;
     }
 
@@ -56,7 +57,7 @@ public class Authentication {
         }
     }
 
-    public void login(String username, char[] password) {
+    public void login(String username, char[] password) throws AuthenticationFailureException {
         this.username = username;
 
         try {
@@ -79,12 +80,12 @@ public class Authentication {
                     JOptionPane.showMessageDialog(optionalFrame, "Broken connection, authentication failed");
             }
 
-            System.out.println("Login status: " + loginSuccessful);
             boolean loginSuccess = authDataInputStream.readBoolean();
             boolean isPremiumUser = authDataInputStream.readBoolean();
             int port = authDataInputStream.readInt();
 
             try {
+                // TODO: tfw depreciated functionality. Find away around this, maybe?
                 localizedRelayPrefix = authDataInputStream.readLine();
 
                 isPremium = isPremiumUser;
@@ -94,10 +95,14 @@ public class Authentication {
             } catch (SocketTimeoutException e) {
                 if(optionalFrame != null)
                     JOptionPane.showMessageDialog(optionalFrame, "Login failed, incorrect username or password");
+
+                throw new AuthenticationFailureException("Wrong credentials for: " + username + " (or account does not exist)");
             }
         } catch (IOException e) {
             if(optionalFrame != null)
                 JOptionPane.showMessageDialog(optionalFrame, "Broken connection, authentication failed");
+
+            throw new AuthenticationFailureException("Login failed");
         }
     }
 
@@ -106,7 +111,6 @@ public class Authentication {
         isPremium = false;
         staticPort = -1;
         localizedRelayPrefix = "";
-        username = null;
 
         try {
             authSocket.close();

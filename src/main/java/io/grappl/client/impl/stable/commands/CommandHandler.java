@@ -29,6 +29,7 @@ public class CommandHandler {
 
         addCommand("init", new InitCommand());
         addCommand("disconnect", new DisconnectCommand());
+        addCommand("register", new RegisterCommand());
         addCommand("login", new LoginCommand());
         addCommand("logout", new LogoutCommand());
 
@@ -62,7 +63,6 @@ public class CommandHandler {
     }
 
     public void handleCommand(String command) {
-
         // If no command was actually entered, return.
         if(command.isEmpty())
             return;

@@ -5,8 +5,9 @@ import io.grappl.client.api.Protocol;
 import io.grappl.client.impl.Application;
 import io.grappl.client.impl.GrapplDataFile;
 import io.grappl.client.impl.ApplicationState;
+import io.grappl.client.impl.error.AuthenticationFailureException;
 import io.grappl.client.impl.stable.GrapplBuilder;
-import io.grappl.client.impl.stable.RelayServerNotFoundException;
+import io.grappl.client.impl.error.RelayServerNotFoundException;
 import io.grappl.client.impl.stable.tcp.TCPGrappl;
 
 import javax.swing.*;
@@ -162,7 +163,12 @@ public class DefaultGUI {
                     consoleButton.setBounds(235, 40, 40, 40);
                     jFrame.add(consoleButton);
 
-                    grappl = new GrapplBuilder().login("default", ("1".hashCode() + "").toCharArray(), jFrame).withGUI(theGUI).build();
+                    try {
+                        grappl = new GrapplBuilder().login("default", ("1".hashCode() + "").toCharArray(), jFrame)
+                                .withGUI(theGUI).build();
+                    } catch (AuthenticationFailureException ignore) {
+                        // TODO: Handle this.
+                    }
 
                     JButton jButton = new JButton("Close " + Application.APP_NAME + " Client");
                     jButton.addActionListener(new ActionListener() {

@@ -7,7 +7,7 @@ import io.grappl.client.impl.GrapplDataFile;
 import io.grappl.client.impl.ApplicationState;
 import io.grappl.client.impl.stable.Authentication;
 import io.grappl.client.impl.stable.NetworkLocation;
-import io.grappl.client.impl.stable.RelayServerNotFoundException;
+import io.grappl.client.impl.error.RelayServerNotFoundException;
 import io.grappl.client.impl.stable.tcp.TCPGrappl;
 import io.grappl.client.impl.stable.event.UserConnectEvent;
 import io.grappl.client.api.event.UserConnectListener;
@@ -151,11 +151,12 @@ public class AdvancedGUI {
 
                             (applicationState.getFocusedGrappl()).getInternalServer().setPort(Integer.parseInt(jTextField.getText()));
 
-                    boolean success = false;
+                    boolean success;
                     try {
                         success = theGrappl.connect(((String) jComboBox.getSelectedItem()).split("\\s+")[0]);
                     } catch (RelayServerNotFoundException e1) {
                         e1.printStackTrace();
+                        success = false;
                     }
 
                     if(success) {
@@ -298,20 +299,18 @@ public class AdvancedGUI {
                     @Override
                     public void actionPerformed(ActionEvent e) {
 
-//                        isLoggedInLabel.setText("Logging in...");
-//                        getFrame().repaint();
-
                         Authentication authentication = new Authentication(getFrame());
-                        login(usernameField, jPasswordField);
+                        prepareForLogin(usernameField, jPasswordField);
 
                         try {
                             if (!isActuallyHash || !Application.usingSavedHashPass) {
                                 theGUI.password = (new String(theGUI.password).hashCode() + "").toCharArray();
                             }
 
-//                            login.setText("Logging in...");
-//                            login.repaint();
-                            authentication.login(username, theGUI.password);
+                            try {
+                                authentication.login(username, theGUI.password);
+                            } catch (Exception exp) { Application.getLog().log(exp.getMessage()); }
+
                             applicationState.useAuthentication(authentication);
 
                             if (authentication.isLoggedIn()) {
@@ -388,6 +387,8 @@ public class AdvancedGUI {
                 logOut();
             }
         });
+
+        applicationState.getAuthentication().logout();
         jFrame.add(logOut);
 
         jFrame.add(logOut);
@@ -411,7 +412,7 @@ public class AdvancedGUI {
         close.setEnabled(false);
     }
 
-    public void login(JTextField usernameField, JPasswordField jPasswordField) {
+    public void prepareForLogin(JTextField usernameField, JPasswordField jPasswordField) {
         username = usernameField.getText().toLowerCase();
         password = jPasswordField.getPassword();
     }

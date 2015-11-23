@@ -14,7 +14,7 @@ public class ListRemoveCommand implements Command {
             Application.getLog().log("Removing from server list");
             state.getAuthentication().getAuthDataOutputStream().writeByte(7);
             PrintStream printStream = new PrintStream(state.getAuthentication().getAuthDataOutputStream());
-            printStream.println(Application.getCommandHandler().returnBuffer);
+            printStream.println("asd");
         } catch (Exception e) {
             e.printStackTrace();
         }

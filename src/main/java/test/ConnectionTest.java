@@ -2,7 +2,7 @@ package test;
 
 import io.grappl.client.api.Grappl;
 import io.grappl.client.impl.Application;
-import io.grappl.client.impl.stable.RelayServerNotFoundException;
+import io.grappl.client.impl.error.RelayServerNotFoundException;
 import io.grappl.client.impl.stable.tcp.TCPGrappl;
 
 import java.util.HashSet;
