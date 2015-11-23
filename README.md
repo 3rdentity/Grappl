@@ -36,7 +36,7 @@ After that, use the grappl object's connect method to open the server.
 
 'relayserverIP' is a string representing the relay server of your choice. This may be one of the official ones (n.grappl.io, s.grappl.io, e.grappl.io, p.grappl.io) or a custom one.
 
-    grappl.getPublicAddress();
+    grappl.getExternalServer();
 
 ...will give you the address that your server is now live on the internet behind! Congrats, you've got Grappl working through its API. It's that simple.
 
