@@ -1,5 +1,8 @@
 package io.grappl.client.impl.relay.adaptive;
 
+import io.grappl.client.impl.relay.RelayServer;
+import io.grappl.client.impl.relay.RelayTransmission;
+
 import java.util.*;
 
 public class RelayManager {
@@ -51,6 +54,19 @@ public class RelayManager {
         }
 
         return str;
+    }
+
+    public RelayTransmission getRelayTransmission() {
+        RelayTransmission relayTransmission = new RelayTransmission();
+
+        System.out.println(records.size());
+        for(LatencyRecord latencyRecord : records) {
+            relayTransmission.getRelayServerList().add(latencyRecord.getServer());
+        }
+
+        System.out.println(relayTransmission.getRelayServerList().size());
+
+        return relayTransmission;
     }
 
     public static void main(String[] args) {

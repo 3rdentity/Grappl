@@ -1,5 +1,7 @@
 package io.grappl.client.impl.relay.adaptive;
 
+import io.grappl.client.impl.relay.RelayServer;
+
 public class LatencyRecord {
 
     private RelayServer server;

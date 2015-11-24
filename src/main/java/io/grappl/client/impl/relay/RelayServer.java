@@ -1,4 +1,4 @@
-package io.grappl.client.impl.relay.adaptive;
+package io.grappl.client.impl.relay;
 
 import java.net.Socket;
 
@@ -7,7 +7,7 @@ public class RelayServer {
     private String relayLocation;
     private String description;
 
-    private long ping = Long.MAX_VALUE;
+    private transient long ping = Long.MAX_VALUE;
     private boolean up = false;
 
     public RelayServer(String location, String description) {

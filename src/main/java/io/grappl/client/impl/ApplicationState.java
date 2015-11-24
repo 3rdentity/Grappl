@@ -4,7 +4,8 @@ import io.grappl.client.api.Grappl;
 import io.grappl.client.api.Protocol;
 import io.grappl.client.api.event.GrapplOpenListener;
 import io.grappl.client.impl.relay.adaptive.RelayManager;
-import io.grappl.client.impl.relay.adaptive.RelayServer;
+import io.grappl.client.impl.relay.RelayServer;
+import io.grappl.client.impl.relay.RelayTransmission;
 import io.grappl.client.impl.stable.Authentication;
 import io.grappl.client.impl.stable.GrapplBuilder;
 
@@ -15,15 +16,19 @@ import java.util.Set;
 
 public class ApplicationState {
 
+    /*
+        Load official relay server list from grappl.io, then ping them all to determine latency.
+     */
     private RelayManager relayManager = new RelayManager();
     {
+        final RelayTransmission relayTransmission = RelayTransmission.getFromWebLocation("http://grappl.io/relays.json");
+
         Thread pingThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                relayManager.offerRelay(new RelayServer("n.grappl.io", "East Coast NA"));
-                relayManager.offerRelay(new RelayServer("s.grappl.io", "West Coast NA"));
-                relayManager.offerRelay(new RelayServer("e.grappl.io", "Europe"));
-                relayManager.offerRelay(new RelayServer("p.grappl.io", "Aus / Oceania"));
+                for(RelayServer relayServer : relayTransmission.getRelayServerList()) {
+                    relayManager.offerRelay(relayServer);
+                }
             }
         });
         pingThread.start();
