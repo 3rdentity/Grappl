@@ -62,40 +62,42 @@ public class PluginLoader {
 
 //        System.out.println(new File(directory).getAbsoluteFile());
         try {
-            for (File file : files) {
-                try {
-                    String[] pluginName = file.getName().split("\\.");
+            if(files != null) {
+                for (File file : files) {
+                    try {
+                        String[] pluginName = file.getName().split("\\.");
 
-                    if (pluginName[1].equalsIgnoreCase(extension)) {
-                        try {
-                            ClassLoader classLoader = new URLClassLoader(new URL[]{file.toURI().toURL()});
-                            String mainClassLocation = "";
+                        if (pluginName[1].equalsIgnoreCase(extension)) {
+                            try {
+                                ClassLoader classLoader = new URLClassLoader(new URL[]{file.toURI().toURL()});
+                                String mainClassLocation = "";
 
-                            DataInputStream stream = new DataInputStream(classLoader.getResourceAsStream("plginfo.dat"));
-                            //noinspection deprecation
-                            mainClassLocation = stream.readLine();
+                                DataInputStream stream = new DataInputStream(classLoader.getResourceAsStream("plginfo.dat"));
+                                //noinspection deprecation
+                                mainClassLocation = stream.readLine();
 
-                            if (!loadedPlugins.contains(mainClassLocation)) {
-                                Class theClass = classLoader.loadClass(mainClassLocation);
+                                if (!loadedPlugins.contains(mainClassLocation)) {
+                                    Class theClass = classLoader.loadClass(mainClassLocation);
 
-                                try {
-                                    Object the = theClass.newInstance();
-                                    Method m = theClass.newInstance().getClass().getMethod("main");
-                                    m.invoke(the);
-                                    pluginsLoaded++;
-                                } catch (Exception e) {
-                                    e.printStackTrace();
+                                    try {
+                                        Object the = theClass.newInstance();
+                                        Method m = theClass.newInstance().getClass().getMethod("main");
+                                        m.invoke(the);
+                                        pluginsLoaded++;
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+
+                                    loadedPlugins.add(mainClassLocation);
                                 }
 
-                                loadedPlugins.add(mainClassLocation);
+                            } catch (MalformedURLException e) {
+                                e.printStackTrace();
                             }
-
-                        } catch (MalformedURLException e) {
-                            e.printStackTrace();
                         }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
             }
         } catch (Exception e) {
