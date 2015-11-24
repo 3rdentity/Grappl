@@ -1,13 +1,5 @@
 package io.grappl.client.impl.relay;
 
-import com.google.gson.Gson;
-
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,31 +16,37 @@ public class RelayTransmission {
     }
 
     public String toJson() {
-        Gson gson = new Gson();
-        return gson.toJson(this);
+//        Gson gson = new Gson();
+//        return gson.toJson(this);
+        return null;
     }
 
     public static RelayTransmission getRelayTransmissionFrom(String json) {
-        Gson gson = new Gson();
-        return gson.fromJson(json, RelayTransmission.class);
+//        Gson gson = new Gson();
+//        return gson.fromJson(json, RelayTransmission.class);
+        return null;
     }
 
     public static RelayTransmission getFromWebLocation(String webLocation) {
-        try {
-            URL url = new URL(webLocation);
-            URLConnection urlConnection = url.openConnection();
-            InputStream inputStream = urlConnection.getInputStream();
-            DataInputStream dataInputStream = new DataInputStream(inputStream);
+//        try {
+//            URL url = new URL(webLocation);
+//            URLConnection urlConnection = url.openConnection();
+//            InputStream inputStream = urlConnection.getInputStream();
+//            DataInputStream dataInputStream = new DataInputStream(inputStream);
 
-            String json = dataInputStream.readLine();
+            String json = "{\"relayServerList\":[{\"relayLocation\":\"n.grappl.io\",\"description\":\"East Coast NA\",\"ping\":44,\"up\":true},{\"relayLocation\":\"s.grappl.io\",\"description\":\"West " +
+                    "Coast NA\",\"ping\":99,\"up\":true},{\"relayLocation\":\"e.grappl.io\",\"description\":\"Europe\",\"ping\":106,\"up\":true},{\"relayLocation\":\"p.grappl.io\",\"description\":\"Aus \n" +
+                    "/ Oceania\",\"ping\":275,\"up\":true}]}";
             return RelayTransmission.getRelayTransmissionFrom(json);
+//
+//        }
+//
+//        catch (MalformedURLException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return null;
+//        return null;
     }
 }
