@@ -5,6 +5,8 @@ import io.grappl.client.api.Protocol;
 import io.grappl.client.impl.Application;
 import io.grappl.client.impl.GrapplDataFile;
 import io.grappl.client.impl.ApplicationState;
+import io.grappl.client.impl.adaptive.AdaptiveConnector;
+import io.grappl.client.impl.adaptive.RelayManager;
 import io.grappl.client.impl.error.AuthenticationException;
 import io.grappl.client.impl.stable.GrapplBuilder;
 import io.grappl.client.impl.error.RelayServerNotFoundException;
@@ -33,6 +35,14 @@ public class DefaultGUI {
     private JLabel connectedClientsLabel;
 
     private ApplicationState applicationState;
+
+    private RelayManager relayManager = new RelayManager();
+    {
+        relayManager.offerRelay("n.grappl.io");
+        relayManager.offerRelay("e.grappl.io");
+        relayManager.offerRelay("s.grappl.io");
+        relayManager.offerRelay("p.grappl.io");
+    }
 
     public DefaultGUI(final ApplicationState applicationState) {
         this.applicationState = applicationState;
@@ -208,13 +218,10 @@ public class DefaultGUI {
                     jFrame.add(donateButton);
 
                     String ports = JOptionPane.showInputDialog("What port does your server run on?");
-                    (grappl).getInternalServer().setPort(Integer.parseInt(ports));
+                    grappl.getInternalServer().setPort(Integer.parseInt(ports));
 
-                    try {
-                        grappl.connect(grappl.getAuthentication().getLocalizedRelayPrefix() + "." + Application.DOMAIN);
-                    } catch (RelayServerNotFoundException e1) {
-                        e1.printStackTrace();
-                    }
+                    AdaptiveConnector adaptiveConnector = new AdaptiveConnector(relayManager);
+                    adaptiveConnector.subject(grappl);
                 }
             });
             beAnonymousButton.setBounds(4, 155, 192, 40);
@@ -233,6 +240,35 @@ public class DefaultGUI {
 
             jFrame.setIconImage(Application.getIcon());
             jFrame.repaint();
+        }
+    }
+
+    private void doConnection(Grappl grappl) {
+        String relayToConnectTo = grappl.getAuthentication().getLocalizedRelayPrefix() + "." + Application.DOMAIN;
+        try {
+            grappl.connect(relayToConnectTo);
+        } catch (RelayServerNotFoundException e1) {
+            Application.getLog().log("Looks like the auth server just tried to send you to a crashed or non-existent relay.");
+            Application.getLog().log("Attempting to connect you to a different relay...");
+
+            String newRelay = "";
+            if(relayToConnectTo.equalsIgnoreCase("n.grappl.io")) {
+                newRelay = "s.grappl.io";
+            } else if(relayToConnectTo.equalsIgnoreCase("s.grappl.io")) {
+                newRelay = "n.grappl.io";
+            } else if(relayToConnectTo.equalsIgnoreCase("e.grappl.io")) {
+                newRelay = "n.grappl.io";
+            } else if(relayToConnectTo.equalsIgnoreCase("p.grappl.io")) {
+                newRelay = "s.grappl.io";
+            }
+
+            try {
+                grappl.connect(newRelay);
+            } catch (RelayServerNotFoundException e2) {
+                Application.getLog().log("Alright, things are going disastrously wrong. " +
+                        "You should contact @Cactose, half the servers are probably down.");
+                e2.printStackTrace();
+            }
         }
     }
 
@@ -366,9 +402,11 @@ public class DefaultGUI {
 
                 jFrame = newJframe;
 
-                ((TCPGrappl) grappl).getInternalServer().setPort(Integer.parseInt(ports));
+                grappl.getInternalServer().setPort(Integer.parseInt(ports));
+
                 try {
-                    grappl.connect(domain);
+                    AdaptiveConnector adaptiveConnector = new AdaptiveConnector(relayManager);
+                    adaptiveConnector.subject(grappl);
                 } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(getFrame(), "The value you entered is not a number");
                 }

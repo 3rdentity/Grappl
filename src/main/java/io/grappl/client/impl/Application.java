@@ -9,6 +9,7 @@ import io.grappl.client.impl.log.SilentGrapplLog;
 
 import java.awt.*;
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
 import java.net.Socket;
 import java.net.URL;
@@ -41,11 +42,6 @@ public final class Application {
 
     public static final String NO_GRAPPL_MESSAGE = "There is no grappl currently open! Start one with 'grappl connect'";
     public static final String NOT_LOGGED_IN_MESSAGE = "Not logged in. Login with 'login [username] [password]' to use this command.";
-
-    private static List<String> nycOrder =     Arrays.asList("n.grappl.io", "s.grappl.io", "e.grappl.io", "p.grappl.io");
-    private static List<String> sFOrder =      Arrays.asList("s.grappl.io", "n.grappl.io", "e.grappl.io", "p.grappl.io");
-    private static List<String> europeOrder =  Arrays.asList("e.grappl.io", "n.grappl.io", "p.grappl.io", "s.grappl.io");
-    private static List<String> pacificOrder = Arrays.asList("p.grappl.io", "s.grappl.io", "n.grappl.io", "e.grappl.io");
 
     public static final long timeStartedRunning = System.currentTimeMillis();
 
@@ -141,31 +137,17 @@ public final class Application {
         return applicationState;
     }
 
-    // TODO: Please do something with these.
-
-    public static List<String> getNewYorkOrder() {
-        return nycOrder;
-    }
-
-    public static List<String> getSFBayOrder() {
-        return sFOrder;
-    }
-
-    public static List<String> getEuropeOrder() {
-        return europeOrder;
-    }
-
-    public static List<String> getPacificOrder() {
-        return pacificOrder;
-    }
-
     private static String getStatus(String relay) {
         return checkStatus(relay) ? "online" : "offline";
     }
 
     private static boolean checkStatus(String relay) {
         try {
-            Socket socket = new Socket(relay, 25564);
+            Socket socket = new Socket();
+            long start = System.currentTimeMillis();
+            socket.connect(new InetSocketAddress(relay, 25564), 2000);
+            long ping = (System.currentTimeMillis() - start);
+            System.out.println(relay + " " + ping);
         } catch (IOException e) {
             return false;
         }

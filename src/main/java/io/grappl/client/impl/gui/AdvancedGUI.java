@@ -69,9 +69,10 @@ public class AdvancedGUI {
         final JComboBox<String> jComboBox = new JComboBox<String>(
                 new String[] {
                         "n.grappl.io (East Coast NA)",
+                        "t.grappl.io (Central NA)",
                         "s.grappl.io (West Coast NA)",
                         "e.grappl.io (Europe)",
-                        "p.grappl.io (Oceania)"
+                        "p.grappl.io (Aus / Oceania)"
                 }
         );
 
