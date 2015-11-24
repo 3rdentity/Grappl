@@ -1,4 +1,4 @@
-package io.grappl.client.impl.relay.adaptive;
+package io.grappl.client.impl.relay;
 
 import io.grappl.client.impl.relay.RelayServer;
 import io.grappl.client.impl.relay.RelayTransmission;
@@ -43,13 +43,15 @@ public class RelayManager {
     public String[] createList() {
         String[] str = new String[getQueue().size()];
 
-        PriorityQueue<RelayServer> latencyRecords = getQueue();
+        PriorityQueue<RelayServer> relayServers = getQueue();
 
         int i = 0;
-        while(!latencyRecords.isEmpty()) {
-            RelayServer latencyRecord = latencyRecords.poll();
+        while(!relayServers.isEmpty()) {
+            RelayServer relayServer = relayServers.poll();
 
-            str[i++] = latencyRecord.getRelayLocation() + " (" + latencyRecord.getDescription() + ") " + latencyRecord.getLatency() + "ms";
+            str[i++] = relayServer.getRelayLocation()
+                    + " (" + relayServer.getDescription() + ") "
+                    + relayServer.getLatency() + "ms";
         }
 
         return str;
@@ -59,8 +61,8 @@ public class RelayManager {
         RelayTransmission relayTransmission = new RelayTransmission();
 
         System.out.println(records.size());
-        for(RelayServer latencyRecord : records) {
-            relayTransmission.getRelayServerList().add(latencyRecord);
+        for(RelayServer relayServer : records) {
+            relayTransmission.getRelayServerList().add(relayServer);
         }
 
         System.out.println(relayTransmission.getRelayServerList().size());

@@ -5,8 +5,7 @@ import io.grappl.client.api.Protocol;
 import io.grappl.client.impl.Application;
 import io.grappl.client.impl.GrapplDataFile;
 import io.grappl.client.impl.ApplicationState;
-import io.grappl.client.impl.relay.adaptive.AdaptiveConnector;
-import io.grappl.client.impl.relay.adaptive.RelayManager;
+import io.grappl.client.impl.relay.AdaptiveConnector;
 import io.grappl.client.impl.error.AuthenticationException;
 import io.grappl.client.impl.stable.GrapplBuilder;
 import io.grappl.client.impl.error.RelayServerNotFoundException;
@@ -61,9 +60,9 @@ public class DefaultGUI {
         final JCheckBox rememberMeBox = new JCheckBox();
         final DefaultGUI theGUI = this;
 
-        final JLabel usernameLable = new JLabel("Username");
-        usernameLable.setBounds(5, 2, 250, 20);
-        jFrame.add(usernameLable);
+        final JLabel usernameLabel = new JLabel("Username");
+        usernameLabel.setBounds(5, 2, 250, 20);
+        jFrame.add(usernameLabel);
         final JTextField usernameField = new JTextField("");
         usernameField.setBounds(5, 22, 250, 20);
         usernameField.setText(GrapplDataFile.getUsername());

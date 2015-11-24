@@ -3,7 +3,7 @@ package io.grappl.client.impl;
 import io.grappl.client.api.Grappl;
 import io.grappl.client.api.Protocol;
 import io.grappl.client.api.event.GrapplOpenListener;
-import io.grappl.client.impl.relay.adaptive.RelayManager;
+import io.grappl.client.impl.relay.RelayManager;
 import io.grappl.client.impl.relay.RelayServer;
 import io.grappl.client.impl.relay.RelayTransmission;
 import io.grappl.client.impl.stable.Authentication;

@@ -7,7 +7,7 @@ import io.grappl.client.impl.Application;
 import io.grappl.client.impl.ApplicationState;
 import io.grappl.client.impl.error.RelayServerNotFoundException;
 import io.grappl.client.impl.log.GrapplLog;
-import io.grappl.client.impl.relay.adaptive.AdaptiveConnector;
+import io.grappl.client.impl.relay.AdaptiveConnector;
 import io.grappl.client.impl.stable.GrapplBuilder;
 import io.grappl.client.impl.stable.StatMonitor;
 

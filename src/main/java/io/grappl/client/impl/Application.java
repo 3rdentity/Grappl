@@ -74,7 +74,6 @@ public final class Application {
             log = new GrapplLog();
 
         log.log("Started: Grappl " + VERSION + " {Brand=" + BRAND + ", Mode=" + mode + "}");
-//        log.log("Service status: " + getOnlineStatus());
         log.log("If you encounter issues, please report them to @grapplstatus, or @Cactose.");
         log.log("Preferably with a copy of this console! Thx <3");
 
@@ -87,7 +86,6 @@ public final class Application {
 
         log.log("Preparing to load plugins-");
         PluginManager.setupAndLoad();
-//        log.log("Initialization complete");
         log.log("====================");
     }
 

@@ -1,8 +1,7 @@
-package io.grappl.client.impl.relay.adaptive;
+package io.grappl.client.impl.relay;
 
 import io.grappl.client.api.Grappl;
 import io.grappl.client.impl.error.RelayServerNotFoundException;
-import io.grappl.client.impl.relay.RelayServer;
 
 import java.util.PriorityQueue;
 
