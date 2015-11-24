@@ -17,10 +17,16 @@ public class ApplicationState {
 
     private RelayManager relayManager = new RelayManager();
     {
-        relayManager.offerRelay(new RelayServer("n.grappl.io", "East Coast NA"));
-        relayManager.offerRelay(new RelayServer("s.grappl.io", "West Coast NA"));
-        relayManager.offerRelay(new RelayServer("e.grappl.io", "Europe"));
-        relayManager.offerRelay(new RelayServer("p.grappl.io", "Aus / Oceania"));
+        Thread pingThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                relayManager.offerRelay(new RelayServer("n.grappl.io", "East Coast NA"));
+                relayManager.offerRelay(new RelayServer("s.grappl.io", "West Coast NA"));
+                relayManager.offerRelay(new RelayServer("e.grappl.io", "Europe"));
+                relayManager.offerRelay(new RelayServer("p.grappl.io", "Aus / Oceania"));
+            }
+        });
+        pingThread.start();
     }
 
     private Authentication authentication;
