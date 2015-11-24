@@ -67,13 +67,7 @@ public class AdvancedGUI {
         jFrame.add(relayLabel);
 
         final JComboBox<String> jComboBox = new JComboBox<String>(
-                new String[] {
-                        "n.grappl.io (East Coast NA)",
-                        "t.grappl.io (Central NA)",
-                        "s.grappl.io (West Coast NA)",
-                        "e.grappl.io (Europe)",
-                        "p.grappl.io (Aus / Oceania)"
-                }
+                applicationState.getRelayManager().createList()
         );
 
         if(Application.debugState) {

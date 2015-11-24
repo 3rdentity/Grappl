@@ -36,14 +36,6 @@ public class DefaultGUI {
 
     private ApplicationState applicationState;
 
-    private RelayManager relayManager = new RelayManager();
-    {
-        relayManager.offerRelay("n.grappl.io");
-        relayManager.offerRelay("e.grappl.io");
-        relayManager.offerRelay("s.grappl.io");
-        relayManager.offerRelay("p.grappl.io");
-    }
-
     public DefaultGUI(final ApplicationState applicationState) {
         this.applicationState = applicationState;
 
@@ -220,7 +212,7 @@ public class DefaultGUI {
                     String ports = JOptionPane.showInputDialog("What port does your server run on?");
                     grappl.getInternalServer().setPort(Integer.parseInt(ports));
 
-                    AdaptiveConnector adaptiveConnector = new AdaptiveConnector(relayManager);
+                    AdaptiveConnector adaptiveConnector = new AdaptiveConnector(applicationState.getRelayManager());
                     adaptiveConnector.subject(grappl);
                 }
             });
@@ -405,7 +397,7 @@ public class DefaultGUI {
                 grappl.getInternalServer().setPort(Integer.parseInt(ports));
 
                 try {
-                    AdaptiveConnector adaptiveConnector = new AdaptiveConnector(relayManager);
+                    AdaptiveConnector adaptiveConnector = new AdaptiveConnector(applicationState.getRelayManager());
                     adaptiveConnector.subject(grappl);
                 } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(getFrame(), "The value you entered is not a number");

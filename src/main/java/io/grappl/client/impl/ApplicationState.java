@@ -3,6 +3,8 @@ package io.grappl.client.impl;
 import io.grappl.client.api.Grappl;
 import io.grappl.client.api.Protocol;
 import io.grappl.client.api.event.GrapplOpenListener;
+import io.grappl.client.impl.adaptive.RelayManager;
+import io.grappl.client.impl.adaptive.RelayServer;
 import io.grappl.client.impl.stable.Authentication;
 import io.grappl.client.impl.stable.GrapplBuilder;
 
@@ -12,6 +14,14 @@ import java.util.List;
 import java.util.Set;
 
 public class ApplicationState {
+
+    private RelayManager relayManager = new RelayManager();
+    {
+        relayManager.offerRelay(new RelayServer("n.grappl.io", "East Coast NA"));
+        relayManager.offerRelay(new RelayServer("s.grappl.io", "West Coast NA"));
+        relayManager.offerRelay(new RelayServer("e.grappl.io", "Europe"));
+        relayManager.offerRelay(new RelayServer("p.grappl.io", "Aus / Oceania"));
+    }
 
     private Authentication authentication;
     private List<Grappl> grapplList = new ArrayList<Grappl>();
@@ -73,6 +83,10 @@ public class ApplicationState {
 
     public void addGrapplOpenListener(GrapplOpenListener grapplOpenListener) {
         grapplOpenListeners.add(grapplOpenListener);
+    }
+
+    public RelayManager getRelayManager() {
+        return relayManager;
     }
 
     public void setCommandBufferVar(String commandBufferVar) {

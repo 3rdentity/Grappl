@@ -5,11 +5,18 @@ import java.net.Socket;
 public class RelayServer {
 
     private String relayLocation;
+    private String description;
+
     private long ping = Long.MAX_VALUE;
     private boolean up = false;
 
-    public RelayServer(String location) {
+    public RelayServer(String location, String description) {
         this.relayLocation = location;
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public boolean isUp() {

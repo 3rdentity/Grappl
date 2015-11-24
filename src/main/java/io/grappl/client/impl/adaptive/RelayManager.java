@@ -8,14 +8,13 @@ public class RelayManager {
 
     private Collection<LatencyRecord> records = new ArrayList<LatencyRecord>();
 
-    public void offerRelay(String relay) {
-        RelayServer relayServer = new RelayServer(relay);
+    public void offerRelay(RelayServer relayServer) {
         relayServer.ping();
 
         LatencyRecord pingRecord = new LatencyRecord(relayServer, relayServer.getLatency());
         records.add(pingRecord);
 
-        relayServerMap.put(relay, relayServer);
+        relayServerMap.put(relayServer.getRelayLocation(), relayServer);
     }
 
     public RelayServer getRelayForAddress(String location) {
@@ -39,24 +38,39 @@ public class RelayManager {
         return records1;
     }
 
+    public String[] createList() {
+        String[] str = new String[getQueue().size()];
+
+        PriorityQueue<LatencyRecord> latencyRecords = getQueue();
+
+        int i = 0;
+        while(!latencyRecords.isEmpty()) {
+            LatencyRecord latencyRecord = latencyRecords.poll();
+
+            str[i++] = latencyRecord.getServer().getRelayLocation() + " (" + latencyRecord.getServer().getDescription() + ") " + latencyRecord.getLatency() + "ms";
+        }
+
+        return str;
+    }
+
     public static void main(String[] args) {
-        RelayManager relayManager = new RelayManager();
-        relayManager.offerRelay("n.grappl.io");
-        relayManager.offerRelay("e.grappl.io");
-        relayManager.offerRelay("s.grappl.io");
-        relayManager.offerRelay("p.grappl.io");
-
-        PriorityQueue<LatencyRecord> stuff = relayManager.getQueue();
-        while(!stuff.isEmpty()) {
-            LatencyRecord pingRecord = stuff.poll();
-            System.out.println(pingRecord.getServer().getRelayLocation() + " " + pingRecord.getLatency());
-        }
-
-        relayManager.pingAll();
-        PriorityQueue<LatencyRecord> s2 = relayManager.getQueue();
-        while(!s2.isEmpty()) {
-            LatencyRecord pingRecord = s2.poll();
-            System.out.println(pingRecord.getServer().getRelayLocation() + " " + pingRecord.getLatency());
-        }
+//        RelayManager relayManager = new RelayManager();
+//        relayManager.offerRelay("n.grappl.io","");
+//        relayManager.offerRelay("e.grappl.io","");
+//        relayManager.offerRelay("s.grappl.io");
+//        relayManager.offerRelay("p.grappl.io");
+//
+//        PriorityQueue<LatencyRecord> stuff = relayManager.getQueue();
+//        while(!stuff.isEmpty()) {
+//            LatencyRecord pingRecord = stuff.poll();
+//            System.out.println(pingRecord.getServer().getRelayLocation() + " " + pingRecord.getLatency());
+//        }
+//
+//        relayManager.pingAll();
+//        PriorityQueue<LatencyRecord> s2 = relayManager.getQueue();
+//        while(!s2.isEmpty()) {
+//            LatencyRecord pingRecord = s2.poll();
+//            System.out.println(pingRecord.getServer().getRelayLocation() + " " + pingRecord.getLatency());
+//        }
     }
 }
