@@ -3,8 +3,8 @@ package io.grappl.client.impl;
 import io.grappl.client.api.Grappl;
 import io.grappl.client.api.Protocol;
 import io.grappl.client.api.event.GrapplOpenListener;
-import io.grappl.client.impl.adaptive.RelayManager;
-import io.grappl.client.impl.adaptive.RelayServer;
+import io.grappl.client.impl.relay.adaptive.RelayManager;
+import io.grappl.client.impl.relay.adaptive.RelayServer;
 import io.grappl.client.impl.stable.Authentication;
 import io.grappl.client.impl.stable.GrapplBuilder;
 

@@ -5,12 +5,11 @@ import io.grappl.client.api.Protocol;
 import io.grappl.client.impl.Application;
 import io.grappl.client.impl.GrapplDataFile;
 import io.grappl.client.impl.ApplicationState;
-import io.grappl.client.impl.adaptive.AdaptiveConnector;
-import io.grappl.client.impl.adaptive.RelayManager;
+import io.grappl.client.impl.relay.adaptive.AdaptiveConnector;
+import io.grappl.client.impl.relay.adaptive.RelayManager;
 import io.grappl.client.impl.error.AuthenticationException;
 import io.grappl.client.impl.stable.GrapplBuilder;
 import io.grappl.client.impl.error.RelayServerNotFoundException;
-import io.grappl.client.impl.stable.tcp.TCPGrappl;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,4 +1,4 @@
-package io.grappl.client.impl.adaptive;
+package io.grappl.client.impl.relay.adaptive;
 
 import io.grappl.client.api.Grappl;
 import io.grappl.client.impl.error.RelayServerNotFoundException;
