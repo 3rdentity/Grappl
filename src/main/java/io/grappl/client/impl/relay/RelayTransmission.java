@@ -34,7 +34,6 @@ public class RelayTransmission {
     }
 
     public static RelayTransmission getFromWebLocation(String webLocation) {
-
         try {
             URL url = new URL(webLocation);
             URLConnection urlConnection = url.openConnection();

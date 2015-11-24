@@ -9,13 +9,12 @@ public class RelayManager {
 
     private Map<String, RelayServer> relayServerMap = new HashMap<String, RelayServer>();
 
-    private Collection<LatencyRecord> records = new ArrayList<LatencyRecord>();
+    private Collection<RelayServer> records = new ArrayList<RelayServer>();
 
     public void offerRelay(RelayServer relayServer) {
         relayServer.ping();
 
-        LatencyRecord pingRecord = new LatencyRecord(relayServer, relayServer.getLatency());
-        records.add(pingRecord);
+        records.add(relayServer);
 
         relayServerMap.put(relayServer.getRelayLocation(), relayServer);
     }
@@ -25,15 +24,15 @@ public class RelayManager {
     }
 
     public void pingAll() {
-        for(LatencyRecord pingRecord : records) {
-            pingRecord.getServer().ping();
+        for(RelayServer server : records) {
+            server.ping();
         }
     }
 
-    public PriorityQueue<LatencyRecord> getQueue() {
-        PriorityQueue<LatencyRecord> records1 = new PriorityQueue<LatencyRecord>(new Comparator<LatencyRecord>() {
+    public PriorityQueue<RelayServer> getQueue() {
+        PriorityQueue<RelayServer> records1 = new PriorityQueue<RelayServer>(new Comparator<RelayServer>() {
             @Override
-            public int compare(LatencyRecord o1, LatencyRecord o2) {
+            public int compare(RelayServer o1, RelayServer o2) {
                 return (o1.getLatency() < o2.getLatency()) ? -1 : 1;
             }
         });
@@ -44,13 +43,13 @@ public class RelayManager {
     public String[] createList() {
         String[] str = new String[getQueue().size()];
 
-        PriorityQueue<LatencyRecord> latencyRecords = getQueue();
+        PriorityQueue<RelayServer> latencyRecords = getQueue();
 
         int i = 0;
         while(!latencyRecords.isEmpty()) {
-            LatencyRecord latencyRecord = latencyRecords.poll();
+            RelayServer latencyRecord = latencyRecords.poll();
 
-            str[i++] = latencyRecord.getServer().getRelayLocation() + " (" + latencyRecord.getServer().getDescription() + ") " + latencyRecord.getLatency() + "ms";
+            str[i++] = latencyRecord.getRelayLocation() + " (" + latencyRecord.getDescription() + ") " + latencyRecord.getLatency() + "ms";
         }
 
         return str;
@@ -60,8 +59,8 @@ public class RelayManager {
         RelayTransmission relayTransmission = new RelayTransmission();
 
         System.out.println(records.size());
-        for(LatencyRecord latencyRecord : records) {
-            relayTransmission.getRelayServerList().add(latencyRecord.getServer());
+        for(RelayServer latencyRecord : records) {
+            relayTransmission.getRelayServerList().add(latencyRecord);
         }
 
         System.out.println(relayTransmission.getRelayServerList().size());

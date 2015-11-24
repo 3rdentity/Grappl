@@ -2,6 +2,7 @@ package io.grappl.client.impl.relay.adaptive;
 
 import io.grappl.client.api.Grappl;
 import io.grappl.client.impl.error.RelayServerNotFoundException;
+import io.grappl.client.impl.relay.RelayServer;
 
 import java.util.PriorityQueue;
 
@@ -14,25 +15,21 @@ public class AdaptiveConnector {
     }
 
     public void subject(Grappl grappl) {
-        PriorityQueue<LatencyRecord> latencyRecords = relayManager.getQueue();
+        PriorityQueue<RelayServer> relayServers = relayManager.getQueue();
 
-        while(!latencyRecords.isEmpty()) {
-            LatencyRecord latencyRecord = latencyRecords.poll();
+        while(!relayServers.isEmpty()) {
+            RelayServer relayServer = relayServers.poll();
 
-            latencyRecord.getServer().ping();
+            relayServer.ping();
 
-            if(latencyRecord.getServer().isUp()) {
+            if(relayServer.isUp()) {
                 try {
-                    grappl.connect(latencyRecord.getServer().getRelayLocation());
+                    grappl.connect(relayServer.getRelayLocation());
                 } catch (RelayServerNotFoundException e) {
                     e.printStackTrace();
                 }
                 return;
             }
         }
-    }
-
-    public RelayManager getRelayManager() {
-        return relayManager;
     }
 }

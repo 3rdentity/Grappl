@@ -13,8 +13,6 @@ import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
 import java.net.Socket;
 import java.net.URL;
-import java.util.*;
-import java.util.List;
 
 /**
  * Represents a single running instance of the Grappl application.
@@ -39,6 +37,8 @@ public final class Application {
 
     // If you are distributing your own version, be kind and change this please.
     public static final String BRAND = "DaexsysVanilla";
+
+    public static final String RELAY_LIST_LOC = "http://grappl.io/relays.json";
 
     public static final String NO_GRAPPL_MESSAGE = "There is no grappl currently open! Start one with 'grappl connect'";
     public static final String NOT_LOGGED_IN_MESSAGE = "Not logged in. Login with 'login [username] [password]' to use this command.";

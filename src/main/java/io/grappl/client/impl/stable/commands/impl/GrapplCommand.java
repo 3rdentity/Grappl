@@ -7,6 +7,7 @@ import io.grappl.client.impl.Application;
 import io.grappl.client.impl.ApplicationState;
 import io.grappl.client.impl.error.RelayServerNotFoundException;
 import io.grappl.client.impl.log.GrapplLog;
+import io.grappl.client.impl.relay.adaptive.AdaptiveConnector;
 import io.grappl.client.impl.stable.GrapplBuilder;
 import io.grappl.client.impl.stable.StatMonitor;
 
@@ -20,7 +21,7 @@ public class GrapplCommand implements Command {
 
             if (subCommand.equalsIgnoreCase("connect")) {
                 // Default relay is the NYC one.
-                String relay = "n.grappl.io";
+                String relay = "unset";
 
                 if (args.length == 3) {
                     relay = args[2];
@@ -30,7 +31,14 @@ public class GrapplCommand implements Command {
                 state.addGrappl(grappl);
 
                 try {
-                    grappl.connect(relay);
+                    if(relay.equals("unset")) {
+                        AdaptiveConnector adaptiveConnector = new AdaptiveConnector(state.getRelayManager());
+                        adaptiveConnector.subject(grappl);
+                        relay = grappl.getExternalServer().getAddress();
+                    } else {
+                        grappl.connect(relay);
+                    }
+
                     Application.getLog().log("Connected to relay server @ " + relay);
                 } catch (RelayServerNotFoundException e) {
                     e.printStackTrace();

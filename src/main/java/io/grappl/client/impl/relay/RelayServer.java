@@ -1,5 +1,7 @@
 package io.grappl.client.impl.relay;
 
+import io.grappl.client.impl.Application;
+
 import java.net.Socket;
 
 public class RelayServer {
@@ -30,7 +32,7 @@ public class RelayServer {
     public void ping() {
         long before = System.currentTimeMillis();
         try {
-            Socket socket = new Socket(getRelayLocation(), 25564);
+            Socket socket = new Socket(getRelayLocation(), Application.MESSAGING_PORT);
             socket.close();
         } catch (Exception e) {
             up = false;

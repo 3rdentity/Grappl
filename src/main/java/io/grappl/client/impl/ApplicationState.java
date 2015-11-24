@@ -21,20 +21,26 @@ public class ApplicationState {
      */
     private RelayManager relayManager = new RelayManager();
     {
-        final RelayTransmission relayTransmission = RelayTransmission.getFromWebLocation("http://grappl.io/relays.json");
+        try {
+            final RelayTransmission relayTransmission =
+                    RelayTransmission.getFromWebLocation(Application.RELAY_LIST_LOC);
 
-        Thread pingThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                for(RelayServer relayServer : relayTransmission.getRelayServerList()) {
-                    relayManager.offerRelay(relayServer);
+            Thread pingThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    for (RelayServer relayServer : relayTransmission.getRelayServerList()) {
+                        relayManager.offerRelay(relayServer);
+                    }
                 }
-            }
-        });
-        pingThread.start();
+            });
+            pingThread.start();
+        } catch (Exception e) {
+            Application.getLog().log("Error fetching relay list");
+        }
     }
 
     private Authentication authentication;
+
     private List<Grappl> grapplList = new ArrayList<Grappl>();
 
     private int focusedIndex = 0;
