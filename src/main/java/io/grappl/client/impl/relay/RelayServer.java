@@ -57,8 +57,11 @@ public class RelayServer {
             e.printStackTrace();
         }
 
-//        AdvancedGUI.relayServerDropdown
-//                .setModel(new DefaultComboBoxModel<String>(Application.getApplicationState().getRelayManager().createList()));
+        if(AdvancedGUI.relayServerDropdown == null) {
+            AdvancedGUI.relayServerDropdown = new JComboBox<String>();
+        }
+        AdvancedGUI.relayServerDropdown
+                .setModel(new DefaultComboBoxModel<String>(Application.getApplicationState().getRelayManager().createList()));
 
         System.out.println("Adding");
         AdvancedGUI.relayServerDropdown.addItem(getRelayLocation()
