@@ -12,23 +12,23 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 
 @SuppressWarnings("All")
-public class Autoupdater {
-    public static String localURL = "";
+public class NewAutoUpdater {
+
+    public static final String APP_NAME = "Grappl";
 
     public static void main(String[] args) {
-
-        localURL = getOSSpecificLocation();
+        String localURL = getOSSpecificLocation();
 
         File file = new File(localURL);
         file.mkdirs();
 
         localURL += "/GrapplClient.jar";
 
-        downloadJar("http://grappl.io:888/html/GrapplClient.jar", true);
+        downloadJar("http://grappl.io:888/html/GrapplClient.jar", localURL);
 
         try {
             URLClassLoader loader =
-                    new URLClassLoader(new URL[]{new File(localURL).toURI().toURL()});
+                    new URLClassLoader(new URL[]{ new File(localURL).toURI().toURL() });
 
             JarInputStream jarInputStream = new JarInputStream(new FileInputStream(localURL));
 
@@ -36,6 +36,7 @@ public class Autoupdater {
 
             while (true) {
                 JarEntry jarEntry = jarInputStream.getNextJarEntry();
+
                 if (jarEntry == null) {
                     break;
                 } else {
@@ -55,23 +56,21 @@ public class Autoupdater {
                 }
             }
 
-            Map<String, Class> classe = new HashMap<String, Class>();
+            Map<String, Class> classMap = new HashMap<String, Class>();
 
             for (String s : classes) {
-                System.out.println(s);
                 Class<?> initiator = loader.loadClass(s);
-                classe.put(s, initiator);
-                System.out.println(initiator.getProtectionDomain().getCodeSource().getLocation());
+                classMap.put(s, initiator);
             }
 
-            classe.get("com.daexsys.grappl.client.Client").getMethod("main", String[].class).invoke(null, (Object) new String[]{});
+            classMap.get("com.daexsys.grappl.client.Client")
+                    .getMethod("main", String[].class).invoke(null, (Object) new String[]{});
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static boolean downloadJar(String url, boolean update) {
-//        File remoteURL = new File(url);
+    public static void downloadJar(String url, String localURL) {
         File localFile = new File(localURL);
 
         try {
@@ -82,22 +81,16 @@ public class Autoupdater {
 
             byte[] stuff = new byte[1024];
 
-            int kbsdld = 0;
-
             int amount = 0;
             while((amount = stream.read(stuff,0,1024)) != -1) {
-                ostream.write(stuff,0,amount);
-                kbsdld++;
+                ostream.write(stuff, 0, amount);
             }
 
             stream.close();
             ostream.flush();
 
-            return true;
-
         } catch (Exception e) {
             e.printStackTrace();
-            return update;
         }
     }
 
@@ -106,15 +99,15 @@ public class Autoupdater {
 
         if(os.contains("win")) {
             return System.getenv("APPDATA") + "/Daexsys/ "
-                    + Application.APP_NAME + "/";
+                    + APP_NAME + "/";
 
         } else if(os.contains("mac")) {
             return System.getProperty("user.home") + "/Library/Application Support/"
-                    + Application.APP_NAME + "/";
+                    + APP_NAME + "/";
 
         } else { // Linux / BSD
             return System.getProperty("user.home") + "/ "
-                    + Application.APP_NAME + "/";
+                    + APP_NAME + "/";
         }
     }
 }
