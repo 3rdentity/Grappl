@@ -34,7 +34,7 @@ public final class Application {
     public static final int AUTHENTICATION =   25571;
 
     public static final String APP_NAME = "Grappl";
-    public static final String VERSION = "Beta 1.4.3";
+    public static final String VERSION = "Beta 1.4.4";
 
     // If you are distributing your own version, be kind and change this please.
     public static final String BRAND = "DaexsysVanilla";
@@ -158,7 +158,6 @@ public final class Application {
             long start = System.currentTimeMillis();
             socket.connect(new InetSocketAddress(relay, 25564), 2000);
             long ping = (System.currentTimeMillis() - start);
-            System.out.println(relay + " " + ping);
         } catch (IOException e) {
             return false;
         }

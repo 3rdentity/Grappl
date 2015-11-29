@@ -1,7 +1,5 @@
 package com.daexsys.autoupdater;
 
-import io.grappl.client.impl.Application;
-
 import java.io.*;
 import java.net.URL;
 import java.net.URLClassLoader;

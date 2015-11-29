@@ -62,12 +62,9 @@ public class RelayManager {
     public RelayTransmission getRelayTransmission() {
         RelayTransmission relayTransmission = new RelayTransmission();
 
-        System.out.println(records.size());
         for(RelayServer relayServer : records) {
             relayTransmission.getRelayServerList().add(relayServer);
         }
-
-        System.out.println(relayTransmission.getRelayServerList().size());
 
         return relayTransmission;
     }
