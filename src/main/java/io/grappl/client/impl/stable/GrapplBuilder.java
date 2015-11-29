@@ -29,7 +29,7 @@ public class GrapplBuilder {
         if(grapplProtocol == Protocol.TCP) {
             grappl = new TCPGrappl(applicationState);
         } else {
-            grappl = new UDPGrappl();
+//            grappl = new UDPGrappl();
         }
     }
 

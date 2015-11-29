@@ -3,6 +3,7 @@ package com.daexsys.grappl.client;
 import io.grappl.client.api.Grappl;
 import io.grappl.client.impl.Application;
 import io.grappl.client.api.ApplicationMode;
+import io.grappl.client.impl.relay.AdaptiveConnector;
 import io.grappl.client.impl.stable.GrapplBuilder;
 import io.grappl.client.impl.gui.DefaultGUI;
 import io.grappl.client.impl.error.RelayServerNotFoundException;
@@ -40,12 +41,11 @@ public class Client {
                 grapplBuilder.atLocalPort(localPort);
                 Grappl grappl = grapplBuilder.build();
 
-                try {
-                    grappl.connect("n.grappl.io");
-                } catch (RelayServerNotFoundException e) {
-                    e.printStackTrace();
-                    System.exit(0);
-                }
+                AdaptiveConnector adaptiveConnector =
+                        new AdaptiveConnector(Application.getApplicationState().getRelayManager());
+
+                adaptiveConnector.subject(grappl);
+
             } else {
                 Application.getCommandHandler().createConsoleCommandListenThread();
             }

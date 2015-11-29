@@ -5,6 +5,7 @@ import io.grappl.client.api.LocationProvider;
 import io.grappl.client.impl.Application;
 import io.grappl.client.impl.GrapplDataFile;
 import io.grappl.client.impl.ApplicationState;
+import io.grappl.client.impl.relay.RelayServer;
 import io.grappl.client.impl.stable.Authentication;
 import io.grappl.client.impl.stable.NetworkLocation;
 import io.grappl.client.impl.error.RelayServerNotFoundException;
@@ -29,7 +30,7 @@ import java.net.URI;
  */
 public class AdvancedGUI {
 
-    private JList<String> jList;
+    private JList<String> connectedUserList;
     private JLabel isLoggedInLabel;
     private JLabel premiumLabel;
     private String username;
@@ -44,6 +45,8 @@ public class AdvancedGUI {
     private JFrame jFrame;
     private JButton open;
     private JButton close;
+
+    public static JComboBox<String> relayServerDropdown;
 
     private ApplicationState applicationState;
 
@@ -66,16 +69,16 @@ public class AdvancedGUI {
         relayLabel.setBounds(20, 20, 100, 20);
         jFrame.add(relayLabel);
 
-        final JComboBox<String> jComboBox = new JComboBox<String>(
-                applicationState.getRelayManager().createList()
-        );
+//        relayServerDropdown = new JComboBox<String>(
+//                applicationState.getRelayManager().createList()
+//        );
 
         if(Application.debugState) {
-            jComboBox.addItem("localhost (if you're testing)");
+            relayServerDropdown.addItem("localhost (if you're testing)");
         }
 
-        jComboBox.setBounds(20, 40, 200, 20);
-        jFrame.add(jComboBox);
+        relayServerDropdown.setBounds(20, 40, 200, 20);
+        jFrame.add(relayServerDropdown);
 
         final JButton addRelay = new JButton("+");
         addRelay.setBounds(220, 40, 20, 20);
@@ -83,10 +86,13 @@ public class AdvancedGUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String rServer = JOptionPane.showInputDialog(jFrame, "New relay server address");
+
                 if(rServer != null && !rServer.equals("")) {
-                    int index = jComboBox.getItemCount();
-                    jComboBox.addItem(rServer);
-                    jComboBox.setSelectedIndex(index);
+                    int index = relayServerDropdown.getItemCount();
+                    RelayServer relayServer = new RelayServer(rServer, "User added");
+                    relayServer.ping();
+//                    relayServerDropdown.addItem(rServer);
+                    relayServerDropdown.setSelectedIndex(index);
                 }
             }
         });
@@ -116,7 +122,8 @@ public class AdvancedGUI {
                             portLabel.setText("Local port: " + applicationState.getFocusedGrappl().getInternalServer().getPort());
                         }
                     } catch (NumberFormatException ignore) {
-                        JOptionPane.showConfirmDialog(jFrame, "Value too high. Port must be equal to or lower than " + MAX_POSSIBLE_PORT_NUMBER);
+                        JOptionPane.showConfirmDialog(jFrame,
+                                "Value too high. Port must be equal to or lower than " + MAX_POSSIBLE_PORT_NUMBER);
                     }
                 }
             }
@@ -151,9 +158,10 @@ public class AdvancedGUI {
 
                     boolean success;
                     try {
-                        success = theGrappl.connect(((String) jComboBox.getSelectedItem()).split("\\s+")[0]);
+                        success = theGrappl.connect(((String) relayServerDropdown.getSelectedItem()).split("\\s+")[0]);
                     } catch (RelayServerNotFoundException e1) {
-                        e1.printStackTrace();
+                        JOptionPane.showMessageDialog(null,
+                                "Connection to relay server failed, it (or you!) may be offline.");
                         success = false;
                     }
 
@@ -161,14 +169,16 @@ public class AdvancedGUI {
                         theGrappl.addUserConnectListener(new UserConnectListener() {
                             @Override
                             public void userConnected(UserConnectEvent userConnectEvent) {
-                                ((DefaultListModel<String>) jList.getModel()).addElement(userConnectEvent.getAddress());
+                                ((DefaultListModel<String>) connectedUserList.getModel())
+                                        .addElement(userConnectEvent.getAddress());
                             }
                         });
 
                         theGrappl.addUserDisconnectListener(new UserDisconnectListener() {
                             @Override
                             public void userDisconnected(UserDisconnectEvent userDisconnectEvent) {
-                                ((DefaultListModel<String>) jList.getModel()).addElement(userDisconnectEvent.getAddress());
+                                ((DefaultListModel<String>) connectedUserList.getModel())
+                                        .removeElement(userDisconnectEvent.getAddress());
                             }
                         });
                         connectionLabel.setText("Public at: " + theGrappl.getExternalServer().getAddress() + ":" + theGrappl.getExternalServer().getPort());
@@ -178,7 +188,8 @@ public class AdvancedGUI {
                         applicationState.removeGrappl(applicationState.getFocusedGrappl());
                     }
                 } else {
-                    JOptionPane.showMessageDialog(jFrame, "Grappl connection already open! Close it before opening another.");
+                    JOptionPane.showMessageDialog(jFrame,
+                            "Grappl connection already open! Close it before opening another.");
                 }
             }
         });
@@ -218,8 +229,8 @@ public class AdvancedGUI {
         openConsoleButton.setBounds(dist, 200, 250, 30);
         jFrame.add(openConsoleButton);
 
-        jList = new JList<String>(new DefaultListModel<String>());
-        JScrollPane jScrollPane = new JScrollPane(jList);
+        connectedUserList = new JList<String>(new DefaultListModel<String>());
+        JScrollPane jScrollPane = new JScrollPane(connectedUserList);
         jScrollPane.setBounds(dist, 130, 250, 60);
         jFrame.add(jScrollPane);
 

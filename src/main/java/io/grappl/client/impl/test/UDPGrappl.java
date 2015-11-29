@@ -3,6 +3,7 @@ package io.grappl.client.impl.test;
 import io.grappl.client.api.ClientConnection;
 import io.grappl.client.api.Grappl;
 import io.grappl.client.api.Protocol;
+import io.grappl.client.impl.Application;
 import io.grappl.client.impl.ApplicationState;
 import io.grappl.client.impl.stable.Authentication;
 import io.grappl.client.impl.stable.NetworkLocation;
@@ -11,20 +12,69 @@ import io.grappl.client.api.event.UserConnectListener;
 import io.grappl.client.api.event.UserDisconnectListener;
 import io.grappl.client.impl.gui.DefaultGUI;
 
-import java.net.DatagramSocket;
-import java.net.SocketException;
+import java.io.IOException;
+import java.net.*;
 import java.util.Collection;
 import java.util.UUID;
 
 /**
- * Experimental UDP grappl implementation
+ * Experimental UDP grappl implementation.
  */
 public class UDPGrappl implements Grappl {
 
-    protected int localIP;
-    protected String relayServer;
+    private ApplicationState applicationState;
+    private UUID uuid;
 
-    public UDPGrappl() {
+    private NetworkLocation internalServer;
+    private NetworkLocation externalServer;
+
+    /**
+     * Constructs a new Grappl
+     */
+    public UDPGrappl(ApplicationState applicationState) {
+        this.applicationState = applicationState;
+        this.uuid = UUID.randomUUID();
+
+        Application.getLog()
+                .log("Creating grappl connection " + getUUID());
+    }
+
+    public boolean connect(final String relayServer) {
+
+        // TODO: Connected to message server 25564
+        try {
+            DatagramSocket datagramSocket = new DatagramSocket();
+
+            byte[] data = new byte[] { 3, 3, 3, 3 };
+
+            try {
+                InetAddress address = InetAddress.getByName("localhost");
+
+                DatagramPacket datagramPacket = new DatagramPacket(data, data.length, address, 333);
+                datagramSocket.send(datagramPacket);
+            } catch (UnknownHostException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
+
+//        try {
+////            DatagramSocket datagramSocket = new DatagramSocket(externalServer.getAddress(), 25564);
+//
+//            // TODO: for each connection, open one connect inwards and one outwards, then route the streams through to each other
+//            // TODO: UDP tunnel
+//        } catch (SocketException e) {
+//            e.printStackTrace();
+//        }
+
+        return true;
+    }
+
+    @Override
+    public void disconnect() {
 
     }
 
@@ -53,39 +103,19 @@ public class UDPGrappl implements Grappl {
         return null;
     }
 
-    public boolean connect(final String relayServer) {
-
-        // TODO: Connected to message server 25564
-        try {
-            DatagramSocket datagramSocket = new DatagramSocket(localIP);
-
-            // TODO: for each connection, open one connect inwards and one outwards, then route the streams through to each other
-            // TODO: UDP tunnel
-        } catch (SocketException e) {
-            e.printStackTrace();
-        }
-
-        return true;
-    }
-
-    @Override
-    public void disconnect() {
-
-    }
-
     @Override
     public NetworkLocation getExternalServer() {
-        return null;
+        return internalServer;
     }
 
     @Override
     public NetworkLocation getInternalServer() {
-        return null;
+        return externalServer;
     }
 
     @Override
     public ApplicationState getApplicationState() {
-        return null;
+        return applicationState;
     }
 
     @Override
@@ -95,7 +125,7 @@ public class UDPGrappl implements Grappl {
 
     @Override
     public UUID getUUID() {
-        return null;
+        return uuid;
     }
 
     @Override
@@ -109,6 +139,6 @@ public class UDPGrappl implements Grappl {
 
     @Override
     public Protocol getProtocol() {
-        return null;
+        return Protocol.UDP;
     }
 }

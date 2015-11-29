@@ -1,7 +1,11 @@
 package io.grappl.client.impl.relay;
 
 import io.grappl.client.impl.Application;
+import io.grappl.client.impl.gui.AdvancedGUI;
 
+import javax.swing.*;
+import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 
 public class RelayServer {
@@ -31,18 +35,48 @@ public class RelayServer {
 
     public void ping() {
         long before = System.currentTimeMillis();
+
+        Socket socket = new Socket();
         try {
-            Socket socket = new Socket(getRelayLocation(), Application.MESSAGING_PORT);
+            socket.connect(new InetSocketAddress(getRelayLocation(), Application.MESSAGING_PORT), 300);
             socket.close();
         } catch (Exception e) {
             up = false;
+            if(AdvancedGUI.relayServerDropdown == null) {
+                AdvancedGUI.relayServerDropdown = new JComboBox<String>();
+            }
+
+            AdvancedGUI.relayServerDropdown.addItem(getRelayLocation()
+                    + " (" + getDescription() + ") "
+                    + getLatencyMessage());
             return;
         }
+        try {
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+//        AdvancedGUI.relayServerDropdown
+//                .setModel(new DefaultComboBoxModel<String>(Application.getApplicationState().getRelayManager().createList()));
+
+        System.out.println("Adding");
+        AdvancedGUI.relayServerDropdown.addItem(getRelayLocation()
+                + " (" + getDescription() + ") "
+                + getLatencyMessage());
+
         up = true;
         ping = System.currentTimeMillis() - before;
     }
 
     public String getRelayLocation() {
         return relayLocation;
+    }
+
+    public String getLatencyMessage() {
+        if(getLatency() < Integer.MAX_VALUE)
+            return getLatency() + "ms";
+
+        else return "UNREACHABLE";
     }
 }

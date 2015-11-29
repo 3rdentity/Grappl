@@ -65,7 +65,7 @@ public class TCPGrappl implements Grappl {
     private List<UserDisconnectListener> userDisconnectListeners = new ArrayList<UserDisconnectListener>();
 
     /**
-     * Constructs a new Grappl and sets a generic LocationProvider.
+     * Constructs a new Grappl
      */
     public TCPGrappl(ApplicationState applicationState) {
         this.applicationState = applicationState;

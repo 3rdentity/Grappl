@@ -37,19 +37,7 @@ public class DefaultGUI {
     public DefaultGUI(final ApplicationState applicationState) {
         this.applicationState = applicationState;
 
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (UnsupportedLookAndFeelException e) {
-            e.printStackTrace();
-        }
-
-        jFrame = new JFrame("Grappl " + Application.VERSION);
+        jFrame = new JFrame(Application.APP_NAME + " " + Application.VERSION);
         jFrame.setSize(new Dimension(310, 240));
         jFrame.setLocationRelativeTo(null);
         jFrame.setVisible(true);
@@ -403,6 +391,7 @@ public class DefaultGUI {
             } else {
                 Application.getLog().log("Login failed!");
             }
+        } catch (AuthenticationException authentication) {
         } catch (Exception esdfe) {
             esdfe.printStackTrace();
             Application.getLog().log("Yeah... that shouldn't have happened. Type the darn port next time!");

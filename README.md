@@ -4,7 +4,7 @@
 
 Website: http://grappl.io/
 
-Donations: http://grappl.io/donate
+Donate: http://grappl.io/donate
 
 Launcher: http://grappl.io:888/html/GrapplLauncher.jar (Beta 1.4 currently, autoupdates)
 
@@ -15,7 +15,7 @@ Relay server code: https://github.com/Cactose/GrapplRelay
 Grappl is a tool for hosting servers behind closed ports.
 People connecting don't have to download anything to connect to Grappl'd servers, unlike with other programs such as hamachi.
 
-All you have to do to run it is run the .jar, choose whether you want to be logged in or anonymous, specify what port your server
+All you have to do to run it is run the .jar, choose whether you want to be logged in or anonymous, specify which port your server
 is bound to, and your server will be open for anyone to connect. No messing around with port forwarding.
 
 It works by transferring data through relay servers (by default, ones on grappl.io).

@@ -76,11 +76,16 @@ public class GrapplDataFile {
         final String os = System.getProperty("os.name").toLowerCase();
 
         if(os.contains("win")) {
-            return System.getenv("APPDATA") + "/Daexsys/Grappl/";
+            return System.getenv("APPDATA") + "/Daexsys/ "
+                    + Application.APP_NAME + "/";
+
         } else if(os.contains("mac")) {
-            return System.getProperty("user.home") + "/Library/Application Support/Grappl/";
+            return System.getProperty("user.home") + "/Library/Application Support/"
+                    + Application.APP_NAME + "/";
+
         } else { // Linux / BSD
-            return System.getProperty("user.home") + "/Grappl/";
+            return System.getProperty("user.home") + "/ "
+                    + Application.APP_NAME + "/";
         }
     }
 }
