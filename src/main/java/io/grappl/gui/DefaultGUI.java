@@ -1,4 +1,4 @@
-package io.grappl.client.impl.gui;
+package io.grappl.gui;
 
 import io.grappl.client.api.Grappl;
 import io.grappl.client.api.Protocol;

@@ -3,7 +3,7 @@ package io.grappl.client.impl.log;
 import io.grappl.client.api.event.ConsoleMessageListener;
 import io.grappl.client.impl.Application;
 import io.grappl.client.impl.GrapplDataFile;
-import io.grappl.client.impl.gui.ConsoleGUI;
+import io.grappl.gui.ConsoleGUI;
 
 import javax.swing.*;
 import java.io.*;

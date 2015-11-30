@@ -11,8 +11,8 @@ import io.grappl.client.impl.event.UserConnectEvent;
 import io.grappl.client.api.event.UserConnectListener;
 import io.grappl.client.impl.event.UserDisconnectEvent;
 import io.grappl.client.api.event.UserDisconnectListener;
-import io.grappl.client.impl.gui.AdvancedGUI;
-import io.grappl.client.impl.gui.DefaultGUI;
+import io.grappl.gui.AdvancedGUI;
+import io.grappl.gui.DefaultGUI;
 
 import javax.swing.*;
 import java.io.DataInputStream;

@@ -4,8 +4,8 @@ import io.grappl.client.api.Grappl;
 import io.grappl.client.api.LocationProvider;
 import io.grappl.client.api.Protocol;
 import io.grappl.client.impl.error.AuthenticationException;
-import io.grappl.client.impl.gui.AdvancedGUI;
-import io.grappl.client.impl.gui.DefaultGUI;
+import io.grappl.gui.AdvancedGUI;
+import io.grappl.gui.DefaultGUI;
 import io.grappl.client.impl.tcp.TCPGrappl;
 
 import javax.swing.*;

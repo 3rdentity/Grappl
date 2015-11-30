@@ -1,4 +1,4 @@
-package io.grappl.client.impl.gui.multi;
+package io.grappl.gui.multi;
 
 import io.grappl.client.api.Grappl;
 import io.grappl.client.api.event.ConsoleMessageListener;

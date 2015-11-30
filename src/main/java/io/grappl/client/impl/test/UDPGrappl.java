@@ -10,7 +10,7 @@ import io.grappl.client.impl.NetworkLocation;
 import io.grappl.client.impl.StatMonitor;
 import io.grappl.client.api.event.UserConnectListener;
 import io.grappl.client.api.event.UserDisconnectListener;
-import io.grappl.client.impl.gui.DefaultGUI;
+import io.grappl.gui.DefaultGUI;
 
 import java.io.IOException;
 import java.net.*;

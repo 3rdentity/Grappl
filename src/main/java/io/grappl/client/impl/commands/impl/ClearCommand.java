@@ -4,7 +4,7 @@ import io.grappl.client.impl.Application;
 import io.grappl.client.api.ApplicationMode;
 import io.grappl.client.api.commands.Command;
 import io.grappl.client.impl.ApplicationState;
-import io.grappl.client.impl.gui.ConsoleGUI;
+import io.grappl.gui.ConsoleGUI;
 
 public class ClearCommand implements Command {
 

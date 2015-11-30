@@ -1,4 +1,4 @@
-package io.grappl.client.impl.gui;
+package io.grappl.gui;
 
 import io.grappl.client.impl.Application;
 import io.grappl.client.impl.ApplicationState;

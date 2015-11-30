@@ -2,7 +2,7 @@ package io.grappl.client.impl.commands.impl;
 
 import io.grappl.client.api.commands.Command;
 import io.grappl.client.impl.ApplicationState;
-import io.grappl.client.impl.gui.multi.MultiLaunchGUI;
+import io.grappl.gui.multi.MultiLaunchGUI;
 
 public class MultiTestCommand implements Command {
 
