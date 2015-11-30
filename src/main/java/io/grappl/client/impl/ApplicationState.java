@@ -40,6 +40,7 @@ public class ApplicationState {
         }
     }
 
+    private HeartbeatHandler heartbeatHandler;
     private Authentication authentication;
 
     private List<Grappl> grapplList = new ArrayList<Grappl>();
@@ -49,7 +50,9 @@ public class ApplicationState {
 
     private Set<GrapplOpenListener> grapplOpenListeners = new HashSet<GrapplOpenListener>();
 
-    public ApplicationState(){}
+    public ApplicationState(){
+        heartbeatHandler = new HeartbeatHandler();
+    }
 
     public void useAuthentication(Authentication authentication) {
         this.authentication = authentication;
@@ -101,6 +104,10 @@ public class ApplicationState {
 
     public void addGrapplOpenListener(GrapplOpenListener grapplOpenListener) {
         grapplOpenListeners.add(grapplOpenListener);
+    }
+
+    public HeartbeatHandler getHeartbeatHandler() {
+        return heartbeatHandler;
     }
 
     public RelayManager getRelayManager() {

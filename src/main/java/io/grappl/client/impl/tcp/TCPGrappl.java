@@ -110,7 +110,8 @@ public class TCPGrappl implements Grappl {
                 if (gui != null)
                     gui.initializeGUI(relayServer, externalServer.getPort() + "", getInternalPort());
 
-                HeartbeatHandler.tryToMakeHeartbeatTo(externalServer.getAddress());
+                applicationState.getHeartbeatHandler()
+                        .tryToMakeHeartbeatTo(externalServer.getAddress());
 
                 // Create thread that routes incoming connections to the local server.
                 createClientHandler(relayMessageSocket, relayMsgInputStream);

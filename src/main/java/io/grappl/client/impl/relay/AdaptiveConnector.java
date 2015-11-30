@@ -27,6 +27,7 @@ public class AdaptiveConnector {
                 } catch (RelayServerNotFoundException e) {
                     e.printStackTrace();
                 }
+
                 return;
             }
         }

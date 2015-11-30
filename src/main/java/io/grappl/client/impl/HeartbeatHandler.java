@@ -22,16 +22,16 @@ import java.util.Set;
 // TODO: Make the components of this class non-static and possibly make it a field of ApplicationState?
 public class HeartbeatHandler {
 
-    private static Set<String> existingHeartbeatThreads = new HashSet<String>();
+    private Set<String> existingHeartbeatThreads = new HashSet<String>();
 
-    public static void tryToMakeHeartbeatTo(String relayServer) {
+    public void tryToMakeHeartbeatTo(String relayServer) {
         if(!existingHeartbeatThreads.contains(relayServer)) {
             createHeartBeatThread(relayServer);
             existingHeartbeatThreads.add(relayServer);
         }
     }
 
-    private static void createHeartBeatThread(final String relayServer) {
+    private void createHeartBeatThread(final String relayServer) {
         Thread heartBeatThread = new Thread(new Runnable() {
             @SuppressWarnings("ConstantConditions")
             @Override
@@ -52,7 +52,6 @@ public class HeartbeatHandler {
                     try {
                         dataOutputStream.writeInt(0);
                     } catch (IOException e) {
-                        isDown(relayServer);
                         return;
                     }
 
@@ -67,7 +66,4 @@ public class HeartbeatHandler {
         heartBeatThread.setName("Grappl Heartbeat Thread " + relayServer);
         heartBeatThread.start();
     }
-
-    // TODO: Make this do something! Argh
-    public static void isDown(String relayServer) {}
 }
