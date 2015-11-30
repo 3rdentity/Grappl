@@ -19,7 +19,6 @@ import java.util.Set;
  * is already created to the relay it is attempting to connect to. If it already is, nothing
  * more is done. Otherwise, a new one is opened, and recorded.
  */
-// TODO: Make the components of this class non-static and possibly make it a field of ApplicationState?
 public class HeartbeatHandler {
 
     private Set<String> existingHeartbeatThreads = new HashSet<String>();

@@ -3,6 +3,9 @@ package io.grappl.client.impl;
 import io.grappl.client.api.Grappl;
 import io.grappl.client.api.Protocol;
 import io.grappl.client.api.event.GrapplOpenListener;
+import io.grappl.client.api.event.Listener;
+import io.grappl.client.api.event.UserConnectListener;
+import io.grappl.client.impl.event.GrapplCloseEvent;
 import io.grappl.client.impl.relay.RelayManager;
 import io.grappl.client.impl.relay.RelayServer;
 
@@ -102,8 +105,16 @@ public class ApplicationState {
         return new GrapplBuilder(this, protocol);
     }
 
-    public void addGrapplOpenListener(GrapplOpenListener grapplOpenListener) {
-        grapplOpenListeners.add(grapplOpenListener);
+    public void addListener(Listener listener) {
+        if(listener instanceof GrapplOpenListener) {
+            grapplOpenListeners.add((GrapplOpenListener) listener);
+        }
+    }
+
+    public void removeListener(Listener listener) {
+        if(listener instanceof GrapplOpenListener) {
+            grapplOpenListeners.remove((GrapplOpenListener) listener);
+        }
     }
 
     public HeartbeatHandler getHeartbeatHandler() {
