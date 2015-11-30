@@ -3,7 +3,7 @@ package test;
 import io.grappl.client.api.Grappl;
 import io.grappl.client.impl.Application;
 import io.grappl.client.impl.error.RelayServerNotFoundException;
-import io.grappl.client.impl.stable.tcp.TCPGrappl;
+import io.grappl.client.impl.tcp.TCPGrappl;
 
 import java.util.HashSet;
 import java.util.Set;

@@ -1,6 +1,6 @@
 package io.grappl.client.api;
 
-import io.grappl.client.impl.stable.NetworkLocation;
+import io.grappl.client.impl.NetworkLocation;
 
 public interface LocationProvider {
 

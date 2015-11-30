@@ -5,8 +5,6 @@ import io.grappl.client.api.Protocol;
 import io.grappl.client.api.event.GrapplOpenListener;
 import io.grappl.client.impl.relay.RelayManager;
 import io.grappl.client.impl.relay.RelayServer;
-import io.grappl.client.impl.stable.Authentication;
-import io.grappl.client.impl.stable.GrapplBuilder;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -30,9 +28,8 @@ public class ApplicationState {
 //                    for (RelayServer relayServer : relayTransmission.getRelayServerList()) {
 //                        relayManager.offerRelay(relayServer);
 //                    }
-                    relayManager.offerRelay(new RelayServer("n.grappl.io", "East Coast NA"));
-                    relayManager.offerRelay(new RelayServer("s.grappl.io", "West Coast NA"));
-//                relayManager.offerRelay(new RelayServer("l.grappl.io", "UK Europe"));
+                relayManager.offerRelay(new RelayServer("n.grappl.io", "East Coast NA"));
+                relayManager.offerRelay(new RelayServer("s.grappl.io", "West Coast NA"));
                 relayManager.offerRelay(new RelayServer("e.grappl.io", "NL Europe"));
                 relayManager.offerRelay(new RelayServer("p.grappl.io", "Aus / Oceania"));
                 }

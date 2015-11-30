@@ -4,7 +4,7 @@ import io.grappl.client.api.Grappl;
 import io.grappl.client.impl.Application;
 import io.grappl.client.api.ApplicationMode;
 import io.grappl.client.impl.error.AuthenticationException;
-import io.grappl.client.impl.stable.GrapplBuilder;
+import io.grappl.client.impl.GrapplBuilder;
 import io.grappl.client.impl.error.RelayServerNotFoundException;
 
 import java.io.File;

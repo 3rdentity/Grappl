@@ -6,13 +6,13 @@ import io.grappl.client.impl.Application;
 import io.grappl.client.impl.GrapplDataFile;
 import io.grappl.client.impl.ApplicationState;
 import io.grappl.client.impl.relay.RelayServer;
-import io.grappl.client.impl.stable.Authentication;
-import io.grappl.client.impl.stable.NetworkLocation;
+import io.grappl.client.impl.Authentication;
+import io.grappl.client.impl.NetworkLocation;
 import io.grappl.client.impl.error.RelayServerNotFoundException;
-import io.grappl.client.impl.stable.tcp.TCPGrappl;
-import io.grappl.client.impl.stable.event.UserConnectEvent;
+import io.grappl.client.impl.tcp.TCPGrappl;
+import io.grappl.client.impl.event.UserConnectEvent;
 import io.grappl.client.api.event.UserConnectListener;
-import io.grappl.client.impl.stable.event.UserDisconnectEvent;
+import io.grappl.client.impl.event.UserDisconnectEvent;
 import io.grappl.client.api.event.UserDisconnectListener;
 
 import javax.swing.*;

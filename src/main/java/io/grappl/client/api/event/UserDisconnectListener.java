@@ -1,6 +1,6 @@
 package io.grappl.client.api.event;
 
-import io.grappl.client.impl.stable.event.UserDisconnectEvent;
+import io.grappl.client.impl.event.UserDisconnectEvent;
 
 public interface UserDisconnectListener {
 
