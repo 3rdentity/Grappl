@@ -71,6 +71,12 @@ public final class Application {
     public static void create(String[] args, ApplicationMode mode) {
         Application.mode = mode;
 
+        System.setProperty("app-name", "Grappl");
+        System.setProperty("app-version", "Beta 1.4.6");
+        System.setProperty("app-brand", "DaexsysVanilla");
+        System.setProperty("no-tunnel-message", "There is no grappl currently open! Start one with 'grappl connect'");
+        System.setProperty("no-user-message", "Not logged in. Login with 'login [username] [password]' to use this command.");
+
         if(log == null)
             log = new GrapplLog();
 
