@@ -15,56 +15,31 @@ public class ConsoleGUI {
     public static JTextArea logDisplay;
 
     private ApplicationState applicationState;
-    private JFrame theFrame;
+    private JFrame consoleFrame;
 
     public ConsoleGUI(final ApplicationState applicationState) {
-        JFrame consoleFrame = new JFrame();
-        theFrame = consoleFrame;
+        consoleFrame = new JFrame();
         this.applicationState = applicationState;
-
         consoleFrame.setResizable(false);
 
-        theFrame.addWindowListener(new WindowListener() {
-            @Override
-            public void windowOpened(WindowEvent e) {
-
-            }
-
+        consoleFrame.addWindowListener(new WindowListener() {
             @Override
             public void windowClosing(WindowEvent e) {
                 try {
                     applicationState.getFocusedGrappl().getGUI().destroyConsoleWindow();
-                } catch (Exception ignore) {
+                } catch (Exception exc) {
+                    exc.printStackTrace();
                 }
-
             }
 
-            @Override
-            public void windowClosed(WindowEvent e) {
-
-            }
-
-            @Override
-            public void windowIconified(WindowEvent e) {
-
-            }
-
-            @Override
-            public void windowDeiconified(WindowEvent e) {
-
-            }
-
-            @Override
-            public void windowActivated(WindowEvent e) {
-
-            }
-
-            @Override
-            public void windowDeactivated(WindowEvent e) {
-
-            }
+            public void windowClosed(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {}
+            public void windowDeactivated(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {}
         });
-        consoleFrame.setTitle("Grappl Console");
+        consoleFrame.setTitle(Application.APP_NAME + " Console");
 
         try {
             consoleFrame.setIconImage(Application.getIcon());
@@ -133,7 +108,7 @@ public class ConsoleGUI {
         return true;
     }
 
-    public JFrame getTheFrame() {
-        return theFrame;
+    public JFrame getConsoleFrame() {
+        return consoleFrame;
     }
 }

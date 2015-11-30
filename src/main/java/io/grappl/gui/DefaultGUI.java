@@ -174,7 +174,7 @@ public class DefaultGUI {
                         if (theConsoleWindow == null) {
                             theConsoleWindow = new ConsoleGUI(applicationState);
                         } else {
-                            theConsoleWindow.getTheFrame().toFront();
+                            theConsoleWindow.getConsoleFrame().toFront();
                         }
                         }
                     });
@@ -361,7 +361,7 @@ public class DefaultGUI {
                     if (theConsoleWindow == null) {
                         theConsoleWindow = new ConsoleGUI(applicationState);
                     } else {
-                        theConsoleWindow.getTheFrame().toFront();
+                        theConsoleWindow.getConsoleFrame().toFront();
                     }
                     }
                 });
