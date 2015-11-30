@@ -66,25 +66,4 @@ public class RelayManager {
 
         return relayTransmission;
     }
-
-    public static void main(String[] args) {
-//        RelayManager relayManager = new RelayManager();
-//        relayManager.offerRelay("n.grappl.io","");
-//        relayManager.offerRelay("e.grappl.io","");
-//        relayManager.offerRelay("s.grappl.io");
-//        relayManager.offerRelay("p.grappl.io");
-//
-//        PriorityQueue<LatencyRecord> stuff = relayManager.getQueue();
-//        while(!stuff.isEmpty()) {
-//            LatencyRecord pingRecord = stuff.poll();
-//            System.out.println(pingRecord.getServer().getRelayLocation() + " " + pingRecord.getLatency());
-//        }
-//
-//        relayManager.pingAll();
-//        PriorityQueue<LatencyRecord> s2 = relayManager.getQueue();
-//        while(!s2.isEmpty()) {
-//            LatencyRecord pingRecord = s2.poll();
-//            System.out.println(pingRecord.getServer().getRelayLocation() + " " + pingRecord.getLatency());
-//        }
-    }
 }

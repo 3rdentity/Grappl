@@ -34,6 +34,10 @@ public class RelayServer {
     }
 
     public void ping() {
+        if(AdvancedGUI.relayServerDropdown == null) {
+            AdvancedGUI.relayServerDropdown = new JComboBox<String>();
+        }
+
         long before = System.currentTimeMillis();
 
         Socket socket = new Socket();
@@ -42,24 +46,19 @@ public class RelayServer {
             socket.close();
         } catch (Exception e) {
             up = false;
-            if(AdvancedGUI.relayServerDropdown == null) {
-                AdvancedGUI.relayServerDropdown = new JComboBox<String>();
-            }
 
             AdvancedGUI.relayServerDropdown.addItem(getRelayLocation()
                     + " (" + getDescription() + ") "
                     + getLatencyMessage());
             return;
         }
+        ping = System.currentTimeMillis() - before;
         try {
             socket.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        if(AdvancedGUI.relayServerDropdown == null) {
-            AdvancedGUI.relayServerDropdown = new JComboBox<String>();
-        }
         AdvancedGUI.relayServerDropdown
                 .setModel(new DefaultComboBoxModel<String>(Application.getApplicationState().getRelayManager().createList()));
 
@@ -68,7 +67,6 @@ public class RelayServer {
                 + getLatencyMessage());
 
         up = true;
-        ping = System.currentTimeMillis() - before;
     }
 
     public String getRelayLocation() {

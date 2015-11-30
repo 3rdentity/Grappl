@@ -30,8 +30,8 @@ public class ApplicationState {
 //                    for (RelayServer relayServer : relayTransmission.getRelayServerList()) {
 //                        relayManager.offerRelay(relayServer);
 //                    }
-                relayManager.offerRelay(new RelayServer("n.grappl.io", "East Coast NA"));
-                relayManager.offerRelay(new RelayServer("s.grappl.io", "West Coast NA"));
+                    relayManager.offerRelay(new RelayServer("n.grappl.io", "East Coast NA"));
+                    relayManager.offerRelay(new RelayServer("s.grappl.io", "West Coast NA"));
 //                relayManager.offerRelay(new RelayServer("l.grappl.io", "UK Europe"));
                 relayManager.offerRelay(new RelayServer("e.grappl.io", "NL Europe"));
                 relayManager.offerRelay(new RelayServer("p.grappl.io", "Aus / Oceania"));
