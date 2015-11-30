@@ -26,6 +26,9 @@ public class RelayServer {
     public void ping() {
         if(AdvancedGUI.relayServerDropdown == null) {
             AdvancedGUI.relayServerDropdown = new JComboBox<String>();
+
+            AdvancedGUI.relayServerDropdown
+                    .setModel(new DefaultComboBoxModel<String>(Application.getApplicationState().getRelayManager().createList()));
         }
 
         /* START PING */
@@ -51,9 +54,6 @@ public class RelayServer {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        AdvancedGUI.relayServerDropdown
-                .setModel(new DefaultComboBoxModel<String>(Application.getApplicationState().getRelayManager().createList()));
 
         AdvancedGUI.relayServerDropdown.addItem(getRelayLocation()
                 + " (" + getDescription() + ") "

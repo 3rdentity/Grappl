@@ -69,10 +69,6 @@ public class AdvancedGUI {
         relayLabel.setBounds(20, 20, 100, 20);
         jFrame.add(relayLabel);
 
-//        relayServerDropdown = new JComboBox<String>(
-//                applicationState.getRelayManager().createList()
-//        );
-
         if(Application.debugState) {
             relayServerDropdown.addItem("localhost (if you're testing)");
         }
