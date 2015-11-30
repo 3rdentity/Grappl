@@ -1,8 +1,5 @@
 package io.grappl.client.impl.relay;
 
-import io.grappl.client.impl.relay.RelayServer;
-import io.grappl.client.impl.relay.RelayTransmission;
-
 import java.util.*;
 
 public class RelayManager {

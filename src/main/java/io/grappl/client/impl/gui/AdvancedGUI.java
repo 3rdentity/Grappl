@@ -298,7 +298,7 @@ public class AdvancedGUI {
                     jPasswordField.setText(password);
                     isActuallyHash = true;
                 } else {
-                    Application.getLog().log("Password is null");
+//                    Application.getLog().log("Password is null");
                 }
                 jFrame.add(jPasswordField);
 
