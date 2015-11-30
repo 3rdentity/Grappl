@@ -81,10 +81,12 @@ public class AdvancedGUI {
         addRelay.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String rServer = JOptionPane.showInputDialog(jFrame, "New relay server address");
+                String newRelay =
+                        JOptionPane.showInputDialog(jFrame, "New relay server address");
 
-                if(rServer != null && !rServer.equals("")) {
-                    RelayServer relayServer = new RelayServer(rServer, "User added");
+                // If the user actually typed something...
+                if(newRelay != null && !newRelay.equals("")) {
+                    RelayServer relayServer = new RelayServer(newRelay, "User added");
                     relayServer.ping();
 
                     int index = relayServerDropdown.getItemCount();

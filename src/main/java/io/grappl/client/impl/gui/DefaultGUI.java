@@ -24,7 +24,7 @@ import java.net.URI;
  */
 public class DefaultGUI {
 
-    private final String COMMAND_BUTTON_TEXT = "...";
+    private final String QUIT_TEXT = "X";
 
     private JFrame jFrame;
     private Grappl grappl;
@@ -150,15 +150,11 @@ public class DefaultGUI {
                     jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
                     jFrame.setIconImage(Application.getIcon());
 
-                    JButton consoleButton = new JButton(COMMAND_BUTTON_TEXT);
+                    JButton consoleButton = new JButton(QUIT_TEXT);
                     consoleButton.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            if (theConsoleWindow == null) {
-                                theConsoleWindow = new ConsoleGUI(applicationState);
-                            } else {
-                                theConsoleWindow.getTheFrame().toFront();
-                            }
+                            System.exit(0);
                         }
                     });
                     consoleButton.setBounds(235, 40, 40, 40);
@@ -171,11 +167,15 @@ public class DefaultGUI {
                         // TODO: Handle this.
                     }
 
-                    JButton jButton = new JButton("Close " + Application.APP_NAME + " Client");
+                    JButton jButton = new JButton("Open console");
                     jButton.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            System.exit(0);
+                        if (theConsoleWindow == null) {
+                            theConsoleWindow = new ConsoleGUI(applicationState);
+                        } else {
+                            theConsoleWindow.getTheFrame().toFront();
+                        }
                         }
                     });
                     jFrame.add(jButton);
@@ -327,48 +327,46 @@ public class DefaultGUI {
                 // options: nyc. sf. pac. lon. deu.
                 String prefix = grappl.getAuthentication().getLocalizedRelayPrefix();
 
-                String domain = prefix + "." + Application.DOMAIN;
-
                 int wX = jFrame.getX();
                 int wY = jFrame.getY();
 
                 jFrame.setVisible(false);
 
-                JFrame newJframe = new JFrame(Application.APP_NAME + " Client ("+ grappl.getAuthentication().getUsername() + ")");
+                JFrame newFrame = new JFrame(Application.APP_NAME + " Client ("+ grappl.getAuthentication().getUsername() + ")");
                 // 300, 240
-                newJframe.setSize(new Dimension(300, 240));
-                newJframe.setLocation(wX, wY);
-                newJframe.setResizable(false);
-                newJframe.setSize(new Dimension(290, 230));
-                newJframe.setIconImage(Application.getIcon());
-                newJframe.setVisible(true);
-                newJframe.setLayout(null);
-                newJframe.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+                newFrame.setSize(new Dimension(300, 240));
+                newFrame.setLocation(wX, wY);
+                newFrame.setResizable(false);
+                newFrame.setSize(new Dimension(290, 230));
+                newFrame.setIconImage(Application.getIcon());
+                newFrame.setVisible(true);
+                newFrame.setLayout(null);
+                newFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-                JButton jButton = new JButton("Close " + Application.APP_NAME + " Client");
+                JButton jButton = new JButton("Close Grappl Client");
                 jButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         System.exit(0);
                     }
                 });
-                newJframe.add(jButton);
+                newFrame.add(jButton);
 
                 jButton.setBounds(2, 105, 280, 90);
 
-                JButton consoleButton = new JButton(COMMAND_BUTTON_TEXT);
+                JButton consoleButton = new JButton("...");
                 consoleButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        if(theConsoleWindow == null) {
-                            theConsoleWindow = new ConsoleGUI(applicationState);
-                        } else {
-                            theConsoleWindow.getTheFrame().toFront();
-                        }
+                    if (theConsoleWindow == null) {
+                        theConsoleWindow = new ConsoleGUI(applicationState);
+                    } else {
+                        theConsoleWindow.getTheFrame().toFront();
+                    }
                     }
                 });
                 consoleButton.setBounds(235, 40, 40, 40);
-                newJframe.add(consoleButton);
+                newFrame.add(consoleButton);
 
                 String ports = JOptionPane.showInputDialog("What port does your server run on?");
 
@@ -378,7 +376,7 @@ public class DefaultGUI {
                     e1.printStackTrace();
                 }
 
-                jFrame = newJframe;
+                jFrame = newFrame;
 
                 grappl.getInternalServer().setPort(Integer.parseInt(ports));
 
