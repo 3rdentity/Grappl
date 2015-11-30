@@ -88,11 +88,11 @@ public class AdvancedGUI {
                 String rServer = JOptionPane.showInputDialog(jFrame, "New relay server address");
 
                 if(rServer != null && !rServer.equals("")) {
-                    int index = relayServerDropdown.getItemCount();
                     RelayServer relayServer = new RelayServer(rServer, "User added");
                     relayServer.ping();
-//                    relayServerDropdown.addItem(rServer);
-                    relayServerDropdown.setSelectedIndex(index);
+
+                    int index = relayServerDropdown.getItemCount();
+                    relayServerDropdown.setSelectedIndex(index - 1);
                 }
             }
         });
