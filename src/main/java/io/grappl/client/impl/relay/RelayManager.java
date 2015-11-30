@@ -45,11 +45,9 @@ public class RelayManager {
 
         PriorityQueue<RelayServer> relayServers = getQueue();
 
-        System.out.println(relayServers.size());
         int i = 0;
         while(!relayServers.isEmpty()) {
             RelayServer relayServer = relayServers.poll();
-            System.out.println(relayServer.getRelayLocation());
 
             str[i++] = relayServer.getRelayLocation()
                     + " (" + relayServer.getDescription() + ") "
