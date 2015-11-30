@@ -108,10 +108,10 @@ public class TCPGrappl implements Grappl {
                 // If a GUI is associated with this Grappl, do GUI things
                 // TODO: GrapplOpenEvent, move this to GUI plugin
                 if (gui != null)
-                    gui.initializeGUI(relayServer, externalServer.getPort() + "", getInternalPort());
+                    gui.initializeGUI(relayServer, getExternalServer().getPort() + "", getInternalPort());
 
-                applicationState.getHeartbeatHandler()
-                        .tryToMakeHeartbeatTo(externalServer.getAddress());
+                getApplicationState().getHeartbeatHandler()
+                        .tryToMakeHeartbeatTo(getExternalServer().getAddress());
 
                 // Create thread that routes incoming connections to the local server.
                 createClientHandler(relayMessageSocket, relayMsgInputStream);
