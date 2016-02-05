@@ -118,7 +118,7 @@ public class TCPGrappl implements Grappl {
                 // Create thread that routes incoming connections to the local server.
                 createClientHandler(relayMessageSocket, relayMsgInputStream);
 
-            } catch (SocketTimeoutException e) {
+            } catch (SocketException e) {
                 if(gui != null)
                     JOptionPane.showMessageDialog(gui.getFrame(),
                             "Connection to relay server failed.\n" +
@@ -134,6 +134,10 @@ public class TCPGrappl implements Grappl {
                 return false;
             }
         } catch (UnknownHostException e) {
+            JOptionPane.showMessageDialog(gui.getFrame(),
+                    "Connection to relay server failed.\n" +
+                            "If this continues, go to Advanced Mode and connect to a different relay server.");
+
             throw new RelayServerNotFoundException(relayServer + " does not appear to exist");
         } catch (IOException e) {
             e.printStackTrace();
@@ -208,32 +212,38 @@ public class TCPGrappl implements Grappl {
         Thread clientHandlerThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                try {
+//                try {
                     while(true) {
-                        // Receive IP of connected client from relay.
-                        // TODO: Express as bytes, maybe?
-                        String userIP = relayMsgInputStream.readLine();
+                        try {
+                            // Receive IP of connected client from relay.
+                            // TODO: Express as bytes, maybe?
+                            String userIP = relayMsgInputStream.readLine();
 
-                        Application.getLog().log("A user has connected from ip "
-                                + userIP.substring(1, userIP.length()));
+                            Application.getLog().log("A user has connected from ip "
+                                    + userIP.substring(1, userIP.length()));
 
-                        TCPClientConnection clientConnection
-                                = new TCPClientConnection(thisGrappl, userIP);
+                            TCPClientConnection clientConnection
+                                    = new TCPClientConnection(thisGrappl, userIP);
 
-                        userConnect(new UserConnectEvent(userIP, clientConnection));
+                            userConnect(new UserConnectEvent(userIP, clientConnection));
 
-                        clientConnection.open();
+                            clientConnection.open();
 
-                        clientsByUUID.put(clientConnection.getUUID(), clientConnection);
-                        connectedClients.add(clientConnection);
+                            clientsByUUID.put(clientConnection.getUUID(), clientConnection);
+                            connectedClients.add(clientConnection);
+                        } catch (Exception e) {
+                            Application.getLog().log("A strange event has occurred. An annoying bug was averted. This is good!");
+                        }
                     }
-                } catch (IOException e) {
-                    try {
-                        relayMsgSocket.close();
-                        Application.getLog().log(
-                                "Connection with relay server has been broken. Unfortunate.");
-                    } catch (IOException ignore) {}
-                }
+//                }
+
+//                catch (IOException e) {
+//                    try {
+//                        relayMsgSocket.close();
+//                        Application.getLog().log(
+//                                "Connection with relay server has been broken. Unfortunate.");
+//                    } catch (IOException ignore) {}
+//                }
             }
         });
         clientHandlerThread.setName("Grappl Client Handler Thread " + getUUID().toString());
