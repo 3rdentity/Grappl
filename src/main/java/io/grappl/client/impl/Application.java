@@ -2,7 +2,7 @@ package io.grappl.client.impl;
 
 import io.grappl.client.api.ApplicationMode;
 import io.grappl.client.impl.plugin.PluginManager;
-import io.grappl.client.impl.stable.commands.CommandHandler;
+import io.grappl.client.impl.commands.CommandHandler;
 import io.grappl.client.impl.log.GrapplLog;
 import io.grappl.client.impl.log.GrapplErrorStream;
 import io.grappl.client.impl.log.SilentGrapplLog;
@@ -34,7 +34,7 @@ public final class Application {
     public static final int AUTHENTICATION =   25571;
 
     public static final String APP_NAME = "Grappl";
-    public static final String VERSION = "Beta 1.4.6";
+    public static final String VERSION = "Beta 2.0";
 
     // If you are distributing your own version, be kind and change this please.
     public static final String BRAND = "DaexsysVanilla";
@@ -153,29 +153,4 @@ public final class Application {
 
         return applicationState;
     }
-
-    private static String getStatus(String relay) {
-        return checkStatus(relay) ? "online" : "offline";
-    }
-
-    private static boolean checkStatus(String relay) {
-        try {
-            Socket socket = new Socket();
-            long start = System.currentTimeMillis();
-            socket.connect(new InetSocketAddress(relay, 25564), 2000);
-            long ping = (System.currentTimeMillis() - start);
-        } catch (IOException e) {
-            return false;
-        }
-
-        return true;
-    }
-//
-//    private static String getOnlineStatus() {
-//        return "n=" + getStatus("n.grappl.io")
-//                + ", e=" + getStatus("e.grappl.io")
-//                + ", s=" + getStatus("s.grappl.io")
-//                + ", p=" + getStatus("p.grappl.io")
-//                ;
-//    }
 }

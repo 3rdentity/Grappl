@@ -4,9 +4,8 @@ import io.grappl.client.api.Grappl;
 import io.grappl.client.impl.Application;
 import io.grappl.client.api.ApplicationMode;
 import io.grappl.client.impl.relay.AdaptiveConnector;
-import io.grappl.client.impl.stable.GrapplBuilder;
-import io.grappl.client.impl.gui.DefaultGUI;
-import io.grappl.client.impl.error.RelayServerNotFoundException;
+import io.grappl.client.impl.GrapplBuilder;
+import io.grappl.gui.DefaultGUI;
 
 /**
  * Class that hosts the main method called when Grappl is started.

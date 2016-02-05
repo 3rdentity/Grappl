@@ -1,7 +1,7 @@
 package io.grappl.client.impl.relay;
 
 import io.grappl.client.impl.Application;
-import io.grappl.client.impl.gui.AdvancedGUI;
+import io.grappl.gui.AdvancedGUI;
 
 import javax.swing.*;
 import java.io.IOException;

@@ -3,10 +3,11 @@ package io.grappl.client.impl;
 import io.grappl.client.api.Grappl;
 import io.grappl.client.api.Protocol;
 import io.grappl.client.api.event.GrapplOpenListener;
+import io.grappl.client.api.event.Listener;
+import io.grappl.client.api.event.UserConnectListener;
+import io.grappl.client.impl.event.GrapplCloseEvent;
 import io.grappl.client.impl.relay.RelayManager;
 import io.grappl.client.impl.relay.RelayServer;
-import io.grappl.client.impl.stable.Authentication;
-import io.grappl.client.impl.stable.GrapplBuilder;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -30,9 +31,8 @@ public class ApplicationState {
 //                    for (RelayServer relayServer : relayTransmission.getRelayServerList()) {
 //                        relayManager.offerRelay(relayServer);
 //                    }
-                    relayManager.offerRelay(new RelayServer("n.grappl.io", "East Coast NA"));
-                    relayManager.offerRelay(new RelayServer("s.grappl.io", "West Coast NA"));
-//                relayManager.offerRelay(new RelayServer("l.grappl.io", "UK Europe"));
+                relayManager.offerRelay(new RelayServer("n.grappl.io", "East Coast NA"));
+                relayManager.offerRelay(new RelayServer("s.grappl.io", "West Coast NA"));
                 relayManager.offerRelay(new RelayServer("e.grappl.io", "NL Europe"));
                 relayManager.offerRelay(new RelayServer("p.grappl.io", "Aus / Oceania"));
                 }
@@ -43,6 +43,7 @@ public class ApplicationState {
         }
     }
 
+    private HeartbeatHandler heartbeatHandler;
     private Authentication authentication;
 
     private List<Grappl> grapplList = new ArrayList<Grappl>();
@@ -52,7 +53,9 @@ public class ApplicationState {
 
     private Set<GrapplOpenListener> grapplOpenListeners = new HashSet<GrapplOpenListener>();
 
-    public ApplicationState(){}
+    public ApplicationState(){
+        heartbeatHandler = new HeartbeatHandler();
+    }
 
     public void useAuthentication(Authentication authentication) {
         this.authentication = authentication;
@@ -102,8 +105,20 @@ public class ApplicationState {
         return new GrapplBuilder(this, protocol);
     }
 
-    public void addGrapplOpenListener(GrapplOpenListener grapplOpenListener) {
-        grapplOpenListeners.add(grapplOpenListener);
+    public void addListener(Listener listener) {
+        if(listener instanceof GrapplOpenListener) {
+            grapplOpenListeners.add((GrapplOpenListener) listener);
+        }
+    }
+
+    public void removeListener(Listener listener) {
+        if(listener instanceof GrapplOpenListener) {
+            grapplOpenListeners.remove((GrapplOpenListener) listener);
+        }
+    }
+
+    public HeartbeatHandler getHeartbeatHandler() {
+        return heartbeatHandler;
     }
 
     public RelayManager getRelayManager() {
