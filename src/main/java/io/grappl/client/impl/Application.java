@@ -39,7 +39,7 @@ public final class Application {
     public static final int AUTHENTICATION =   25571;
 
     public static final String APP_NAME = "Grappl";
-    public static final String VERSION = "Beta 1.5";
+    public static final String VERSION = "Beta 1.5.1";
 
     // If you are distributing your own version, be kind and change this please.
     public static final String BRAND = "DaexsysVanilla";
@@ -77,7 +77,7 @@ public final class Application {
         Application.mode = mode;
 
         System.setProperty("app-name", "Grappl");
-        System.setProperty("app-version", "Beta 1.5");
+        System.setProperty("app-version", "Beta 1.5.1");
         System.setProperty("app-brand", "DaexsysVanilla");
         System.setProperty("no-tunnel-message", "There is no grappl currently open! Start one with 'grappl connect'");
         System.setProperty("no-user-message", "Not logged in. Login with 'login [username] [password]' to use this command.");
