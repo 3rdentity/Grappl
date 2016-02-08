@@ -229,8 +229,11 @@ public class TCPGrappl implements Grappl {
 
                             clientsByUUID.put(clientConnection.getUUID(), clientConnection);
                             connectedClients.add(clientConnection);
-                        } catch (Exception e) {
-                            Application.getLog().log("A strange event has occurred. An annoying bug was averted. This is good!");
+                        } catch (SocketException e) {
+                            return;
+                        }
+
+                        catch (Exception e) {
                         }
                     }
 //                }

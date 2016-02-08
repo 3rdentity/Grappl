@@ -1,5 +1,6 @@
 package io.grappl.client.impl.commands;
 
+import com.daexsys.language.syntax.TreeSegment;
 import io.grappl.client.api.commands.Command;
 import io.grappl.client.impl.ApplicationState;
 import io.grappl.client.impl.Application;
@@ -43,6 +44,27 @@ public class CommandHandler {
         addCommand(new DirectoryCommand(), "directory");
 
         addCommand(new MultiTestCommand(), "multitest");
+        addCommand(new Command() {
+            @Override
+            public void runCommand(ApplicationState state, String[] args) {
+
+                String thing = "";
+
+                for (int i = 1; i < args.length; i++) {
+                    thing += args[i] + " ";
+                }
+                thing = thing.substring(0, thing.length() - 1);
+
+                System.out.println(thing);
+                TreeSegment treeSegment = new TreeSegment(thing, Application.functionGroup.getEnvironment());
+                treeSegment.evaluateWDefaultTrace();
+            }
+
+            @Override
+            public String getDescription() {
+                return "Invokes magical hexes";
+            }
+        }, "eval");
     }
 
     public void addCommand(Command command, String... names) {

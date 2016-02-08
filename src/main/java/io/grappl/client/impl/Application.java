@@ -1,5 +1,8 @@
 package io.grappl.client.impl;
 
+import com.daexsys.language.Environment;
+import com.daexsys.language.Function;
+import com.daexsys.language.FunctionGroup;
 import io.grappl.client.api.ApplicationMode;
 import io.grappl.client.impl.plugin.PluginManager;
 import io.grappl.client.impl.commands.CommandHandler;
@@ -25,6 +28,8 @@ import java.net.URL;
  */
 public final class Application {
 
+    public static final FunctionGroup functionGroup = new FunctionGroup(System.out);
+
     // TODO: Perhaps have a way to configure a third-party auth server. Or somehow get it to not automatically connect to one on launch (via args?).
     public static final String DOMAIN = "grappl.io";
 
@@ -34,7 +39,7 @@ public final class Application {
     public static final int AUTHENTICATION =   25571;
 
     public static final String APP_NAME = "Grappl";
-    public static final String VERSION = "Beta 2.0";
+    public static final String VERSION = "Beta 1.5";
 
     // If you are distributing your own version, be kind and change this please.
     public static final String BRAND = "DaexsysVanilla";
@@ -72,10 +77,24 @@ public final class Application {
         Application.mode = mode;
 
         System.setProperty("app-name", "Grappl");
-        System.setProperty("app-version", "Beta 1.4.6");
+        System.setProperty("app-version", "Beta 1.5");
         System.setProperty("app-brand", "DaexsysVanilla");
         System.setProperty("no-tunnel-message", "There is no grappl currently open! Start one with 'grappl connect'");
         System.setProperty("no-user-message", "Not logged in. Login with 'login [username] [password]' to use this command.");
+
+        functionGroup.unregister("println");
+        functionGroup.register(new Function() {
+            @Override
+            public void run(Environment environment, String[] strings) {
+                String output = "";
+                for (String s : strings) {
+                    output += s + " ";
+                }
+                output = output.substring(0, output.length() - 1);
+
+                log.log(output);
+            }
+        }, "println");
 
         if(log == null)
             log = new GrapplLog();
