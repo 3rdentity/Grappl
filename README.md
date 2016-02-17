@@ -2,7 +2,7 @@
 
 ![passing-or-failing-ci](https://travis-ci.org/Cactose/Grappl.svg?branch=master)
 
-GRAPPL (THE COMPILED .JAR) ALSO CONTAINS CODE FROM: https://github.com/Cactose/Lithp
+GRAPPL (THE COMPILED .JAR) ALSO CONTAINS CODE FROM: https://github.com/Cactose/Ferrous
 
 Website: http://grappl.io/
 
