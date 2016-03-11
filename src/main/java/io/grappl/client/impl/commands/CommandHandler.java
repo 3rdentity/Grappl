@@ -55,9 +55,9 @@ public class CommandHandler {
                 }
                 thing = thing.substring(0, thing.length() - 1);
 
-                System.out.println(thing);
                 TreeSegment treeSegment = new TreeSegment(thing, Application.functionGroup.getEnvironment());
                 treeSegment.evaluateWDefaultTrace();
+//                Application.getLog().log(treeSegment.getDefaultTrace().getBufferVariable());
             }
 
             @Override
@@ -76,21 +76,23 @@ public class CommandHandler {
     }
 
     public void handleCommand(String command) {
-        // If no command was actually entered, return.
-        if(command.isEmpty())
-            return;
+//        // If no command was actually entered, return.
+//        if(command.isEmpty())
+//            return;
 
         // Split command string into words. args[0] is the commands name, all other are args.
         String[] words = command.split("\\s+");
-        String commandName = words[0].toLowerCase();
 
-//        String[] args = Arrays.copyOfRange(words, 1, words.length);
-
-        if (commandMap.containsKey(commandName)) {
-            getCommand(commandName).runCommand(state, words);
-        } else {
-            Application.getLog().log("Unknown command '" + command + "'");
-        }
+        TreeSegment treeSegment = new TreeSegment(command, Application.functionGroup.getEnvironment());
+        treeSegment.evaluateWDefaultTrace();
+//
+////        String[] args = Arrays.copyOfRange(words, 1, words.length);
+//
+//        if (commandMap.containsKey(commandName)) {
+//            getCommand(commandName).runCommand(state, words);
+//        } else {
+//            Application.getLog().log("Unknown command '" + command + "'");
+//        }
     }
 
     public void createConsoleCommandListenThread() {
@@ -101,6 +103,7 @@ public class CommandHandler {
                 public void run() {
 
                     Application.getLog().log(Application.APP_NAME + " Command Line (type a command, or type 'help' or 'help [command]' for ideas!)");
+                    Application.getLog().log("Grappl uses the Ostia programming language in it's command system, the same language found in the Ostia Sponge (MC server) plugin.");
 
                     Scanner scanner = new Scanner(System.in);
 

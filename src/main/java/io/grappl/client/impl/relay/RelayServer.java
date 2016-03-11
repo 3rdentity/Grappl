@@ -36,7 +36,7 @@ public class RelayServer {
 
         Socket socket = new Socket();
         try {
-            socket.connect(new InetSocketAddress(getRelayLocation(), Application.MESSAGING_PORT), 300);
+            socket.connect(new InetSocketAddress(getRelayLocation(), 33433), 300);
             socket.close();
         } catch (Exception e) {
             relayIsOnline = false;

@@ -1,14 +1,15 @@
 package io.grappl.client.impl;
 
-import com.daexsys.language.Environment;
 import com.daexsys.language.Function;
 import com.daexsys.language.FunctionGroup;
+import com.daexsys.language.Vars;
 import io.grappl.client.api.ApplicationMode;
 import io.grappl.client.impl.plugin.PluginManager;
 import io.grappl.client.impl.commands.CommandHandler;
 import io.grappl.client.impl.log.GrapplLog;
 import io.grappl.client.impl.log.GrapplErrorStream;
 import io.grappl.client.impl.log.SilentGrapplLog;
+import io.grappl.gui.DefaultGUI;
 
 import javax.swing.*;
 import java.awt.*;
@@ -39,7 +40,7 @@ public final class Application {
     public static final int AUTHENTICATION =   25571;
 
     public static final String APP_NAME = "Grappl";
-    public static final String VERSION = "Beta 1.5.1";
+    public static final String VERSION = "Beta 1.5.3";
 
     // If you are distributing your own version, be kind and change this please.
     public static final String BRAND = "DaexsysVanilla";
@@ -70,22 +71,26 @@ public final class Application {
         log = new GrapplLog();
 
         log.log("Launcher version: " + version);
-        create(args, ApplicationMode.NOGUI);
+        create(args, ApplicationMode.GUI);
     }
 
     public static void create(String[] args, ApplicationMode mode) {
         Application.mode = mode;
 
         System.setProperty("app-name", "Grappl");
-        System.setProperty("app-version", "Beta 1.5.1");
+        System.setProperty("app-version", "Beta 1.5.3");
         System.setProperty("app-brand", "DaexsysVanilla");
         System.setProperty("no-tunnel-message", "There is no grappl currently open! Start one with 'grappl connect'");
         System.setProperty("no-user-message", "Not logged in. Login with 'login [username] [password]' to use this command.");
 
+        functionGroup.getEnvironment().putVar("app-name", "Grappl");
+        functionGroup.getEnvironment().putVar("version", Application.APP_NAME + " " + Application.VERSION + " {Brand=" + Application.BRAND + "}");
+
         functionGroup.unregister("println");
+        functionGroup.unregister("pl");
         functionGroup.register(new Function() {
             @Override
-            public void run(Environment environment, String[] strings) {
+            public void run(Vars environment, String[] strings) {
                 String output = "";
                 for (String s : strings) {
                     output += s + " ";
@@ -94,7 +99,7 @@ public final class Application {
 
                 log.log(output);
             }
-        }, "println");
+        }, "println", "pl");
 
         if(log == null)
             log = new GrapplLog();
@@ -125,6 +130,8 @@ public final class Application {
         } catch (UnsupportedLookAndFeelException e) {
             e.printStackTrace();
         }
+
+        DefaultGUI defaultGUI = new DefaultGUI(getApplicationState());
     }
 
     public static void setMode(ApplicationMode mode) {
