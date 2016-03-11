@@ -2,13 +2,13 @@
 
 ![passing-or-failing-ci](https://travis-ci.org/Cactose/Grappl.svg?branch=master)
 
-GRAPPL (THE COMPILED .JAR) ALSO CONTAINS CODE FROM: https://github.com/Cactose/Lithp
+GRAPPL (THE COMPILED .JAR) ALSO CONTAINS CODE FROM: https://github.com/Cactose/Ferrous
 
 Website: http://grappl.io/
 
 Donate: http://grappl.io/donate
 
-Launcher: http://grappl.io:888/html/GrapplLauncher.jar (Beta 1.4 currently, autoupdates)
+Launcher: http://grappl.io:888/html/GrapplLauncher.jar (Beta 1.5 currently, autoupdates)
 
 Relay server code: https://github.com/Cactose/GrapplRelay
 
@@ -23,24 +23,6 @@ is bound to, and your server will be open for anyone to connect. No messing arou
 It works by transferring data through relay servers (by default, ones on grappl.io).
 
 The project is in beta. This repository contains all the newest client code.
-
-## API
-
-Using Grappl's client API is very simple and straightforward.
-
-Just create a GrapplBuilder, use the supplied methods to configure Grappl's state, then use build() to create the Grappl object. Like so:
-
-    Grappl grappl = new GrapplBuilder().atLocalPort(25565).build();
-
-After that, use the grappl object's connect method to open the server.
-
-    grappl.connect(relayServerIP);
-
-'relayserverIP' is a string representing the relay server of your choice. This may be one of the official ones (n.grappl.io, s.grappl.io, e.grappl.io, p.grappl.io) or a custom one.
-
-    grappl.getExternalServer();
-
-...will give you the address that your server is now live on the internet behind! Congrats, you've got Grappl working through its API. It's that simple.
 
 ## License
 
