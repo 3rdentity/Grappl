@@ -2,12 +2,8 @@ package io.grappl.gui;
 
 import io.grappl.client.api.Grappl;
 import io.grappl.client.api.LocationProvider;
-import io.grappl.client.impl.Application;
-import io.grappl.client.impl.GrapplDataFile;
-import io.grappl.client.impl.ApplicationState;
+import io.grappl.client.impl.*;
 import io.grappl.client.impl.relay.RelayServer;
-import io.grappl.client.impl.Authentication;
-import io.grappl.client.impl.NetworkLocation;
 import io.grappl.client.impl.error.RelayServerNotFoundException;
 import io.grappl.client.impl.tcp.TCPGrappl;
 import io.grappl.client.impl.event.UserConnectEvent;
@@ -145,6 +141,7 @@ public class AdvancedGUI {
                     applicationState.addGrappl(new TCPGrappl(Application.getApplicationState()));
                     Grappl theGrappl = applicationState.getFocusedGrappl();
 
+
                     ((TCPGrappl) applicationState.getFocusedGrappl()).advancedGUI = advancedGUI;
                     applicationState.getFocusedGrappl().useAuthentication(applicationState.getAuthentication());
                     ((TCPGrappl) applicationState.getFocusedGrappl()).setInternalServerProvider(new LocationProvider() {
@@ -155,6 +152,7 @@ public class AdvancedGUI {
                         }
                     });
 
+                    theGrappl.getInternalServer().setAddress(System.getProperty("serverhost"));
                     if(!portTextField.getText().equals("")) { // If field isn't empty
                         applicationState.getFocusedGrappl().getInternalServer().setPort(Integer.parseInt(portTextField.getText()));
                     }

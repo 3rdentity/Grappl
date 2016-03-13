@@ -84,9 +84,18 @@ public final class Application {
         System.setProperty("no-tunnel-message", "There is no grappl currently open! Start one with 'grappl connect'");
         System.setProperty("no-user-message", "Not logged in. Login with 'login [username] [password]' to use this command.");
         System.setProperty("localadded", "false");
+        System.setProperty("serverhost", "localhost");
 
         functionGroup.getEnvironment().putVar("app-name", "Grappl");
         functionGroup.getEnvironment().putVar("version", Application.APP_NAME + " " + Application.VERSION + " {Brand=" + Application.BRAND + "}");
+
+        Application.functionGroup.register(new Function() {
+            @Override
+            public void run(Vars vars, String[] strings) {
+                System.out.println("Changing host to: " + strings[0]);
+                System.setProperty("serverhost", strings[0]);
+            }
+        }, "changelocal");
 
         functionGroup.unregister("println");
         functionGroup.unregister("pl");
@@ -107,6 +116,7 @@ public final class Application {
             log = new GrapplLog();
 
         log.log("Started: Grappl " + VERSION + " {Brand=" + BRAND + ", Mode=" + mode + "}");
+        log.log("JVM version: " + System.getProperty("java.version"));
         log.log("If you encounter issues, please report them to @grapplstatus, or @Cactose.");
         log.log("Preferably with a copy of this console! Thx <3");
 

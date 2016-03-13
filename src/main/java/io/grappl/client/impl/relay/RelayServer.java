@@ -30,7 +30,7 @@ public class RelayServer {
 
                 AdvancedGUI.relayServerDropdown
                         .setModel(new DefaultComboBoxModel<String>(Application.getApplicationState().getRelayManager().createList()));
-            } catch (Exception e) {e.printStackTrace();}
+            } catch (Exception e) {}
         }
 
         /* START PING */

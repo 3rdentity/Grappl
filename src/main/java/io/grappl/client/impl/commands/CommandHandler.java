@@ -1,5 +1,7 @@
 package io.grappl.client.impl.commands;
 
+import com.daexsys.language.Function;
+import com.daexsys.language.Vars;
 import com.daexsys.language.syntax.TreeSegment;
 import io.grappl.client.api.commands.Command;
 import io.grappl.client.impl.ApplicationState;
