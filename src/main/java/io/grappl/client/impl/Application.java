@@ -77,11 +77,13 @@ public final class Application {
     public static void create(String[] args, ApplicationMode mode) {
         Application.mode = mode;
 
+
         System.setProperty("app-name", "Grappl");
         System.setProperty("app-version", "Beta 1.5.5");
         System.setProperty("app-brand", "DaexsysVanilla");
         System.setProperty("no-tunnel-message", "There is no grappl currently open! Start one with 'grappl connect'");
         System.setProperty("no-user-message", "Not logged in. Login with 'login [username] [password]' to use this command.");
+        System.setProperty("localadded", "false");
 
         functionGroup.getEnvironment().putVar("app-name", "Grappl");
         functionGroup.getEnvironment().putVar("version", Application.APP_NAME + " " + Application.VERSION + " {Brand=" + Application.BRAND + "}");

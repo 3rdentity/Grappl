@@ -12,10 +12,7 @@ import io.grappl.client.impl.error.RelayServerNotFoundException;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.*;
 import java.io.*;
 import java.net.URI;
 
@@ -102,6 +99,34 @@ public class DefaultGUI {
         rememberMeBox.setBounds(10, 87, 20, 20);
         jFrame.add(rememberMeBox);
         final JLabel rememberMeLabel = new JLabel("Remember me");
+
+        rememberMeLabel.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                rememberMeBox.setSelected(!rememberMeBox.isSelected());
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
+
         rememberMeLabel.setBounds(35, 87, 250, 20);
         jFrame.add(rememberMeLabel);
         if(isActuallyHash) {

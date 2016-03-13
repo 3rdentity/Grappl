@@ -69,7 +69,10 @@ public class AdvancedGUI {
         jFrame.add(relayLabel);
 
         if(Application.debugState) {
-            relayServerDropdown.addItem("localhost (if you're testing)");
+            if(System.getProperty("localadded").equals("false")) {
+                relayServerDropdown.addItem("localhost (if you're testing)");
+                System.setProperty("localadded", "true");
+            }
         }
 
         relayServerDropdown.setBounds(20, 40, 200, 20);
@@ -373,8 +376,10 @@ public class AdvancedGUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 jFrame.setVisible(false);
-                applicationState.getFocusedGrappl().disconnect();
-                applicationState.removeGrappl(applicationState.getFocusedGrappl());
+                if(applicationState.getFocusedGrappl() != null) {
+                    applicationState.getFocusedGrappl().disconnect();
+                    applicationState.removeGrappl(applicationState.getFocusedGrappl());
+                }
                 new DefaultGUI(Application.getApplicationState());
             }
         });
