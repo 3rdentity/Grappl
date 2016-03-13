@@ -99,23 +99,24 @@ public class AdvancedGUI {
         localPort.setBounds(20, 80, 200, 20);
         jFrame.add(localPort);
 
-        final JTextField jTextField = new JTextField();
-        jTextField.setBounds(20, 100, 130, 20);
-        jFrame.add(jTextField);
+        final JTextField portTextField = new JTextField();
+        portTextField.setBounds(20, 100, 130, 20);
+        jFrame.add(portTextField);
+
         final JButton update = new JButton("Update");
-        update.addActionListener(new ActionListener() {
+        ActionListener portUpdate = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 final int MAX_POSSIBLE_PORT_NUMBER = 65535;
 
                 if (applicationState.getFocusedGrappl() != null) {
                     try {
-                        int portValue = Integer.parseInt(jTextField.getText());
+                        int portValue = Integer.parseInt(portTextField.getText());
 
                         if (portValue > MAX_POSSIBLE_PORT_NUMBER) {
                             JOptionPane.showConfirmDialog(jFrame, "Value too high. Port must be equal to or lower than " + MAX_POSSIBLE_PORT_NUMBER);
                         } else {
-                            applicationState.getFocusedGrappl().getInternalServer().setPort(Integer.parseInt(jTextField.getText()));
+                            applicationState.getFocusedGrappl().getInternalServer().setPort(Integer.parseInt(portTextField.getText()));
                             portLabel.setText("Local port: " + applicationState.getFocusedGrappl().getInternalServer().getPort());
                         }
                     } catch (NumberFormatException ignore) {
@@ -124,7 +125,9 @@ public class AdvancedGUI {
                     }
                 }
             }
-        });
+        };
+        update.addActionListener(portUpdate);
+        portTextField.addActionListener(portUpdate);
         update.setBounds(150, 100, 90, 20);
         jFrame.add(update);
 
@@ -149,8 +152,8 @@ public class AdvancedGUI {
                         }
                     });
 
-                    if(!jTextField.getText().equals("")) { // If field isn't empty
-                        applicationState.getFocusedGrappl().getInternalServer().setPort(Integer.parseInt(jTextField.getText()));
+                    if(!portTextField.getText().equals("")) { // If field isn't empty
+                        applicationState.getFocusedGrappl().getInternalServer().setPort(Integer.parseInt(portTextField.getText()));
                     }
 
                     boolean success;
@@ -179,6 +182,7 @@ public class AdvancedGUI {
                             }
                         });
                         connectionLabel.setText("Public at: " + theGrappl.getExternalServer().getAddress() + ":" + theGrappl.getExternalServer().getPort());
+                        jFrame.setTitle("Grappl Advanced | " + theGrappl.getExternalServer().getAddress() + ":" + theGrappl.getExternalServer().getPort());
                         portLabel.setText("Local port: " + theGrappl.getInternalServer().getPort());
                         close.setEnabled(true);
                     } else {
@@ -199,6 +203,7 @@ public class AdvancedGUI {
                 applicationState.getFocusedGrappl().disconnect();
                 connectionLabel.setText("Not connected - Tunnel closed");
                 Application.getLog().log("Disconnected from relay");
+                jFrame.setTitle("Grappl Advanced");
                 applicationState.removeGrappl(applicationState.getFocusedGrappl());
                 close.setEnabled(false);
             }
@@ -223,7 +228,7 @@ public class AdvancedGUI {
                 new ConsoleGUI(applicationState);
             }
         });
-        openConsoleButton.setBounds(dist, 200, 250, 30);
+        openConsoleButton.setBounds(dist, 200, 120, 30);
         jFrame.add(openConsoleButton);
 
         connectedUserList = new JList<String>(new DefaultListModel<String>());
@@ -361,6 +366,19 @@ public class AdvancedGUI {
             }
         });
         jFrame.add(signUpButton);
+
+        JButton back = new JButton("Back to home");
+        back.setBounds(dist + 130, 200, 120, 30);
+        back.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                jFrame.setVisible(false);
+                applicationState.getFocusedGrappl().disconnect();
+                applicationState.removeGrappl(applicationState.getFocusedGrappl());
+                new DefaultGUI(Application.getApplicationState());
+            }
+        });
+        jFrame.add(back);
 
         donateButton = new JButton("Donate");
         donateButton.setBounds(dist + 180, 70, 80, 30);

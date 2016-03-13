@@ -26,7 +26,7 @@ public class ConsoleGUI {
             @Override
             public void windowClosing(WindowEvent e) {
                 try {
-                    applicationState.getFocusedGrappl().getGUI().destroyConsoleWindow();
+                    Application.getApplicationState().getFocusedGrappl().getGUI().destroyConsoleWindow();
                 } catch (Exception exc) {
                     exc.printStackTrace();
                 }
