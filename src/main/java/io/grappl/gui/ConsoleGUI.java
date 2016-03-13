@@ -50,7 +50,6 @@ public class ConsoleGUI {
         consoleFrame.setLayout(null);
         consoleFrame.setSize(705, 350);
         consoleFrame.setLocationRelativeTo(null);
-        consoleFrame.setVisible(true);
 
         logDisplay = new JTextArea(120, 20);
         logDisplay.setLineWrap(true);
@@ -96,6 +95,7 @@ public class ConsoleGUI {
         Application.getLog().log("PING");
 
         consoleFrame.repaint();
+        consoleFrame.setVisible(true);
     }
 
     public boolean enterCommand(String command) {

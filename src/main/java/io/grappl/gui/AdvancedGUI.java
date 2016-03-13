@@ -58,7 +58,6 @@ public class AdvancedGUI {
         jFrame = new JFrame();
         jFrame.setIconImage(Application.getIcon());
         jFrame.setTitle("Grappl Advanced");
-        jFrame.setVisible(true);
         jFrame.setSize(600, 300);
         jFrame.setLayout(null);
         jFrame.setLocationRelativeTo(null);
@@ -378,6 +377,7 @@ public class AdvancedGUI {
         jFrame.add(donateButton);
 
         jFrame.repaint();
+        jFrame.setVisible(true);
     }
 
     public void logIn() {

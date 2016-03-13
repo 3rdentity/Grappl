@@ -40,7 +40,6 @@ public class DefaultGUI {
         jFrame = new JFrame(Application.APP_NAME + " " + Application.VERSION);
         jFrame.setSize(new Dimension(310, 240));
         jFrame.setLocationRelativeTo(null);
-        jFrame.setVisible(true);
         jFrame.setLayout(null);
         jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
@@ -219,6 +218,8 @@ public class DefaultGUI {
             jFrame.setIconImage(Application.getIcon());
             jFrame.repaint();
         }
+
+        jFrame.setVisible(true);
     }
 
     private void doConnection(Grappl grappl) {
