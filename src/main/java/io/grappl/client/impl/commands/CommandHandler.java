@@ -76,18 +76,18 @@ public class CommandHandler {
     }
 
     public void handleCommand(String command) {
-//        // If no command was actually entered, return.
-//        if(command.isEmpty())
-//            return;
+        // If no command was actually entered, return.
+        if(command.isEmpty())
+            return;
 
         // Split command string into words. args[0] is the commands name, all other are args.
         String[] words = command.split("\\s+");
 
         TreeSegment treeSegment = new TreeSegment(command, Application.functionGroup.getEnvironment());
         treeSegment.evaluateWDefaultTrace();
-//
-////        String[] args = Arrays.copyOfRange(words, 1, words.length);
-//
+////
+//        String[] args = Arrays.copyOfRange(words, 1, words.length);
+////
 //        if (commandMap.containsKey(commandName)) {
 //            getCommand(commandName).runCommand(state, words);
 //        } else {

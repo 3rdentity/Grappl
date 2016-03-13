@@ -376,6 +376,7 @@ public class AdvancedGUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 jFrame.setVisible(false);
+                jFrame.dispose();
                 if(applicationState.getFocusedGrappl() != null) {
                     applicationState.getFocusedGrappl().disconnect();
                     applicationState.removeGrappl(applicationState.getFocusedGrappl());

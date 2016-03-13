@@ -28,7 +28,6 @@ public class ConsoleGUI {
                 try {
                     Application.getApplicationState().getFocusedGrappl().getGUI().destroyConsoleWindow();
                 } catch (Exception exc) {
-                    exc.printStackTrace();
                 }
             }
 

@@ -234,6 +234,7 @@ public class DefaultGUI {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     jFrame.setVisible(false);
+                    jFrame.dispose();
                     new AdvancedGUI(applicationState).create();
                 }
             });
@@ -404,9 +405,8 @@ public class DefaultGUI {
 
                 jFrame = newFrame;
 
-                grappl.getInternalServer().setPort(Integer.parseInt(ports));
-
                 try {
+                    grappl.getInternalServer().setPort(Integer.parseInt(ports));
                     AdaptiveConnector adaptiveConnector = new AdaptiveConnector(applicationState.getRelayManager());
                     adaptiveConnector.subject(grappl);
                 } catch (NumberFormatException ex) {
