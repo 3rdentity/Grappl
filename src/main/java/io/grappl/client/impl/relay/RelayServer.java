@@ -25,10 +25,12 @@ public class RelayServer {
     // TODO: need to remove GUI code from the logic
     public void ping() {
         if(AdvancedGUI.relayServerDropdown == null) {
-            AdvancedGUI.relayServerDropdown = new JComboBox<String>();
+            try {
+                AdvancedGUI.relayServerDropdown = new JComboBox<String>();
 
-            AdvancedGUI.relayServerDropdown
-                    .setModel(new DefaultComboBoxModel<String>(Application.getApplicationState().getRelayManager().createList()));
+                AdvancedGUI.relayServerDropdown
+                        .setModel(new DefaultComboBoxModel<String>(Application.getApplicationState().getRelayManager().createList()));
+            } catch (Exception e) {e.printStackTrace();}
         }
 
         /* START PING */

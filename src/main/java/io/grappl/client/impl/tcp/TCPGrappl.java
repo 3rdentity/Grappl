@@ -128,18 +128,19 @@ public class TCPGrappl implements Grappl {
 
                     advancedGUI.triggerClosing();
                 }
-
-                return false;
             }
-        } catch (UnknownHostException e) {
-            JOptionPane.showMessageDialog(gui.getFrame(),
-                    "Connection to relay server failed.\n" +
-                            "If this continues, go to Advanced Mode and connect to a different relay server.");
+        } catch (Exception e) {
+            if(gui != null)
+                JOptionPane.showMessageDialog(gui.getFrame(),
+                        "Connection to relay server failed.\n" +
+                                "If this continues, go to Advanced Mode and connect to a different relay server.");
+
+            if(advancedGUI != null) {
+                JOptionPane.showMessageDialog(advancedGUI.getFrame(),
+                        "Connection to relay server failed.");
+            }
 
             throw new RelayServerNotFoundException(relayServer + " does not appear to exist");
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
         }
 
         return true;

@@ -36,7 +36,7 @@ public class AdvancedGUI {
     private String username;
     private char[] password;
     private boolean isActuallyHash;
-    private JLabel connectionLabel;
+    private JTextPane connectionLabel;
     private JLabel portLabel;
     private JButton logIn;
     private JButton signUpButton;
@@ -214,7 +214,11 @@ public class AdvancedGUI {
         close.setEnabled(false);
         jFrame.add(close);
 
-        connectionLabel = new JLabel("Not connected - Tunnel closed");
+        connectionLabel = new JTextPane();
+        connectionLabel.setEditable(false);
+        connectionLabel.setBorder(null);
+        connectionLabel.setBackground(null);
+        connectionLabel.setText("Not connected - Tunnel closed");
         connectionLabel.setBounds(20, 200, 200, 20);
         jFrame.add(connectionLabel);
 

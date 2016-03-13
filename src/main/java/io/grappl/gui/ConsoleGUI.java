@@ -56,8 +56,8 @@ public class ConsoleGUI {
                 JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
-        logDisplayScrollPane.setVisible(true);
         logDisplayScrollPane.setBounds(10, 10, 670, 260);
+        logDisplayScrollPane.setVisible(true);
         consoleFrame.add(logDisplayScrollPane);
         logDisplay.setEditable(false);
         logDisplay.setFont(new Font("Sans", Font.PLAIN, 12));
