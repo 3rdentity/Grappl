@@ -1,8 +1,5 @@
 package io.grappl.client.impl;
 
-import com.daexsys.language.Function;
-import com.daexsys.language.FunctionGroup;
-import com.daexsys.language.Vars;
 import io.grappl.client.api.ApplicationMode;
 import io.grappl.client.impl.plugin.PluginManager;
 import io.grappl.client.impl.commands.CommandHandler;
@@ -10,6 +7,7 @@ import io.grappl.client.impl.log.GrapplLog;
 import io.grappl.client.impl.log.GrapplErrorStream;
 import io.grappl.client.impl.log.SilentGrapplLog;
 import io.grappl.gui.DefaultGUI;
+import io.grappl.gui.GraphGUI;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,8 +26,6 @@ import java.net.URL;
  * Therefore, static fields are acceptable.
  */
 public final class Application {
-
-    public static final FunctionGroup functionGroup = new FunctionGroup(System.out);
 
     // TODO: Perhaps have a way to configure a third-party auth server. Or somehow get it to not automatically connect to one on launch (via args?).
     public static final String DOMAIN = "grappl.io";
@@ -68,15 +64,18 @@ public final class Application {
     }
 
     public static void launch(String version, String[] args) {
-        log = new GrapplLog();
+        try {
+            log = new GrapplLog();
 
-        log.log("Launcher version: " + version);
-        create(args, ApplicationMode.GUI);
+            log.log("Launcher version: " + version);
+            create(args, ApplicationMode.GUI);
+        } catch(Exception e) {
+            JOptionPane.showConfirmDialog(null, "Critical error on startup. One step further than not starting at all. Error: " + e + "; " + e.getStackTrace()[0].getMethodName());
+        }
     }
 
     public static void create(String[] args, ApplicationMode mode) {
         Application.mode = mode;
-
 
         System.setProperty("app-name", "Grappl");
         System.setProperty("app-version", "Beta 1.5.5");
@@ -85,40 +84,40 @@ public final class Application {
         System.setProperty("no-user-message", "Not logged in. Login with 'login [username] [password]' to use this command.");
         System.setProperty("localadded", "false");
         System.setProperty("serverhost", "localhost");
-
-        functionGroup.getEnvironment().putVar("app-name", "Grappl");
-        functionGroup.getEnvironment().putVar("version", Application.APP_NAME + " " + Application.VERSION + " {Brand=" + Application.BRAND + "}");
-
-        Application.functionGroup.register(new Function() {
-            @Override
-            public void run(Vars vars, String[] strings) {
-                System.out.println("Changing host to: " + strings[0]);
-                System.setProperty("serverhost", strings[0]);
-            }
-        }, "changelocal");
-
-        functionGroup.unregister("println");
-        functionGroup.unregister("pl");
-        functionGroup.register(new Function() {
-            @Override
-            public void run(Vars environment, String[] strings) {
-                String output = "";
-                for (String s : strings) {
-                    output += s + " ";
-                }
-                output = output.substring(0, output.length() - 1);
-
-                log.log(output);
-            }
-        }, "println", "pl");
+//
+//        functionGroup.getEnvironment().putVar("app-name", "Grappl");
+//        functionGroup.getEnvironment().putVar("version", Application.APP_NAME + " " + Application.VERSION + " {Brand=" + Application.BRAND + "}");
+//
+//        Application.functionGroup.register(new Function() {
+//            @Override
+//            public void run(Vars vars, String[] strings) {
+//                System.out.println("Changing host to: " + strings[0]);
+//                System.setProperty("serverhost", strings[0]);
+//            }
+//        }, "changelocal");
+//
+//        functionGroup.unregister("println");
+//        functionGroup.unregister("pl");
+//        functionGroup.register(new Function() {
+//            @Override
+//            public void run(Vars environment, String[] strings) {
+//                String output = "";
+//                for (String s : strings) {
+//                    output += s + " ";
+//                }
+//                output = output.substring(0, output.length() - 1);
+//
+//                log.log(output);
+//            }
+//        }, "println", "pl");
 
         if(log == null)
             log = new GrapplLog();
 
         log.log("Started: Grappl " + VERSION + " {Brand=" + BRAND + ", Mode=" + mode + "}");
-        log.log("JVM version: " + System.getProperty("java.version"));
+        log.log("JVM version: " + System.getProperty("java.version") + " | OS: " + System.getProperty("os.name") + " | Arch: " + System.getProperty("os.arch"));
         log.log("If you encounter issues, please report them to @grapplstatus, or @Cactose.");
-        log.log("Preferably with a copy of this console! Thx <3");
+        log.log("Preferably with a copy of this log! Thx <3");
 
         log.log("====================");
 
@@ -142,6 +141,7 @@ public final class Application {
         } catch (UnsupportedLookAndFeelException e) {
             e.printStackTrace();
         }
+
 
         DefaultGUI defaultGUI = new DefaultGUI(getApplicationState());
     }

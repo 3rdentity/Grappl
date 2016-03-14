@@ -109,6 +109,7 @@ public class AdvancedGUI {
                 final int MAX_POSSIBLE_PORT_NUMBER = 65535;
 
                 if (applicationState.getFocusedGrappl() != null) {
+//                    new GraphGUI(applicationState.getFocusedGrappl().getStatMonitor());
                     try {
                         int portValue = Integer.parseInt(portTextField.getText());
 
@@ -140,7 +141,6 @@ public class AdvancedGUI {
                 if (applicationState.getFocusedGrappl() == null) {
                     applicationState.addGrappl(new TCPGrappl(Application.getApplicationState()));
                     Grappl theGrappl = applicationState.getFocusedGrappl();
-
 
                     ((TCPGrappl) applicationState.getFocusedGrappl()).advancedGUI = advancedGUI;
                     applicationState.getFocusedGrappl().useAuthentication(applicationState.getAuthentication());

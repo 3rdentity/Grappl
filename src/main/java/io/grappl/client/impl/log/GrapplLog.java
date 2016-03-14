@@ -23,9 +23,6 @@ public class GrapplLog {
 
     public void log(String message) {
         String tag = DateFormat.getDateTimeInstance().format(new Date(System.currentTimeMillis()));
-        String[] spl = tag.split("\\s+");
-        tag = spl[3] + " " + spl[4];
-
         String taggedMessage = "[" + tag + "] " + message;
 
         if(!message.equals("PING")) {

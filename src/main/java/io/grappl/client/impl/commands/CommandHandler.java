@@ -1,8 +1,8 @@
 package io.grappl.client.impl.commands;
-
-import com.daexsys.language.Function;
-import com.daexsys.language.Vars;
-import com.daexsys.language.syntax.TreeSegment;
+//
+//import com.daexsys.language.Function;
+//import com.daexsys.language.Vars;
+//import com.daexsys.language.syntax.TreeSegment;
 import io.grappl.client.api.commands.Command;
 import io.grappl.client.impl.ApplicationState;
 import io.grappl.client.impl.Application;
@@ -56,9 +56,9 @@ public class CommandHandler {
                     thing += args[i] + " ";
                 }
                 thing = thing.substring(0, thing.length() - 1);
-
-                TreeSegment treeSegment = new TreeSegment(thing, Application.functionGroup.getEnvironment());
-                treeSegment.evaluateWDefaultTrace();
+//
+//                TreeSegment treeSegment = new TreeSegment(thing, Application.functionGroup.getEnvironment());
+//                treeSegment.evaluateWDefaultTrace();
 //                Application.getLog().log(treeSegment.getDefaultTrace().getBufferVariable());
             }
 
@@ -84,10 +84,10 @@ public class CommandHandler {
 
         // Split command string into words. args[0] is the commands name, all other are args.
         String[] words = command.split("\\s+");
-
-        TreeSegment treeSegment = new TreeSegment(command, Application.functionGroup.getEnvironment());
-        treeSegment.evaluateWDefaultTrace();
-////
+//
+//        TreeSegment treeSegment = new TreeSegment(command, Application.functionGroup.getEnvironment());
+//        treeSegment.evaluateWDefaultTrace();
+//////
 //        String[] args = Arrays.copyOfRange(words, 1, words.length);
 ////
 //        if (commandMap.containsKey(commandName)) {
