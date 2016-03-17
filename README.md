@@ -1,7 +1,5 @@
 ![Grappl Logo](https://dl.dropboxusercontent.com/u/34769058/grappl/glogo3.png)
 
-![passing-or-failing-ci](https://travis-ci.org/Cactose/Grappl.svg?branch=master)
-
 GRAPPL (THE COMPILED .JAR) ALSO CONTAINS CODE FROM: https://github.com/ellenhebert/Aproc
 
 Website: http://grappl.io/
