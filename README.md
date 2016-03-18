@@ -28,6 +28,6 @@ The Grappl client code is released under LGPL v2.1.
 
 ## Development
 
-Grappl is primarily developed by Cactose.
+Grappl is primarily developed by ellenhebert/Cactose.
 
 Her twitter is here: https://twitter.com/Cactose
