@@ -8,7 +8,7 @@ Donate: http://grappl.io/donate
 
 Launcher: http://grappl.io:888/html/GrapplLauncher.jar (Beta 1.5.6 currently, autoupdates)
 
-Relay server code: https://github.com/Cactose/GrapplRelay
+Relay server code: https://github.com/ellenhebert/GrapplRelay
 
 ## What is Grappl?
 
