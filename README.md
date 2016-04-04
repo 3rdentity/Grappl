@@ -1,16 +1,14 @@
 ![Grappl Logo](https://dl.dropboxusercontent.com/u/34769058/grappl/glogo3.png)
 
-![passing-or-failing-ci](https://travis-ci.org/Cactose/Grappl.svg?branch=master)
-
-GRAPPL (THE COMPILED .JAR) ALSO CONTAINS CODE FROM: https://github.com/Cactose/Ferrous
+GRAPPL (THE COMPILED .JAR) ALSO CONTAINS CODE FROM: https://github.com/ellenhebert/Aproc
 
 Website: http://grappl.io/
 
 Donate: http://grappl.io/donate
 
-Launcher: http://grappl.io:888/html/GrapplLauncher.jar (Beta 1.5.5 currently, autoupdates)
+Launcher: http://grappl.io:888/html/GrapplLauncher.jar (Beta 1.5.6 currently, autoupdates)
 
-Relay server code: https://github.com/Cactose/GrapplRelay
+Relay server code: https://github.com/ellenhebert/GrapplRelay
 
 ## What is Grappl?
 
@@ -30,6 +28,6 @@ The Grappl client code is released under LGPL v2.1.
 
 ## Development
 
-Grappl is primarily developed by Cactose.
+Grappl is primarily developed by Ellen Hebert a.k.a. Cactose.
 
-Their twitter is here: https://twitter.com/Cactose
+Her twitter is here: https://twitter.com/Cactose
