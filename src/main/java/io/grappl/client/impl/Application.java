@@ -27,7 +27,6 @@ import java.net.URL;
  */
 public final class Application {
 
-    // TODO: Perhaps have a way to configure a third-party auth server. Or somehow get it to not automatically connect to one on launch (via args?).
     public static final String DOMAIN = "grappl.io";
 
     // TODO: Maybe come up with... better port numbers? But that will be something done in 2.0.
