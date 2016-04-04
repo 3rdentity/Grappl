@@ -7,14 +7,10 @@ import io.grappl.client.impl.log.GrapplLog;
 import io.grappl.client.impl.log.GrapplErrorStream;
 import io.grappl.client.impl.log.SilentGrapplLog;
 import io.grappl.gui.DefaultGUI;
-import io.grappl.gui.GraphGUI;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
-import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
-import java.net.Socket;
 import java.net.URL;
 
 /**
@@ -35,7 +31,7 @@ public final class Application {
     public static final int AUTHENTICATION =   25571;
 
     public static final String APP_NAME = "Grappl";
-    public static final String VERSION = "Beta 1.5.9";
+    public static final String VERSION = "Beta 1.5.10";
 
     // If you are distributing your own version, be kind and change this please.
     public static final String BRAND = "DaexsysVanilla";
