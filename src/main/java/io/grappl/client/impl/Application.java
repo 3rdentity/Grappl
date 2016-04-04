@@ -28,7 +28,7 @@ import java.net.URL;
 public final class Application {
 
     // TODO: Perhaps have a way to configure a third-party auth server. Or somehow get it to not automatically connect to one on launch (via args?).
-    public static final String DOMAIN = "localhost";
+    public static final String DOMAIN = "grappl.io";
 
     // TODO: Maybe come up with... better port numbers? But that will be something done in 2.0.
     public static final int MESSAGING_PORT =   25564;
@@ -36,7 +36,7 @@ public final class Application {
     public static final int AUTHENTICATION =   25571;
 
     public static final String APP_NAME = "Grappl";
-    public static final String VERSION = "Beta 1.5.7";
+    public static final String VERSION = "Beta 1.5.9";
 
     // If you are distributing your own version, be kind and change this please.
     public static final String BRAND = "DaexsysVanilla";
@@ -143,7 +143,7 @@ public final class Application {
         }
 
 
-//        DefaultGUI defaultGUI = new DefaultGUI(getApplicationState());
+        DefaultGUI defaultGUI = new DefaultGUI(getApplicationState());
     }
 
     public static void setMode(ApplicationMode mode) {

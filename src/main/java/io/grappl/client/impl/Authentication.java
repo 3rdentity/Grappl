@@ -109,30 +109,30 @@ public class Authentication {
         }
 
         Application.getLog().log("Exiting");
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while(true) {
-                    System.out.println("Looked");
-                    try {
-                        int i = authDataInputStream.readInt();
-                        Application.getLog().log("You are now a beta tester!");
-                        if(i == 1) {
-                            JOptionPane.showConfirmDialog(null, "You are now a beta tester! Thanks for donating!");
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
-        thread.start();
+//        Thread thread = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                while(true) {
+//                    System.out.println("Looked");
+//                    try {
+//                        int i = authDataInputStream.readInt();
+//                        Application.getLog().log("You are now a beta tester!");
+//                        if(i == 1) {
+//                            JOptionPane.showConfirmDialog(null, "You are now a beta tester! Thanks for donating!");
+//                        }
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                    try {
+//                        Thread.sleep(1000);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }
+//        });
+//        thread.start();
     }
 
     public void logout() {
