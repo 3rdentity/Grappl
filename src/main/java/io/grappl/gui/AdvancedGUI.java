@@ -421,7 +421,7 @@ public class AdvancedGUI {
             }
         });
 
-        applicationState.getAuthentication().logout();
+//        applicationState.getAuthentication().logout();
         jFrame.add(logOut);
 
         jFrame.add(logOut);

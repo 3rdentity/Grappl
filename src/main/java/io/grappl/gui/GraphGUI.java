@@ -19,7 +19,7 @@ public class GraphGUI extends JFrame {
 
         DefaultPieDataset defaultPieDataset = new DefaultPieDataset();
         defaultPieDataset.setValue("Data Sent", statMonitor.getSentData());
-        defaultPieDataset.setValue("Data Receive", statMonitor.getReceivedData());
+        defaultPieDataset.setValue("Data Received", statMonitor.getReceivedData());
 
         JFreeChart jFreeChart = ChartFactory.createPieChart3D("Data Usage", defaultPieDataset, true, true, false);
         PiePlot3D piePlot3D = (PiePlot3D) jFreeChart.getPlot();

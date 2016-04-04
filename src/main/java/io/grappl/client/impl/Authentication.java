@@ -2,6 +2,7 @@ package io.grappl.client.impl;
 
 import io.grappl.client.impl.Application;
 import io.grappl.client.impl.error.AuthenticationException;
+import org.jfree.util.Log;
 
 import javax.swing.*;
 import java.io.DataInputStream;
@@ -99,12 +100,39 @@ public class Authentication {
 
                 throw new AuthenticationException("Wrong credentials for: " + username + " (or account does not exist)");
             }
+            authSocket.setSoTimeout(100000000);
         } catch (IOException e) {
             if(optionalFrame != null)
                 JOptionPane.showMessageDialog(optionalFrame, "Broken connection, authentication failed");
 
             throw new AuthenticationException("Login failed");
         }
+
+        Application.getLog().log("Exiting");
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(true) {
+                    System.out.println("Looked");
+                    try {
+                        int i = authDataInputStream.readInt();
+                        Application.getLog().log("You are now a beta tester!");
+                        if(i == 1) {
+                            JOptionPane.showConfirmDialog(null, "You are now a beta tester! Thanks for donating!");
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+        thread.start();
     }
 
     public void logout() {
@@ -112,6 +140,8 @@ public class Authentication {
         isPremium = false;
         staticPort = -1;
         localizedRelayPrefix = "";
+
+        Application.getLog().log("Logged out");
 
         try {
             authSocket.close();

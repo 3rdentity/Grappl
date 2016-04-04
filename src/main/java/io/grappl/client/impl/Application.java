@@ -28,7 +28,7 @@ import java.net.URL;
 public final class Application {
 
     // TODO: Perhaps have a way to configure a third-party auth server. Or somehow get it to not automatically connect to one on launch (via args?).
-    public static final String DOMAIN = "grappl.io";
+    public static final String DOMAIN = "localhost";
 
     // TODO: Maybe come up with... better port numbers? But that will be something done in 2.0.
     public static final int MESSAGING_PORT =   25564;
@@ -36,7 +36,7 @@ public final class Application {
     public static final int AUTHENTICATION =   25571;
 
     public static final String APP_NAME = "Grappl";
-    public static final String VERSION = "Beta 1.5.6";
+    public static final String VERSION = "Beta 1.5.7";
 
     // If you are distributing your own version, be kind and change this please.
     public static final String BRAND = "DaexsysVanilla";
@@ -70,15 +70,15 @@ public final class Application {
             log.log("Launcher version: " + version);
             create(args, ApplicationMode.GUI);
         } catch(Exception e) {
-            JOptionPane.showConfirmDialog(null, "Critical error on startup. One step further than not starting at all. Error: " + e + "; " + e.getStackTrace()[0].getMethodName());
+            JOptionPane.showConfirmDialog(null, "Last resort error catch. Error: " + e + "; " + e.getStackTrace()[0].getMethodName());
         }
     }
 
     public static void create(String[] args, ApplicationMode mode) {
         Application.mode = mode;
 
-        System.setProperty("app-name", "Grappl");
-        System.setProperty("app-version", "Beta 1.5.6");
+        System.setProperty("app-name", APP_NAME);
+        System.setProperty("app-version", VERSION);
         System.setProperty("app-brand", "DaexsysVanilla");
         System.setProperty("no-tunnel-message", "There is no grappl currently open! Start one with 'grappl connect'");
         System.setProperty("no-user-message", "Not logged in. Login with 'login [username] [password]' to use this command.");
