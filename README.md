@@ -4,7 +4,7 @@ Website: http://grappl.io/
 
 Donate: http://grappl.io/donate
 
-Launcher: http://grappl.io:888/html/GrapplLauncher.jar (Beta 1.5.9 currently, autoupdates)
+Launcher: http://grappl.io:888/html/GrapplLauncher.jar (Beta 1.5.10 currently, autoupdates)
 
 Relay server code: https://github.com/ellenhebert/GrapplRelay
 
