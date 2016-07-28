@@ -1,12 +1,10 @@
 ![Grappl Logo](https://dl.dropboxusercontent.com/u/34769058/grappl/glogo3.png)
 
-GRAPPL (THE COMPILED .JAR) ALSO CONTAINS CODE FROM: https://github.com/ellenhebert/Aproc
-
 Website: http://grappl.io/
 
 Donate: http://grappl.io/donate
 
-Launcher: http://grappl.io:888/html/GrapplLauncher.jar (Beta 1.5.6 currently, autoupdates)
+Launcher: http://grappl.io:888/html/GrapplLauncher.jar (Beta 1.5.10 currently, autoupdates)
 
 Relay server code: https://github.com/ellenhebert/GrapplRelay
 
