@@ -38,7 +38,7 @@ public class ConsoleGUI {
             public void windowDeactivated(WindowEvent e) {}
             public void windowOpened(WindowEvent e) {}
         });
-        consoleFrame.setTitle(Application.APP_NAME + " Ostia Console");
+        consoleFrame.setTitle(Application.APP_NAME + " Console");
 
         try {
             consoleFrame.setIconImage(Application.getIcon());

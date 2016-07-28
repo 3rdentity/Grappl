@@ -32,9 +32,9 @@ public class ApplicationState {
 //                        relayManager.offerRelay(relayServer);
 //                    }
                 relayManager.offerRelay(new RelayServer("n.grappl.io", "East Coast NA"));
-                relayManager.offerRelay(new RelayServer("s.grappl.io", "West Coast NA"));
-                relayManager.offerRelay(new RelayServer("e.grappl.io", "NL Europe"));
-                relayManager.offerRelay(new RelayServer("p.grappl.io", "Aus / Oceania"));
+//                relayManager.offerRelay(new RelayServer("s.grappl.io", "West Coast NA"));
+//                relayManager.offerRelay(new RelayServer("e.grappl.io", "NL Europe"));
+//                relayManager.offerRelay(new RelayServer("p.grappl.io", "Aus / Oceania"));
                 }
             });
             pingThread.start();

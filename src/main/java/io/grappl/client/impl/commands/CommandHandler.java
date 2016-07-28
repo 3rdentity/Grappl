@@ -105,7 +105,6 @@ public class CommandHandler {
                 public void run() {
 
                     Application.getLog().log(Application.APP_NAME + " Command Line (type a command, or type 'help' or 'help [command]' for ideas!)");
-//                    Application.getLog().log("Grappl uses the Ostia programming language in it's command system, the same language found in the Ostia Sponge (MC server) plugin.");
 
                     Scanner scanner = new Scanner(System.in);
 
