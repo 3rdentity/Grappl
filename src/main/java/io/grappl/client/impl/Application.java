@@ -80,7 +80,7 @@ public final class Application {
         System.setProperty("localadded", "false");
         System.setProperty("serverhost", "localhost");
 //
-        JOptionPane.showMessageDialog(null, "Grappl is for sale! The whole service, $8k. Contact ellenhbrt@gmail.com if you are interested.\nAs it stands currently, the service will likely be brought down indefinitely within the next 12-48 hours (As of July 28th).\nIf you are outside of this period, the application will still work, but the auth server/relays may be down.\nClick OK to continue launching Grappl.");
+        JOptionPane.showMessageDialog(null, "Grappl is for sale! The whole service, $8k. Contact ellenhbrt@gmail.com if you are interested.\nClick OK to continue launching Grappl.");
 //        functionGroup.getEnvironment().putVar("app-name", "Grappl");
 //        functionGroup.getEnvironment().putVar("version", Application.APP_NAME + " " + Application.VERSION + " {Brand=" + Application.BRAND + "}");
 //
