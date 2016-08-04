@@ -58,13 +58,17 @@ public class PluginLoader {
      * Load the plugins
      */
     public void load() {
+        directory = directory.replaceAll(" Grappl", "Grappl");
         File[] files = new File(directory).listFiles();
+
 
 //        System.out.println(new File(directory).getAbsoluteFile());
         try {
             if(files != null) {
+//                System.out.println(".jars found: " + files.length);
                 for (File file : files) {
                     try {
+//                        System.out.println("Found plugin: " + file.getName());
                         String[] pluginName = file.getName().split("\\.");
 
                         if (pluginName[1].equalsIgnoreCase(extension)) {
@@ -72,9 +76,9 @@ public class PluginLoader {
                                 ClassLoader classLoader = new URLClassLoader(new URL[]{file.toURI().toURL()});
                                 String mainClassLocation = "";
 
-                                DataInputStream stream = new DataInputStream(classLoader.getResourceAsStream("plginfo.dat"));
+                                DataInputStream plgInfoStream = new DataInputStream(classLoader.getResourceAsStream("plginfo.dat"));
                                 //noinspection deprecation
-                                mainClassLocation = stream.readLine();
+                                mainClassLocation = plgInfoStream.readLine();
 
                                 if (!loadedPlugins.contains(mainClassLocation)) {
                                     Class theClass = classLoader.loadClass(mainClassLocation);

@@ -1,8 +1,6 @@
 package io.grappl.client.impl;
 
-import io.grappl.client.impl.Application;
 import io.grappl.client.impl.error.AuthenticationException;
-import org.jfree.util.Log;
 
 import javax.swing.*;
 import java.io.DataInputStream;

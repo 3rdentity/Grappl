@@ -31,7 +31,7 @@ public final class Application {
     public static final int AUTHENTICATION =   25571;
 
     public static final String APP_NAME = "Grappl";
-    public static final String VERSION = "Beta 1.6";
+    public static final String VERSION = "Beta 1.6.1 (Server list test)";
 
     // If you are distributing your own version, be kind and change this please.
     public static final String BRAND = "DaexsysVanilla";
@@ -80,7 +80,7 @@ public final class Application {
         System.setProperty("localadded", "false");
         System.setProperty("serverhost", "localhost");
 //
-        JOptionPane.showMessageDialog(null, "Grappl is for sale! The whole service, $8k. Contact ellenhbrt@gmail.com if you are interested.\nClick OK to continue launching Grappl.");
+//        JOptionPane.showMessageDialog(null, "Grappl is for sale! The whole service, $8k. Contact ellenhbrt@gmail.com if you are interested.\nClick OK to continue launching Grappl.");
 //        functionGroup.getEnvironment().putVar("app-name", "Grappl");
 //        functionGroup.getEnvironment().putVar("version", Application.APP_NAME + " " + Application.VERSION + " {Brand=" + Application.BRAND + "}");
 //
@@ -112,7 +112,7 @@ public final class Application {
 
         log.log("Started: Grappl " + VERSION + " {Brand=" + BRAND + ", Mode=" + mode + "}");
         log.log("JVM version: " + System.getProperty("java.version") + " | OS: " + System.getProperty("os.name") + " | Arch: " + System.getProperty("os.arch"));
-        log.log("If you encounter issues, please report them to @grapplstatus, or @Cactose.");
+        log.log("If you encounter issues, please report them to @grapplstatus, or ellenhbrt@gmail.com.");
         log.log("Preferably with a copy of this log! Thx <3");
 
         log.log("====================");
@@ -123,7 +123,7 @@ public final class Application {
         System.setErr(new GrapplErrorStream(log, System.out));
 
         log.log("Preparing to load plugins-");
-        PluginManager.setupAndLoad();
+//        PluginManager.setupAndLoad();
         log.log("====================");
 
         try {

@@ -17,6 +17,7 @@ import io.grappl.gui.DefaultGUI;
 import javax.swing.*;
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.net.*;
 import java.util.*;
 
@@ -98,7 +99,7 @@ public class TCPGrappl implements Grappl {
                         "Connection opened: relayserver=" + externalServer.getAddress()
                         + " localport=" + getInternalServer().getPort());
 
-                // Receive port that the server will be hosted on externally.
+                // Receive port that the server will be hosted on externally.3
                 // TODO: Protocol overhaul. Should just send an int.
                 DataInputStream relayMsgInputStream = new DataInputStream(relayMessageSocket.getInputStream());
                 externalServer.setPort(Integer.parseInt(relayMsgInputStream.readLine()));
@@ -115,6 +116,28 @@ public class TCPGrappl implements Grappl {
 
                 // Create thread that routes incoming connections to the local server.
                 createClientHandler(relayMessageSocket, relayMsgInputStream);
+
+
+
+                /* Server list addition */
+                int result = JOptionPane.showConfirmDialog(null, "Would you like to post your server on the public server list?\n(This will likely cause people you don't know to join your game!)");
+
+                if(result == JOptionPane.YES_OPTION) {
+                    try {
+                        Application.getApplicationState().getAuthentication().getAuthDataOutputStream().writeByte(114);
+
+                        PrintStream printStream = new PrintStream(Application.getApplicationState().getAuthentication().getAuthDataOutputStream());
+//
+                        String input =
+                                Application.getApplicationState().getAuthentication().getUsername() + "'s server - " + Application.getApplicationState().getFocusedGrappl().getExternalServer().getAddress() + ":"
+                                        + Application.getApplicationState().getFocusedGrappl().getExternalServer().getPort();
+
+                        printStream.println(input);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
 
             } catch (SocketException e) {
                 if(gui != null)
