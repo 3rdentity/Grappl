@@ -27,7 +27,7 @@ public class RelayManager {
     }
 
     public PriorityQueue<RelayServer> getQueue() {
-        PriorityQueue<RelayServer> records1 = new PriorityQueue<RelayServer>(new Comparator<RelayServer>() {
+        PriorityQueue<RelayServer> records1 = new PriorityQueue<RelayServer>(100, new Comparator<RelayServer>() {
             @Override
             public int compare(RelayServer o1, RelayServer o2) {
                 return (o1.getLatency() < o2.getLatency()) ? -1 : 1;

@@ -31,7 +31,7 @@ public final class Application {
     public static final int AUTHENTICATION =   25571;
 
     public static final String APP_NAME = "Grappl";
-    public static final String VERSION = "Beta 1.6.2";
+    public static final String VERSION = "Beta 1.6.3";
 
     // If you are distributing your own version, be kind and change this please.
     public static final String BRAND = "DaexsysVanilla";
@@ -139,7 +139,9 @@ public final class Application {
         }
 
 
-        DefaultGUI defaultGUI = new DefaultGUI(getApplicationState());
+        if(mode == ApplicationMode.GUI) {
+            DefaultGUI defaultGUI = new DefaultGUI(getApplicationState());
+        }
     }
 
     public static void setMode(ApplicationMode mode) {
