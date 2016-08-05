@@ -119,24 +119,24 @@ public class TCPGrappl implements Grappl {
 
 
 
-                /* Server list addition */
-                int result = JOptionPane.showConfirmDialog(null, "Would you like to post your server on the public server list?\n(This will likely cause people you don't know to join your game!)");
-
-                if(result == JOptionPane.YES_OPTION) {
-                    try {
-                        Application.getApplicationState().getAuthentication().getAuthDataOutputStream().writeByte(114);
-
-                        PrintStream printStream = new PrintStream(Application.getApplicationState().getAuthentication().getAuthDataOutputStream());
+//                /* Server list addition */
+//                int result = JOptionPane.showConfirmDialog(null, "Would you like to post your server on the public server list?\n(This will likely cause people you don't know to join your game!)");
 //
-                        String input =
-                                Application.getApplicationState().getAuthentication().getUsername() + "'s server - " + Application.getApplicationState().getFocusedGrappl().getExternalServer().getAddress() + ":"
-                                        + Application.getApplicationState().getFocusedGrappl().getExternalServer().getPort();
-
-                        printStream.println(input);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
+//                if(result == JOptionPane.YES_OPTION) {
+//                    try {
+//                        Application.getApplicationState().getAuthentication().getAuthDataOutputStream().writeByte(114);
+//
+//                        PrintStream printStream = new PrintStream(Application.getApplicationState().getAuthentication().getAuthDataOutputStream());
+////
+//                        String input =
+//                                Application.getApplicationState().getAuthentication().getUsername() + "'s server - " + Application.getApplicationState().getFocusedGrappl().getExternalServer().getAddress() + ":"
+//                                        + Application.getApplicationState().getFocusedGrappl().getExternalServer().getPort();
+//
+//                        printStream.println(input);
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                }
 
 
             } catch (SocketException e) {
