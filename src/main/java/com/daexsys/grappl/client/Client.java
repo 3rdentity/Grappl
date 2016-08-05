@@ -14,12 +14,14 @@ public class Client {
 
     public static void main(String[] args) {
 
+//        args = new String[]{ "-nogui" };
+
+        Application.create(args, ApplicationMode.GUI);
 
         boolean displayGui = true;
 
         // Handle command line arguments
         if(args.length > 0) {
-            System.out.println("ARGUMENT LENGTH: " + args.length);
             Application.setMode(ApplicationMode.NOGUI);
 
             if (args[0].equalsIgnoreCase("-nogui") || args[0].equalsIgnoreCase("nogui")) {
@@ -46,16 +48,13 @@ public class Client {
             } else {
                 Application.getCommandHandler().createConsoleCommandListenThread();
             }
-        } else {
-
-            Application.create(args, ApplicationMode.NOGUI);
         }
 
         Application.getCommandHandler().createConsoleCommandListenThread();
 
-//        // If there should be a gui, create it
-//        if(displayGui) {
-//            new DefaultGUI(Application.getApplicationState());
-//        }
+        // If there should be a gui, create it
+        if(displayGui) {
+            new DefaultGUI(Application.getApplicationState());
+        }
     }
 }
