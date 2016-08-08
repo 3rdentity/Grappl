@@ -2,12 +2,9 @@ package io.grappl.gui;
 
 import io.grappl.client.api.Grappl;
 import io.grappl.client.api.Protocol;
-import io.grappl.client.impl.Application;
-import io.grappl.client.impl.GrapplDataFile;
-import io.grappl.client.impl.ApplicationState;
+import io.grappl.client.impl.*;
 import io.grappl.client.impl.relay.AdaptiveConnector;
 import io.grappl.client.impl.error.AuthenticationException;
-import io.grappl.client.impl.GrapplBuilder;
 import io.grappl.client.impl.error.RelayServerNotFoundException;
 
 import javax.swing.*;
@@ -132,6 +129,9 @@ public class DefaultGUI {
         if(isActuallyHash) {
             rememberMeBox.setSelected(true);
         } {
+
+            boolean servUp = CoreUp.isCoreUp();
+
             final JButton logInButton = new JButton("Log in");
             logInButton.setBounds(4, 112, 140, 40);
             logInButton.addActionListener(new ActionListener() {
@@ -154,7 +154,13 @@ public class DefaultGUI {
                     }
                 }
             });
+            signUpButton.setEnabled(false);
             jFrame.add(signUpButton);
+
+            if(!servUp) {
+                logInButton.setEnabled(false);
+                signUpButton.setEnabled(false);
+            }
 
             JButton beAnonymousButton = new JButton("Run without logging in");
             beAnonymousButton.addActionListener(new ActionListener() {
@@ -217,7 +223,7 @@ public class DefaultGUI {
                         }
                     });
                     donateButton.setBounds(2, 155, 280, 40);
-                    jFrame.add(donateButton);
+//                    jFrame.add(donateButton);
 
                     String ports = JOptionPane.showInputDialog("What port does your server run on?");
                     grappl.getInternalServer().setPort(Integer.parseInt(ports));

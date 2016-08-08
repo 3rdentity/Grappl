@@ -163,7 +163,7 @@ public class TCPGrappl implements Grappl {
                         "Connection to relay server failed.");
             }
 
-            throw new RelayServerNotFoundException(relayServer + " does not appear to exist");
+//            throw new RelayServerNotFoundException(relayServer + " does not appear to exist");
         }
 
         return true;
