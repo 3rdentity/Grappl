@@ -1,4 +1,4 @@
-package io.grappl.client.impl.error;
+package io.grappl.client.impl.authentication;
 
 public class AuthenticationException extends Exception {
 

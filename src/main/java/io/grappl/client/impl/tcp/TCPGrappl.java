@@ -5,6 +5,7 @@ import io.grappl.client.api.Grappl;
 import io.grappl.client.api.LocationProvider;
 import io.grappl.client.api.Protocol;
 import io.grappl.client.impl.*;
+import io.grappl.client.impl.authentication.Authentication;
 import io.grappl.client.impl.error.RelayServerNotFoundException;
 import io.grappl.client.impl.log.GrapplLog;
 import io.grappl.client.impl.event.UserConnectEvent;
@@ -17,7 +18,6 @@ import io.grappl.gui.DefaultGUI;
 import javax.swing.*;
 import java.io.DataInputStream;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.net.*;
 import java.util.*;
 

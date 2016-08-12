@@ -39,7 +39,7 @@ public class HeartbeatHandler {
                 DataOutputStream dataOutputStream = null;
 
                 try {
-                    heartBeat = new Socket(relayServer, Application.HEARTBEAT);
+                    heartBeat = new Socket(relayServer, Application.HEARTBEAT_PORT);
                     dataOutputStream = new DataOutputStream(heartBeat.getOutputStream());
                 } catch (IOException e) {
                     e.printStackTrace();

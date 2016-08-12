@@ -1,7 +1,7 @@
 package io.grappl.client.api;
 
 import io.grappl.client.impl.ApplicationState;
-import io.grappl.client.impl.Authentication;
+import io.grappl.client.impl.authentication.Authentication;
 import io.grappl.client.impl.NetworkLocation;
 import io.grappl.client.impl.error.RelayServerNotFoundException;
 import io.grappl.client.impl.StatMonitor;

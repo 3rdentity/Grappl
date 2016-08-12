@@ -14,11 +14,7 @@ public class IpBanCommand implements Command {
             if (state.getAuthentication().isLoggedIn()) {
                 try {
                     String ipToBAN = args[1];
-
-                    state.getAuthentication().getAuthDataOutputStream().writeByte(5);
-                    PrintStream printStream = new PrintStream(state.getAuthentication().getAuthDataOutputStream());
-                    printStream.println(ipToBAN);
-
+                    state.getAuthentication().banIP(args[1]);
                     Application.getLog().log("Banned ip: " + ipToBAN);
                 } catch (Exception e) {
                     e.printStackTrace();

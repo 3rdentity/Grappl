@@ -4,8 +4,7 @@ import io.grappl.client.api.Grappl;
 import io.grappl.client.api.Protocol;
 import io.grappl.client.api.event.GrapplOpenListener;
 import io.grappl.client.api.event.Listener;
-import io.grappl.client.api.event.UserConnectListener;
-import io.grappl.client.impl.event.GrapplCloseEvent;
+import io.grappl.client.impl.authentication.Authentication;
 import io.grappl.client.impl.relay.RelayManager;
 import io.grappl.client.impl.relay.RelayServer;
 

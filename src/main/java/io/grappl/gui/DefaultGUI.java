@@ -4,8 +4,7 @@ import io.grappl.client.api.Grappl;
 import io.grappl.client.api.Protocol;
 import io.grappl.client.impl.*;
 import io.grappl.client.impl.relay.AdaptiveConnector;
-import io.grappl.client.impl.error.AuthenticationException;
-import io.grappl.client.impl.error.RelayServerNotFoundException;
+import io.grappl.client.impl.authentication.AuthenticationException;
 
 import javax.swing.*;
 import java.awt.*;
@@ -130,7 +129,7 @@ public class DefaultGUI {
             rememberMeBox.setSelected(true);
         } {
 
-            boolean servUp = CoreUp.isCoreUp();
+            boolean servUp = CoreTester.isCoreUp();
 
             final JButton logInButton = new JButton("Log in");
             logInButton.setBounds(4, 112, 140, 40);
@@ -253,35 +252,35 @@ public class DefaultGUI {
 
         jFrame.setVisible(true);
     }
-
-    private void doConnection(Grappl grappl) {
-        String relayToConnectTo = grappl.getAuthentication().getLocalizedRelayPrefix() + "." + Application.DOMAIN;
-        try {
-            grappl.connect(relayToConnectTo);
-        } catch (RelayServerNotFoundException e1) {
-            Application.getLog().log("Looks like the auth server just tried to send you to a crashed or non-existent relay.");
-            Application.getLog().log("Attempting to connect you to a different relay...");
-
-            String newRelay = "";
-            if(relayToConnectTo.equalsIgnoreCase("n.grappl.io")) {
-                newRelay = "s.grappl.io";
-            } else if(relayToConnectTo.equalsIgnoreCase("s.grappl.io")) {
-                newRelay = "n.grappl.io";
-            } else if(relayToConnectTo.equalsIgnoreCase("e.grappl.io")) {
-                newRelay = "n.grappl.io";
-            } else if(relayToConnectTo.equalsIgnoreCase("p.grappl.io")) {
-                newRelay = "s.grappl.io";
-            }
-
-            try {
-                grappl.connect(newRelay);
-            } catch (RelayServerNotFoundException e2) {
-                Application.getLog().log("Alright, things are going disastrously wrong. " +
-                        "You should contact @Cactose, half the servers are probably down.");
-                e2.printStackTrace();
-            }
-        }
-    }
+//
+//    private void doConnection(Grappl grappl) {
+//        String relayToConnectTo = grappl.getAuthentication().getLocalizedRelayPrefix() + "." + Application.DOMAIN;
+//        try {
+//            grappl.connect(relayToConnectTo);
+//        } catch (RelayServerNotFoundException e1) {
+//            Application.getLog().log("Looks like the auth server just tried to send you to a crashed or non-existent relay.");
+//            Application.getLog().log("Attempting to connect you to a different relay...");
+//
+//            String newRelay = "";
+//            if(relayToConnectTo.equalsIgnoreCase("n.grappl.io")) {
+//                newRelay = "s.grappl.io";
+//            } else if(relayToConnectTo.equalsIgnoreCase("s.grappl.io")) {
+//                newRelay = "n.grappl.io";
+//            } else if(relayToConnectTo.equalsIgnoreCase("e.grappl.io")) {
+//                newRelay = "n.grappl.io";
+//            } else if(relayToConnectTo.equalsIgnoreCase("p.grappl.io")) {
+//                newRelay = "s.grappl.io";
+//            }
+//
+//            try {
+//                grappl.connect(newRelay);
+//            } catch (RelayServerNotFoundException e2) {
+//                Application.getLog().log("Alright, things are going disastrously wrong. " +
+//                        "You should contact @Cactose, half the servers are probably down.");
+//                e2.printStackTrace();
+//            }
+//        }
+//    }
 
     public JLabel getConnectedClientsLabel() {
         return connectedClientsLabel;
@@ -348,8 +347,8 @@ public class DefaultGUI {
 
             if(grappl.getAuthentication().isLoggedIn()) {
                 Application.getLog().log("Logged in as " + grappl.getAuthentication().getUsername());
-                Application.getLog().log("Beta tester: " + grappl.getAuthentication().isPremium());
-                Application.getLog().log("Static port: " + grappl.getExternalServer().getPort());
+                Application.getLog().log("Donator: " + grappl.getAuthentication().isPremium());
+                Application.getLog().log("Reserved port: " + grappl.getExternalServer().getPort());
 
                 if(!rememberMeBox.isSelected()) {
                     password = null;
@@ -358,7 +357,7 @@ public class DefaultGUI {
                 GrapplDataFile.saveUsername(grappl.getAuthentication().getUsername(), password);
 
                 // options: nyc. sf. pac. lon. deu.
-                String prefix = grappl.getAuthentication().getLocalizedRelayPrefix();
+//                String prefix = grappl.getAuthentication().getLocalizedRelayPrefix();
 
                 int wX = jFrame.getX();
                 int wY = jFrame.getY();

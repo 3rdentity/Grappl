@@ -4,7 +4,7 @@ import io.grappl.client.impl.Application;
 import io.grappl.client.api.commands.Command;
 import io.grappl.client.impl.ApplicationState;
 import io.grappl.client.impl.log.GrapplLog;
-import io.grappl.client.impl.Authentication;
+import io.grappl.client.impl.authentication.Authentication;
 
 import java.awt.*;
 import java.io.IOException;

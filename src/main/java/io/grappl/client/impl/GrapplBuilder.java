@@ -3,7 +3,7 @@ package io.grappl.client.impl;
 import io.grappl.client.api.Grappl;
 import io.grappl.client.api.LocationProvider;
 import io.grappl.client.api.Protocol;
-import io.grappl.client.impl.error.AuthenticationException;
+import io.grappl.client.impl.authentication.*;
 import io.grappl.gui.AdvancedGUI;
 import io.grappl.gui.DefaultGUI;
 import io.grappl.client.impl.tcp.TCPGrappl;
@@ -63,10 +63,16 @@ public class GrapplBuilder {
      * JFrame is optional
      */
     public GrapplBuilder login(String username, char[] password, JFrame jFrame) throws AuthenticationException {
-        Authentication authentication = new Authentication(jFrame);
-        authentication.login(username, password);
-        grappl.useAuthentication(authentication);
-
+        try {
+            Authentication authentication = Authenticator.login(username, password);
+            grappl.useAuthentication(authentication);
+        } catch (AuthenticationException auth) {
+            if(jFrame != null) {
+                JOptionPane.showMessageDialog(jFrame, "Login failed, incorrect username or password or broken connection.\nError message: " + auth.getMessage());
+            } else {
+                auth.printStackTrace();
+            }
+        }
         return this;
     }
 

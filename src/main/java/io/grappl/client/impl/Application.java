@@ -26,12 +26,11 @@ public final class Application {
     public static final String DOMAIN = "grappl.io";
 
     // TODO: Maybe come up with... better port numbers? But that will be something done in 2.0.
-    public static final int MESSAGING_PORT =   25564;
-    public static final int HEARTBEAT =        25570;
-    public static final int AUTHENTICATION =   25571;
+    public static final int MESSAGING_PORT =        25564;
+    public static final int HEARTBEAT_PORT =        25570;
 
     public static final String APP_NAME = "Grappl";
-    public static final String VERSION = "Beta 1.6.5";
+    public static final String VERSION = "Beta 1.6.6";
 
     // If you are distributing your own version, be kind and change this please.
     public static final String BRAND = "DaexsysVanilla";
@@ -39,7 +38,7 @@ public final class Application {
     public static final String RELAY_LIST_LOC = "http://grappl.io/relays.json";
 
     public static final String NO_GRAPPL_MESSAGE = "There is no grappl currently open! Start one with 'grappl connect'";
-    public static final String NOT_LOGGED_IN_MESSAGE = "Not logged in. Login with 'login [username] [password]' to use this command.";
+    public static final String NOT_LOGGED_IN_MESSAGE = "Not logged in. Login with 'createSession [username] [password]' to use this command.";
 
     public static final long timeStartedRunning = System.currentTimeMillis();
 
@@ -76,7 +75,7 @@ public final class Application {
         System.setProperty("app-version", VERSION);
         System.setProperty("app-brand", "DaexsysVanilla");
         System.setProperty("no-tunnel-message", "There is no grappl currently open! Start one with 'grappl connect'");
-        System.setProperty("no-user-message", "Not logged in. Login with 'login [username] [password]' to use this command.");
+        System.setProperty("no-user-message", "Not logged in. Login with 'createSession [username] [password]' to use this command.");
         System.setProperty("localadded", "false");
         System.setProperty("serverhost", "localhost");
 //

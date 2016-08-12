@@ -13,13 +13,8 @@ public class IpUnbanCommand implements Command {
 
         if (state.getAuthentication().isLoggedIn()) {
             try {
-                String ipToUnban = args[1];
-
-                state.getAuthentication().getAuthDataOutputStream().writeByte(8);
-                PrintStream printStream = new PrintStream(state.getAuthentication().getAuthDataOutputStream());
-                printStream.println(ipToUnban);
-
-                Application.getLog().log("Unbanned ip: " + ipToUnban);
+                state.getAuthentication().unbanIP(args[1]);
+                Application.getLog().log("Unbanned ip: " + args[1]);
             } catch (Exception e) {
                 e.printStackTrace();
             }

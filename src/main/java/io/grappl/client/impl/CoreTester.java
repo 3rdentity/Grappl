@@ -2,7 +2,7 @@ package io.grappl.client.impl;
 
 import java.net.Socket;
 
-public class CoreUp {
+public class CoreTester {
 
     public static boolean isCoreUp() {
         try {

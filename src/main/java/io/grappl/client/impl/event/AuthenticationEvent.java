@@ -1,6 +1,6 @@
 package io.grappl.client.impl.event;
 
-import io.grappl.client.impl.Authentication;
+import io.grappl.client.impl.authentication.Authentication;
 
 public class AuthenticationEvent {
 

@@ -34,8 +34,8 @@ public class CommandHandler {
         /* Account related */
         addCommand(new AccountCommand(), "account");
         addCommand(new RegisterCommand(), "register");
-        addCommand(new LoginCommand(), "login");
-        addCommand(new LogoutCommand(), "logout");
+        addCommand(new LoginCommand(), "createSession");
+        addCommand(new LogoutCommand(), "closeSession");
         addCommand(new WhoAmICommand(), "whoami");
         // TODO: put as subcommand to account, maybe?
         addCommand(new SetStaticPortCommand(), "setstaticport", "setport");

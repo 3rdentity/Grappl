@@ -12,7 +12,7 @@ public class LogoutCommand implements Command {
         if(state.getAuthentication() == null) {
             Application.getLog().log(Application.NOT_LOGGED_IN_MESSAGE);
         } else {
-            state.getAuthentication().logout();
+            state.getAuthentication().closeSession();
             Application.getLog().log("Logged out. Bye, " + state.getAuthentication().getUsername() + "!");
         }
     }

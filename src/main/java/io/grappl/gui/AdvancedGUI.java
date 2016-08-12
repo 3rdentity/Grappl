@@ -1,8 +1,13 @@
 package io.grappl.gui;
 
+import io.grappl.client.api.ClientConnection;
 import io.grappl.client.api.Grappl;
 import io.grappl.client.api.LocationProvider;
 import io.grappl.client.impl.*;
+import io.grappl.client.impl.authentication.Authentication;
+import io.grappl.client.impl.authentication.AuthenticationException;
+import io.grappl.client.impl.authentication.AuthenticationPackets;
+import io.grappl.client.impl.authentication.Authenticator;
 import io.grappl.client.impl.relay.RelayServer;
 import io.grappl.client.impl.error.RelayServerNotFoundException;
 import io.grappl.client.impl.tcp.TCPGrappl;
@@ -17,7 +22,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.DataOutput;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.URI;
@@ -43,7 +47,8 @@ public class AdvancedGUI {
     private JFrame jFrame;
     private JButton open;
     private JButton close;
-    private JButton setReservedPort;
+    private JButton kickUsers;
+    private JButton setReservedPortButton;
 
     public static JComboBox<String> relayServerDropdown;
 
@@ -216,22 +221,17 @@ public class AdvancedGUI {
         jFrame.add(close);
 
         int dist = 290;
-        setReservedPort = new JButton("Set reserved/static port");
-        setReservedPort.addActionListener(new ActionListener() {
+        setReservedPortButton = new JButton("Set reserved/static port (Donator feature)");
+        setReservedPortButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
                     int port = Integer.parseInt(JOptionPane.showInputDialog("New static port:"));
-
-                    DataOutputStream dataOutputStream = Application.getApplicationState().getAuthentication().getAuthDataOutputStream();
                     try {
-                        dataOutputStream.writeByte(74);
-                        dataOutputStream.writeInt(port);
-
-                        boolean bool = Application.getApplicationState().getAuthentication().getAuthDataInputStream().readBoolean();
-                        if (bool)
-                            JOptionPane.showMessageDialog(null, "Success! Your static port has been set to: " + port + "\nLog out and log back in for it to take effect.");
-                        else JOptionPane.showMessageDialog(null, "Failed to set port. It may already be taken.");
+                        boolean success = Application.getApplicationState().getAuthentication().changeReservedPortTo(port);
+                        if (success)
+                            JOptionPane.showMessageDialog(jFrame, "Success! Your static port has been set to: " + port + "\nLog out and log back in for it to take effect.");
+                        else JOptionPane.showMessageDialog(jFrame, "Failed to set port. It may already be taken.");
 
                         premiumLabel.setText("Donator: true, reserved port: " + port);
                     } catch (IOException e1) {
@@ -240,9 +240,21 @@ public class AdvancedGUI {
                 } catch (Exception r) {}
             }
         });
-        setReservedPort.setEnabled(false);
-        setReservedPort.setBounds(dist, 105, 260, 20);
-        jFrame.add(setReservedPort);
+        setReservedPortButton.setEnabled(false);
+        setReservedPortButton.setBounds(dist, 105, 260, 20);
+        jFrame.add(setReservedPortButton);
+
+        kickUsers = new JButton("Kick connected users");
+        kickUsers.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                for(ClientConnection tcpClientConnection : Application.getApplicationState().getGrappl(0).getConnectedClients()) {
+                    tcpClientConnection.close();
+                }
+            }
+        });
+        kickUsers.setBounds(dist, 135, 260, 20);
+        jFrame.add(kickUsers);
 
         connectionLabel = new JTextPane();
         connectionLabel.setEditable(false);
@@ -346,37 +358,39 @@ public class AdvancedGUI {
                     @Override
                     public void actionPerformed(ActionEvent e) {
 
-                        Authentication authentication = new Authentication(getFrame());
                         prepareForLogin(usernameField, jPasswordField);
 
                         try {
                             if (!isActuallyHash || !Application.usingSavedHashPass) {
-                                theGUI.password = (new String(theGUI.password).hashCode() + "").toCharArray();
+                                theGUI.password = Authenticator.formatPassword(new String(theGUI.password));
                             }
 
                             try {
-                                authentication.login(username, theGUI.password);
-                            } catch (Exception exp) { Application.getLog().log(exp.getMessage()); }
+                                Authentication authentication = Authenticator.login(username, theGUI.password);
 
-                            applicationState.useAuthentication(authentication);
+                                applicationState.useAuthentication(authentication);
 
-                            if (authentication.isLoggedIn()) {
-                                isLoggedInLabel.setText("Logged in as: " + username);
+                                if (authentication.isLoggedIn()) {
+                                    isLoggedInLabel.setText("Logged in as: " + username);
 
-                                if(authentication.isPremium()) {
-                                    premiumLabel.setText("Donator: true, reserved port: " + authentication.getStaticPort());
-                                    setReservedPort.setEnabled(true);
+                                    if(authentication.isPremium()) {
+                                        premiumLabel.setText("Donator: true, reserved port: " + authentication.getReservedPort());
+                                        setReservedPortButton.setEnabled(true);
+                                    }
+
+                                    Application.getLog().log("Logged in as " + authentication.getUsername());
+                                    Application.getLog().log("Donator: " + authentication.isPremium());
+                                    Application.getLog().log("Reserved port: " + authentication.getReservedPort());
+
+                                    setGUIStateLoggedIn();
+
+                                    GrapplDataFile.saveUsername(authentication.getUsername(), theGUI.password);
                                 }
-
-                                Application.getLog().log("Logged in as " + authentication.getUsername());
-                                Application.getLog().log("Donator: " + authentication.isPremium());
-                                Application.getLog().log("Reserved port: " + authentication.getStaticPort());
-                                logIn();
-
-                                GrapplDataFile.saveUsername(authentication.getUsername(), theGUI.password);
-                            } else {
-//                                isLoggedInLabel.setText("Anonymous: Not logged in");
+                            } catch (AuthenticationException exp) {
+                                JOptionPane.showMessageDialog(jFrame, "Login failed, incorrect username or password or broken connection.\nError message: " + exp.getMessage());
+                                Application.getLog().log(exp.getMessage());
                             }
+
                         } catch (Exception ere) {
                             ere.printStackTrace();
                         }
@@ -440,7 +454,7 @@ public class AdvancedGUI {
         jFrame.setVisible(true);
     }
 
-    public void logIn() {
+    public void setGUIStateLoggedIn() {
         jFrame.remove(logIn);
         jFrame.remove(signUpButton);
 
@@ -455,7 +469,6 @@ public class AdvancedGUI {
             }
         });
 
-//        applicationState.getAuthentication().logout();
         jFrame.add(logOut);
 
         jFrame.add(logOut);
@@ -467,6 +480,7 @@ public class AdvancedGUI {
         jFrame.remove(logOut);
         jFrame.add(logIn);
         jFrame.add(signUpButton);
+        setReservedPortButton.setEnabled(false);
         donateButton.setBounds(290 + 180, 70, 80, 30);
         isLoggedInLabel.setText("Anonymous: Not logged in");
         premiumLabel.setText("Donator: false");
