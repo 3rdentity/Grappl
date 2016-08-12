@@ -6,7 +6,6 @@ import io.grappl.client.api.LocationProvider;
 import io.grappl.client.impl.*;
 import io.grappl.client.impl.authentication.Authentication;
 import io.grappl.client.impl.authentication.AuthenticationException;
-import io.grappl.client.impl.authentication.AuthenticationPackets;
 import io.grappl.client.impl.authentication.Authenticator;
 import io.grappl.client.impl.relay.RelayServer;
 import io.grappl.client.impl.error.RelayServerNotFoundException;
@@ -22,7 +21,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.URI;
 
@@ -44,7 +42,7 @@ public class AdvancedGUI {
     private JButton signUpButton;
     private JButton donateButton;
     private JButton logOut;
-    private JFrame jFrame;
+    private JFrame advancedGUIFrame;
     private JButton open;
     private JButton close;
     private JButton kickUsers;
@@ -59,18 +57,18 @@ public class AdvancedGUI {
     }
 
     public void create() {
-        jFrame = new JFrame();
-        jFrame.setIconImage(Application.getIcon());
-        jFrame.setTitle("Grappl Advanced");
-        jFrame.setSize(600, 300);
-        jFrame.setLayout(null);
-        jFrame.setLocationRelativeTo(null);
-        jFrame.setResizable(false);
-        jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        advancedGUIFrame = new JFrame();
+        advancedGUIFrame.setIconImage(Application.getIcon());
+        advancedGUIFrame.setTitle("Grappl Advanced");
+        advancedGUIFrame.setSize(600, 300);
+        advancedGUIFrame.setLayout(null);
+        advancedGUIFrame.setLocationRelativeTo(null);
+        advancedGUIFrame.setResizable(false);
+        advancedGUIFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         final JLabel relayLabel = new JLabel("Relay server");
         relayLabel.setBounds(20, 20, 100, 20);
-        jFrame.add(relayLabel);
+        advancedGUIFrame.add(relayLabel);
 
         if(Application.debugState) {
             if(System.getProperty("localadded").equals("false")) {
@@ -80,7 +78,7 @@ public class AdvancedGUI {
         }
 
         relayServerDropdown.setBounds(20, 40, 200, 20);
-        jFrame.add(relayServerDropdown);
+        advancedGUIFrame.add(relayServerDropdown);
 
         final JButton addRelay = new JButton("+");
         addRelay.setBounds(220, 40, 20, 20);
@@ -88,7 +86,7 @@ public class AdvancedGUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String newRelay =
-                        JOptionPane.showInputDialog(jFrame, "New relay server address");
+                        JOptionPane.showInputDialog(advancedGUIFrame, "New relay server address");
 
                 // If the user actually typed something...
                 if(newRelay != null && !newRelay.equals("")) {
@@ -100,15 +98,15 @@ public class AdvancedGUI {
                 }
             }
         });
-        jFrame.add(addRelay);
+        advancedGUIFrame.add(addRelay);
 
         final JLabel localPort = new JLabel("Local port");
         localPort.setBounds(20, 80, 200, 20);
-        jFrame.add(localPort);
+        advancedGUIFrame.add(localPort);
 
         final JTextField portTextField = new JTextField();
         portTextField.setBounds(20, 100, 130, 20);
-        jFrame.add(portTextField);
+        advancedGUIFrame.add(portTextField);
 
         final JButton update = new JButton("Update");
         ActionListener portUpdate = new ActionListener() {
@@ -122,13 +120,13 @@ public class AdvancedGUI {
                         int portValue = Integer.parseInt(portTextField.getText());
 
                         if (portValue > MAX_POSSIBLE_PORT_NUMBER) {
-                            JOptionPane.showConfirmDialog(jFrame, "Value too high. Port must be equal to or lower than " + MAX_POSSIBLE_PORT_NUMBER);
+                            JOptionPane.showConfirmDialog(advancedGUIFrame, "Value too high. Port must be equal to or lower than " + MAX_POSSIBLE_PORT_NUMBER);
                         } else {
                             applicationState.getFocusedGrappl().getInternalServer().setPort(Integer.parseInt(portTextField.getText()));
                             portLabel.setText("Local port: " + applicationState.getFocusedGrappl().getInternalServer().getPort());
                         }
                     } catch (NumberFormatException ignore) {
-                        JOptionPane.showConfirmDialog(jFrame,
+                        JOptionPane.showConfirmDialog(advancedGUIFrame,
                                 "Value too high. Port must be equal to or lower than " + MAX_POSSIBLE_PORT_NUMBER);
                     }
                 }
@@ -137,7 +135,7 @@ public class AdvancedGUI {
         update.addActionListener(portUpdate);
         portTextField.addActionListener(portUpdate);
         update.setBounds(150, 100, 90, 20);
-        jFrame.add(update);
+        advancedGUIFrame.add(update);
 
         close = new JButton("Close");
         open = new JButton("Open");
@@ -191,19 +189,19 @@ public class AdvancedGUI {
                             }
                         });
                         connectionLabel.setText("Public at: " + theGrappl.getExternalServer().getAddress() + ":" + theGrappl.getExternalServer().getPort());
-                        jFrame.setTitle("Grappl Advanced | " + theGrappl.getExternalServer().getAddress() + ":" + theGrappl.getExternalServer().getPort());
+                        advancedGUIFrame.setTitle("Grappl Advanced | " + theGrappl.getExternalServer().getAddress() + ":" + theGrappl.getExternalServer().getPort());
                         portLabel.setText("Local port: " + theGrappl.getInternalServer().getPort());
                         close.setEnabled(true);
                     } else {
                         applicationState.removeGrappl(applicationState.getFocusedGrappl());
                     }
                 } else {
-                    JOptionPane.showMessageDialog(jFrame,
+                    JOptionPane.showMessageDialog(advancedGUIFrame,
                             "Grappl connection already open! Close it before opening another.");
                 }
             }
         });
-        jFrame.add(open);
+        advancedGUIFrame.add(open);
 
         close.setBounds(140, 140, 100, 40);
         close.addActionListener(new ActionListener() {
@@ -212,37 +210,51 @@ public class AdvancedGUI {
                 applicationState.getFocusedGrappl().disconnect();
                 connectionLabel.setText("Not connected - Tunnel closed");
                 Application.getLog().log("Disconnected from relay");
-                jFrame.setTitle("Grappl Advanced");
+                advancedGUIFrame.setTitle("Grappl Advanced");
                 applicationState.removeGrappl(applicationState.getFocusedGrappl());
                 close.setEnabled(false);
             }
         });
         close.setEnabled(false);
-        jFrame.add(close);
+        advancedGUIFrame.add(close);
 
         int dist = 290;
+
+        /* Set reserved port button */
         setReservedPortButton = new JButton("Set reserved/static port (Donator feature)");
         setReservedPortButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    int port = Integer.parseInt(JOptionPane.showInputDialog("New static port:"));
-                    try {
-                        boolean success = Application.getApplicationState().getAuthentication().changeReservedPortTo(port);
-                        if (success)
-                            JOptionPane.showMessageDialog(jFrame, "Success! Your static port has been set to: " + port + "\nLog out and log back in for it to take effect.");
-                        else JOptionPane.showMessageDialog(jFrame, "Failed to set port. It may already be taken.");
+                    JOptionPane reservedPortPane = new JOptionPane("Set reserved port: ", JOptionPane.QUESTION_MESSAGE);
+                    reservedPortPane.setWantsInput(true);
+                    JDialog jDialog = reservedPortPane.createDialog(advancedGUIFrame, "Change reserved port");
+                    jDialog.setIconImage(Application.getIcon());
+                    jDialog.setVisible(true);
 
-                        premiumLabel.setText("Donator: true, reserved port: " + port);
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
+                    String portString = (String) reservedPortPane.getInputValue();
+                    if(!portString.equals(JOptionPane.UNINITIALIZED_VALUE)) {
+                        int port = Integer.parseInt(portString);
+                        boolean success = applicationState.getAuthentication().changeReservedPortTo(port);
+                        if (success) {
+                            JOptionPane.showMessageDialog(advancedGUIFrame, "Success! Your reserved port has been set to: " + port + "\nLog out and log back in for it to take effect.");
+                            premiumLabel.setText("Donator: true, reserved port: " + port);
+                        } else {
+                            JOptionPane.showMessageDialog(advancedGUIFrame, "Failed to set port. It may already be taken.");
+                        }
                     }
-                } catch (Exception r) {}
+                }
+                catch (NumberFormatException nFE) {
+                    JOptionPane.showMessageDialog(advancedGUIFrame, "Error: Input provided is not a number");
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
             }
         });
         setReservedPortButton.setEnabled(false);
         setReservedPortButton.setBounds(dist, 105, 260, 20);
-        jFrame.add(setReservedPortButton);
+        advancedGUIFrame.add(setReservedPortButton);
+        /* End reserved port button */
 
         kickUsers = new JButton("Kick connected users");
         kickUsers.addActionListener(new ActionListener() {
@@ -254,7 +266,7 @@ public class AdvancedGUI {
             }
         });
         kickUsers.setBounds(dist, 135, 260, 20);
-        jFrame.add(kickUsers);
+        advancedGUIFrame.add(kickUsers);
 
         connectionLabel = new JTextPane();
         connectionLabel.setEditable(false);
@@ -262,11 +274,11 @@ public class AdvancedGUI {
         connectionLabel.setBackground(null);
         connectionLabel.setText("Not connected - Tunnel closed");
         connectionLabel.setBounds(20, 200, 200, 20);
-        jFrame.add(connectionLabel);
+        advancedGUIFrame.add(connectionLabel);
 
         portLabel = new JLabel("Local port not set");
         portLabel.setBounds(20, 220, 200, 20);
-        jFrame.add(portLabel);
+        advancedGUIFrame.add(portLabel);
 
 
         JButton openConsoleButton = new JButton("Open console");
@@ -277,22 +289,22 @@ public class AdvancedGUI {
             }
         });
         openConsoleButton.setBounds(dist, 200, 120, 30);
-        jFrame.add(openConsoleButton);
+        advancedGUIFrame.add(openConsoleButton);
 
 //        connectedUserList = new JList<String>(new DefaultListModel<String>());
 //        JScrollPane jScrollPane = new JScrollPane(connectedUserList);
 //        jScrollPane.setBounds(dist, 130, 250, 60);
-//        jFrame.add(jScrollPane);
+//        advancedGUIFrame.add(jScrollPane);
 
         isLoggedInLabel = new JLabel();
         isLoggedInLabel.setText("Anonymous: Not logged in");
         isLoggedInLabel.setBounds(dist, 20, 250, 20);
-        jFrame.add(isLoggedInLabel);
+        advancedGUIFrame.add(isLoggedInLabel);
 
         premiumLabel = new JLabel();
         premiumLabel.setText("Donator: false");
         premiumLabel.setBounds(dist, 40, 250, 20);
-        jFrame.add(premiumLabel);
+        advancedGUIFrame.add(premiumLabel);
 
         final AdvancedGUI theGUI = this;
         logIn = new JButton("Log in");
@@ -402,7 +414,7 @@ public class AdvancedGUI {
 
             }
         });
-        jFrame.add(logIn);
+        advancedGUIFrame.add(logIn);
 
         signUpButton = new JButton("Sign up");
         signUpButton.setBounds(dist + 90, 70, 80, 30);
@@ -417,15 +429,15 @@ public class AdvancedGUI {
             }
         });
         signUpButton.setEnabled(false);
-        jFrame.add(signUpButton);
+        advancedGUIFrame.add(signUpButton);
 
         JButton back = new JButton("Back to home");
         back.setBounds(dist + 130, 200, 120, 30);
         back.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                jFrame.setVisible(false);
-                jFrame.dispose();
+                advancedGUIFrame.setVisible(false);
+                advancedGUIFrame.dispose();
                 if(applicationState.getFocusedGrappl() != null) {
                     applicationState.getFocusedGrappl().disconnect();
                     applicationState.removeGrappl(applicationState.getFocusedGrappl());
@@ -433,7 +445,7 @@ public class AdvancedGUI {
                 new DefaultGUI(Application.getApplicationState());
             }
         });
-        jFrame.add(back);
+        advancedGUIFrame.add(back);
 
         donateButton = new JButton("Donate");
         donateButton.setBounds(dist + 180, 70, 80, 30);
@@ -448,15 +460,15 @@ public class AdvancedGUI {
             }
         });
         donateButton.setEnabled(false);
-        jFrame.add(donateButton);
+        advancedGUIFrame.add(donateButton);
 
-        jFrame.repaint();
-        jFrame.setVisible(true);
+        advancedGUIFrame.repaint();
+        advancedGUIFrame.setVisible(true);
     }
 
     public void setGUIStateLoggedIn() {
-        jFrame.remove(logIn);
-        jFrame.remove(signUpButton);
+        advancedGUIFrame.remove(logIn);
+        advancedGUIFrame.remove(signUpButton);
 
         logOut = new JButton("Log out");
         logOut.setBounds(290, 70, 80, 30);
@@ -469,22 +481,22 @@ public class AdvancedGUI {
             }
         });
 
-        jFrame.add(logOut);
+        advancedGUIFrame.add(logOut);
 
-        jFrame.add(logOut);
+        advancedGUIFrame.add(logOut);
         donateButton.setBounds(290 + 90, 70, 80, 30);
-        jFrame.repaint();
+        advancedGUIFrame.repaint();
     }
 
     public void logOut() {
-        jFrame.remove(logOut);
-        jFrame.add(logIn);
-        jFrame.add(signUpButton);
+        advancedGUIFrame.remove(logOut);
+        advancedGUIFrame.add(logIn);
+        advancedGUIFrame.add(signUpButton);
         setReservedPortButton.setEnabled(false);
         donateButton.setBounds(290 + 180, 70, 80, 30);
         isLoggedInLabel.setText("Anonymous: Not logged in");
         premiumLabel.setText("Donator: false");
-        jFrame.repaint();
+        advancedGUIFrame.repaint();
     }
 
     public void triggerClosing() {
@@ -499,6 +511,6 @@ public class AdvancedGUI {
     }
 
     public JFrame getFrame() {
-        return jFrame;
+        return advancedGUIFrame;
     }
 }
