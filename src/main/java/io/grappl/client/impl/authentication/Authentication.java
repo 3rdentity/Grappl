@@ -36,7 +36,7 @@ public class Authentication {
     /* Unique ID for this auth session. Primarily used to discriminate between sessions in logs. */
     private UUID connectionUUID = UUID.randomUUID();
 
-    public Authentication() {
+    protected Authentication() {
         Application.getLog().log("Auth connection created " + getConnectionUUID());
     }
 
