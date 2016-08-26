@@ -1,12 +1,4 @@
-![Grappl Logo](https://dl.dropboxusercontent.com/u/34769058/grappl/glogo3.png)
-
-Website: http://grappl.io/
-
-Donate: http://grappl.io/donate
-
-Launcher: http://grappl.io:888/html/GrapplLauncher.jar (Beta 1.5.10 currently, autoupdates)
-
-Relay server code: https://github.com/ellenhebert/GrapplRelay
+Service is currently on standby mode, with services available to people who have already downloaded the .jar. By using the services at grappl.io, you agree to not use it for any illegal purposes, and that you are responsible for anything you use the service for. Do not transmit any copyrighted material you do not have the rights to transmit using the service.
 
 ## What is Grappl?
 
@@ -17,8 +9,6 @@ All you have to do to run it is run the .jar, choose whether you want to be logg
 is bound to, and your server will be open for anyone to connect. No messing around with port forwarding.
 
 It works by transferring data through relay servers (by default, ones on grappl.io).
-
-The project is in beta. This repository contains all the newest client code.
 
 ## License
 
