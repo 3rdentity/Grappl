@@ -1,4 +1,4 @@
-Service is currently on standby mode, with services available to people who have already downloaded the .jar. By using the services at grappl.io, you agree to not use it for any illegal purposes, and that you are responsible for anything you use the service for. Do not transmit any copyrighted material you do not have the rights to transmit using the service.
+Service is currently on standby mode, with services available to people who have the .jar. By using the services at grappl.io, you agree to not use it for any illegal purposes, and that you are responsible for anything you use the service for. Do not transmit any copyrighted material you do not have the rights to transmit using the service.
 
 ## What is Grappl?
 
